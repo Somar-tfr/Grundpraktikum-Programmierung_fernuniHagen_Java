@@ -20,6 +20,8 @@ public class Feld {
 	}
 
 	// TODO: (weitere) Konstruktoren
+	
+	//getter funktionen
 
 	public int getZeile() {
 		return zeile;
@@ -30,5 +32,18 @@ public class Feld {
 	}
 
 	// TODO: (weitere) Methoden
+	public String getZeichen() {
+		return zeichen;
+	}
+	
+	public int getVerwendbarkeit() {
+		return verwendbarkeit;
+	}
+	
+	public int getPunkte() {
+		return punkte;
+	}
+	
+	
 
 }
