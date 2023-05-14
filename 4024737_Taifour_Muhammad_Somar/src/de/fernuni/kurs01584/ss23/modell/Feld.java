@@ -5,7 +5,10 @@ public class Feld {
 	private int spalte;
 
 	// TODO: (weitere) Attribute
-
+	private String zeichen;
+	private int verwendbarkeit;
+	private int punkte;
+	
 	public Feld(int zeile, int spalte) {
 		super();
 		if (zeile < 0 || spalte < 0) {
