@@ -8,7 +8,7 @@ public class Feld {
 	private String zeichen;
 	private int verwendbarkeit;
 	private int punkte;
-	private int id; //??
+	private String id;
 	
 	public Feld(int zeile, int spalte) {
 		super();
@@ -38,7 +38,8 @@ public class Feld {
 	//setter funktionen
 	public void setId(int spalten) {
 		
-		id = (zeile * spalten) + spalte;
+		int nummer = (zeile * spalten) + spalte;
+		id = "F" + nummer;
 	}
 	
 	public void setZeichen(String eingabeZeichen) {
@@ -57,7 +58,7 @@ public class Feld {
 	}
 
 	// TODO: (weitere) Methoden
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	

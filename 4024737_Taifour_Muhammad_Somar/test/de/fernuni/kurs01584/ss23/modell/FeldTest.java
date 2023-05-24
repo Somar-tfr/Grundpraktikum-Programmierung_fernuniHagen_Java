@@ -80,6 +80,14 @@ class FeldTest {
 		
 	}
 	
+	@DisplayName("Einfacher negativer getVerwendbarkeit Test")
+	@Test
+	void testNegGetVerwendbarkeit() {
+		int verwendbarkeit = -1;
+		assertThrows(IllegalArgumentException.class, () -> new Feld(0, 0,verwendbarkeit ,0),
+				() -> "Fuer den (negativen) Verwendbarkeitswert '" + verwendbarkeit + "' wird keine Ausnahme erzeugt.");
+	}
+	
 	@DisplayName("Einfacher aktiver getVerwendbarkeit Test")
 	@Test
 	void testAktGetVerwendbarkeit() {
@@ -103,7 +111,7 @@ class FeldTest {
 	@DisplayName("Einfacher setId getId Test")
 	@Test
 	void testGetId() {
-		int id = 0;
+		String id = "F0";
 		int spalten = 1;
 		Feld feld = new Feld(0,0);
 		
@@ -113,16 +121,6 @@ class FeldTest {
 				
 	}
 	
-	
-	
-	@DisplayName("Einfacher negativer getVerwendbarkeit Test")
-	@Test
-	void testNegGetVerwendbarkeit() {
-		int verwendbarkeit = -1;
-		Feld feld = new Feld(0,0);
-		assertThrows(IllegalArgumentException.class, () -> new Feld(0, 0,verwendbarkeit ,0),
-				() -> "Fuer den (negativen) Verwendbarkeitswert '" + verwendbarkeit + "' wird keine Ausnahme erzeugt.");
-	}
 
 	@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 	@Nested
