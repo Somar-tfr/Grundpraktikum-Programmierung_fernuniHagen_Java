@@ -48,6 +48,8 @@ class FeldTest {
 	static void tearDownAll() {
 		System.out.println("Nach allen Testfaellen.");
 	}
+	
+
 
 	@DisplayName("Einfacher positiver Test.")
 	@Test
@@ -63,15 +65,63 @@ class FeldTest {
 	void testeGetSpalte() {
 		int spalte = -1;
 		assertThrows(IllegalArgumentException.class, () -> new Feld(0, spalte),
-				() -> "Fuer den (negativen) Spaltenwert '" + spalte + "' wird keine Ausnahme erzeugt.");
+				() -> "Fuer den (negativen) Spaltenwert '" + spalte + "' wird keine "
+						+ "Ausnahme erzeugt.");
 	}
 	
 	@DisplayName("Einfacher positiver getVerwendbarkeit Test")
 	@Test
-	void testGetVerwendbarkeit() {
+	void testNeutGetVerwendbarkeit() {
 		int verwendbarkeit = 1;
 		Feld feld = new Feld(0,0);
-		assertEquals(feld.getVerwendbarkeit(), verwendbarkeit, () ->"Der Verwendbarkeit '" + feld.getVerwendbarkeit() + "'entspricht nicht dem vorgegebenen Wert'" + verwendbarkeit + "'.");
+		assertEquals(feld.getVerwendbarkeit(), verwendbarkeit, () ->"Der Verwendbarkeit '" +
+		feld.getVerwendbarkeit() + "'entspricht nicht dem vorgegebenen Wert'" +
+				verwendbarkeit + "'.");
+		
+	}
+	
+	@DisplayName("Einfacher aktiver getVerwendbarkeit Test")
+	@Test
+	void testAktGetVerwendbarkeit() {
+		int verwendbarkeit = 1;
+		Feld feld = new Feld(0,0,1, 0);
+		assertEquals(feld.getVerwendbarkeit(), verwendbarkeit, 
+				() ->"Der Verwendbarkeit '" + feld.getVerwendbarkeit() + "'entspricht nicht dem vorgegebenen Wert'" + verwendbarkeit + "'.");
+	}
+	
+	@DisplayName("Einfacher setZeichen getZeichen Test")
+	@Test
+	void testSetZeichen() {
+		String zeichen = "a";
+		Feld feld = new Feld(0,0);
+		
+		feld.setZeichen(zeichen);
+		
+		assertEquals(feld.getZeichen(), zeichen, () -> "Der Zeichen '" + feld.getZeichen() + "'entspricht nicht dem vorgegebenen Wert'" + zeichen + "'.");
+	}
+	
+	@DisplayName("Einfacher setId getId Test")
+	@Test
+	void testGetId() {
+		int id = 0;
+		int spalten = 1;
+		Feld feld = new Feld(0,0);
+		
+		feld.setId(spalten);
+		
+		assertEquals(feld.getId(), id, () -> "Der Id '" + feld.getId() + "'entspricht nicht dem vorgegebenen Wert'" + id + "'.");
+				
+	}
+	
+	
+	
+	@DisplayName("Einfacher negativer getVerwendbarkeit Test")
+	@Test
+	void testNegGetVerwendbarkeit() {
+		int verwendbarkeit = -1;
+		Feld feld = new Feld(0,0);
+		assertThrows(IllegalArgumentException.class, () -> new Feld(0, 0,verwendbarkeit ,0),
+				() -> "Fuer den (negativen) Verwendbarkeitswert '" + verwendbarkeit + "' wird keine Ausnahme erzeugt.");
 	}
 
 	@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
