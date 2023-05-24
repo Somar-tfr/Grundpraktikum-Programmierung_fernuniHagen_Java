@@ -1,5 +1,6 @@
 package de.fernuni.kurs01584.ss23.modell;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
@@ -63,6 +64,14 @@ class FeldTest {
 		int spalte = -1;
 		assertThrows(IllegalArgumentException.class, () -> new Feld(0, spalte),
 				() -> "Fuer den (negativen) Spaltenwert '" + spalte + "' wird keine Ausnahme erzeugt.");
+	}
+	
+	@DisplayName("Einfacher positiver getVerwendbarkeit Test")
+	@Test
+	void testGetVerwendbarkeit() {
+		int verwendbarkeit = 1;
+		Feld feld = new Feld(0,0);
+		assertEquals(feld.getVerwendbarkeit(), verwendbarkeit, () ->"Der Verwendbarkeit '" + feld.getVerwendbarkeit() + "'entspricht nicht dem vorgegebenen Wert'" + verwendbarkeit + "'.");
 	}
 
 	@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
