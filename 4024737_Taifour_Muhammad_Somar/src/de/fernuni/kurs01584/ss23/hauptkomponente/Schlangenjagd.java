@@ -32,18 +32,18 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 	@Override
 	public String getName() {
 		// TODO Implementierung der API-Methode zur Rueckgabe Ihres vollstaenigen Namens.
-		return null;
+		return "Muhammad Somar Taifour";
 	}
 
 	@Override
 	public String getMatrikelnummer() {
 		// TODO Implementierung der API-Methode zur Rueckgabe Ihrer Matrikelnummer.
-		return null;
+		return "4024737";
 	}
 
 	@Override
 	public String getEmail() {
 		// TODO Implementierung der API-Methode zur Rueckgabe Ihrer E-Mail Adresse.
-		return null;
+		return "somar.taifour@outlook.com";
 	}
 }
