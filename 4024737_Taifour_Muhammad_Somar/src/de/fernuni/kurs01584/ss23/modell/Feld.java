@@ -22,7 +22,7 @@ public class Feld {
 		this.punkte = 1;
 	}
 	public Feld(int zeile, int spalte, int verwendbarkeit, int punkte) {
-		super();
+		//super();
 		if (zeile < 0 || spalte < 0 || verwendbarkeit < 0 || punkte < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' , 'spalte' , 'verwendbarket' , 'punlte'  keine negativen Werte annehmen.");
