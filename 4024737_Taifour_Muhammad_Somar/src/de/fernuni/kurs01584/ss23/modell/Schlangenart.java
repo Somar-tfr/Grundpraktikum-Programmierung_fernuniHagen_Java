@@ -5,7 +5,7 @@ public class Schlangenart {
 	private String zeichenkette;
 	private int punkte;
 	private int anzahl;
-	
+	private Nachbarschaftsstruktur nachbarschaftsstruktur;
 	
 	// TODO: Konstruktoren
 	Schlangenart(String zeichenkette){
