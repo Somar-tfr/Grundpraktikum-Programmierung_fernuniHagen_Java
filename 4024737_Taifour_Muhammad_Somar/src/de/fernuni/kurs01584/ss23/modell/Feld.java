@@ -74,6 +74,11 @@ public class Feld {
 		return zeichen;
 	}
 	
+	public void verwenden() {
+		if (verwendbarkeit > 0) {
+			verwendbarkeit -= 1;
+		}
+	}
 
 
 }
