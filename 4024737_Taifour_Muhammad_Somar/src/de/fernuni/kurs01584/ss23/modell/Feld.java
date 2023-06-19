@@ -3,15 +3,13 @@ package de.fernuni.kurs01584.ss23.modell;
 public class Feld {
 	private int zeile;
 	private int spalte;
-
-	// TODO: (weitere) Attribute
-	private String zeichen;
+	private char zeichen;
 	private int verwendbarkeit;
 	private int punkte;
 	private String id;
 	
 	public Feld(int zeile, int spalte) {
-		super();
+		//super();
 		if (zeile < 0 || spalte < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
@@ -20,6 +18,7 @@ public class Feld {
 		this.spalte = spalte;
 		this.verwendbarkeit = 1;
 		this.punkte = 1;
+		this.zeichen = ' ';
 	}
 	public Feld(int zeile, int spalte, int verwendbarkeit, int punkte) {
 		//super();
@@ -34,7 +33,6 @@ public class Feld {
 		
 	}
 
-	// TODO: (weitere) Konstruktoren
 	//setter funktionen
 	public void setId(int spalten) {
 		
@@ -42,13 +40,12 @@ public class Feld {
 		id = "F" + nummer;
 	}
 	
-	public void setZeichen(String eingabeZeichen) {
+	public void setZeichen(char eingabeZeichen) {
 		zeichen = eingabeZeichen;
 	}
 	
 	
 	//getter funktionen
-
 	public int getZeile() {
 		return zeile;
 	}
@@ -57,7 +54,6 @@ public class Feld {
 		return spalte;
 	}
 
-	// TODO: (weitere) Methoden
 	public String getId() {
 		return id;
 	}
@@ -70,13 +66,15 @@ public class Feld {
 		return punkte;
 	}
 	
-	public String getZeichen() {
+	public char getZeichen() {
 		return zeichen;
 	}
 	
 	public void verwenden() {
 		if (verwendbarkeit > 0) {
 			verwendbarkeit -= 1;
+		}else {
+			System.out.println("nicht verwendbar?"); //?
 		}
 	}
 

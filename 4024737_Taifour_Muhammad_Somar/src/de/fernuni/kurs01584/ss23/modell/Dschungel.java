@@ -8,7 +8,7 @@ public class Dschungel {
 	private String zeichenMenge;
 	private ArrayList<ArrayList<Feld>> dschungelMatrix;
 	
-	// TODO: Konstruktoren
+	//Konstruktoren
 	public Dschungel(int zeilen, int spalten,String zeichenMenge) {
 		if (zeilen <= 0 || spalten <= 0 || zeichenMenge.length() == 0) {
 			throw new IllegalArgumentException(
@@ -47,9 +47,12 @@ public class Dschungel {
 		return zeichenMenge;
 	}
 	
-	// TODO: Methoden
 	public Feld getFeld(int zNummer, int sNummer) {
 		return dschungelMatrix.get(zNummer).get(sNummer);
+	}
+	
+	public int getFelderAnzahl() {
+		return (zeilen * spalten);
 	}
 	
 	
@@ -67,7 +70,8 @@ public class Dschungel {
 	public static void main(String[] args) {
 		Dschungel test = new Dschungel(5,6, "abcd");
 		test.print();
-		System.out.println(test.getFeld(2,1));
+		test.getFeld(2,1).setZeichen('A');
+		System.out.println(test.getFeld(2,1).getZeichen());
 		
 	}
 }

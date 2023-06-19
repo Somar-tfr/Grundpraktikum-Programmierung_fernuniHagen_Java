@@ -106,7 +106,7 @@ public class Nachbarschaftsstruktur {
 				//break;
 				
 			case "Spalte":
-				return nachbarschaft;
+				return null;//nachbarschaft;
 				//break;
 			default:
 				return null; //?
