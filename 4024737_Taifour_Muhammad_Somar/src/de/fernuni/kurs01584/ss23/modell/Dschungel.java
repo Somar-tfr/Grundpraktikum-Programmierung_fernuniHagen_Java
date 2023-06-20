@@ -55,6 +55,15 @@ public class Dschungel {
 		return (zeilen * spalten);
 	}
 	
+	public boolean feldExistiert(int zeile, int spalte){
+		if (zeile >= 0 && zeile < zeilen ) {
+			if (spalte >= 0 && spalte < spalten) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	//a test method
 	public void print(/*String zeichen*/) {
@@ -72,6 +81,14 @@ public class Dschungel {
 		test.print();
 		test.getFeld(2,1).setZeichen('A');
 		System.out.println(test.getFeld(2,1).getZeichen());
+		System.out.println("---");
 		
+		Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
+		Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
+		
+		(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
+		System.out.println("---");
+		
+		(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 	}
 }
