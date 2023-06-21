@@ -1,21 +1,34 @@
 package de.fernuni.kurs01584.ss23.modell;
 
+import java.util.ArrayList;
+
 public class Schlange {
 	// TODO: Attribute
-	private Schlangenglied anfang;
+	//private Schlangenglied anfang;
+	private ArrayList<Schlangenglied> glieder;
 	
-	
+	//MUSS NOCH ANPASSENم
 	// TODO: Konstruktoren
-	public Schlange(Schlangenglied anfang) {
-		this.anfang = anfang;
+
+	
+	public ArrayList<Schlangenglied> getSchlange(){
+		return this.glieder;
 	}
 	
-	public Schlangenglied getAnfang() {
-		return anfang;
+	public void gliedAddieren(Schlangenglied glied) {
+		this.glieder.add(glied);
 	}
 	
-	public void setAnfang(Schlangenglied anfang) {
-		this.anfang = anfang;
+	public int getLength() {
+		return this.glieder.size();
+	}
+	
+	public Schlangenglied getGlied(int index) {
+		return this.glieder.get(index);
+	}
+	
+	public void clearSchlange() {
+		this.glieder.clear();
 	}
 	
 	// TODO: Methoden

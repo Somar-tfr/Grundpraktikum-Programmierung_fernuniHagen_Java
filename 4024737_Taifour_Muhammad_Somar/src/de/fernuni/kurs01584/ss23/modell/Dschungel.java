@@ -2,6 +2,8 @@ package de.fernuni.kurs01584.ss23.modell;
 
 import java.util.ArrayList;
 
+import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
+
 public class Dschungel {
 	private int zeilen;
 	private int spalten;
@@ -69,7 +71,8 @@ public class Dschungel {
 	public void print(/*String zeichen*/) {
 		for(ArrayList<Feld> zeile : dschungelMatrix) {
 			for (Feld element : zeile) {
-				System.out.print(element.getId());
+				//System.out.print(element.getId());
+				System.out.print(element.getZeichen());
 				}
 			
 			System.out.println();
@@ -77,9 +80,14 @@ public class Dschungel {
 	}
 	//a test main
 	public static void main(String[] args) {
-		Dschungel test = new Dschungel(5,6, "abcd");
+		
+		
+		Schlangenarten schlangenarten = new Schlangenarten();
+		DschungelGenerator  testgenerator = new DschungelGenerator(5,6,"abcdefghijklmnopqrstuvwxyz",schlangenarten, 2);
+		Dschungel test = testgenerator.erzeugeDschungel();
+		
 		test.print();
-		test.getFeld(2,1).setZeichen('A');
+		//test.getFeld(2,1).setZeichen('A');
 		System.out.println(test.getFeld(2,1).getZeichen());
 		System.out.println("---");
 		

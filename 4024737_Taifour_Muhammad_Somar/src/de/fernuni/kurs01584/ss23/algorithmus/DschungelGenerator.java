@@ -15,13 +15,13 @@ public class DschungelGenerator {
 	private int zeilen;
 	private int spalten;
 	private String zulaessigeZeichen;
-	private Schlangenart[] schlangenarten;
+	private Schlangenarten schlangenarten;
 	private int schlangenAnzahl;
 	
-	DschungelGenerator(int zeilen, 
+	public DschungelGenerator(int zeilen, 
 			int spalten, 
 			String zulaessigeZeichen, 
-			Schlangenart[] schlangenarten,
+			Schlangenarten schlangenarten,
 			int schlangenanzahl){
 		if (zeilen < 1 || spalten < 1 || zulaessigeZeichen == null || schlangenarten == null ||  schlangenanzahl < 1) {
 			throw new IllegalArgumentException(
@@ -45,9 +45,7 @@ public class DschungelGenerator {
 		
 		//Belegung verbliebenden Felder mit zufällige zeichen
 		int randMax = zulaessigeZeichen.length() - 1;
-		
-		
-		
+
 		for (int i = 0; i < dschungel.getZeilen(); i++) {
 			for (int j = 0; j < dschungel.getSpalten(); j++) {
 				Feld feld = dschungel.getFeld(i, j);

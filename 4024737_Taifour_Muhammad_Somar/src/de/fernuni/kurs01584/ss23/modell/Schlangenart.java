@@ -37,6 +37,9 @@ public class Schlangenart {
 	public String getId() {
 		return id;
 	}
+	public Nachbarschaftsstruktur getNachbarschaftsstruktur() {
+		return nachbarschaftsstruktur;
+	}
 	
 	//setters
 	public void setPunkte(int punkte) {
@@ -46,6 +49,9 @@ public class Schlangenart {
 		this.anzahl = anzahl;
 	}
 	
+	public void setID(String i) {
+		this.id = i;
+	}
 	
 	
 	
