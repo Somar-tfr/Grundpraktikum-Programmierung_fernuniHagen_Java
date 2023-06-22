@@ -52,6 +52,10 @@ public class Dschungel {
 	public Feld getFeld(int zNummer, int sNummer) {
 		return dschungelMatrix.get(zNummer).get(sNummer);
 	}
+	/*
+	public Feld getFeldById(String id) {
+		return dschungelMatrix.get
+	}*/
 	
 	public int getFelderAnzahl() {
 		return (zeilen * spalten);
@@ -78,15 +82,35 @@ public class Dschungel {
 			System.out.println();
 		}
 	}
+	
+	//a test method
+		public void printid(/*String zeichen*/) {
+			for(ArrayList<Feld> zeile : dschungelMatrix) {
+				for (Feld element : zeile) {
+					//System.out.print(element.getId());
+					System.out.print(element.getId());
+					}
+				
+				System.out.println();
+			}
+		}
+		
 	//a test main
 	public static void main(String[] args) {
 		
 		
 		Schlangenarten schlangenarten = new Schlangenarten();
-		DschungelGenerator  testgenerator = new DschungelGenerator(5,6,"abcdefghijklmnopqrstuvwxyz",schlangenarten, 2);
+		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
+		Schlangenart schlangenart = new Schlangenart("fernuni", nachb );
+		
+		schlangenarten.add(schlangenart);
+		schlangenarten.print();
+		
+		DschungelGenerator  testgenerator = new DschungelGenerator(5,6,"abcdefghijklmnopqrstuvwxyz",schlangenarten, 1);
 		Dschungel test = testgenerator.erzeugeDschungel();
 		
 		test.print();
+		test.printid();
 		//test.getFeld(2,1).setZeichen('A');
 		System.out.println(test.getFeld(2,1).getZeichen());
 		System.out.println("---");
