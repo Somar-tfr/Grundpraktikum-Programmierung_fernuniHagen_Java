@@ -106,51 +106,12 @@ public class DschungelGenerator {
 				
 			}
 			
-			/*felderlist.forEach(n->System.out.print(n.getId()));
-			System.out.println();*///ein test
+			
 			//der inhalt vom gefundenen felderliste mit schlange belegen
 			for(int j = 0; j < gliederAnzahl; j++) {
 				felderlist.get(j).setZeichen(schlangenart.getZeichenkette().charAt(j)) ;
 			}
-			
-			
-			/*
-			feld.setZeichen(schlangenart.getZeichenkette().charAt(0));
-			//should a while be here?? while alle schlangen noch nicht gegeben sind?
-			//iterate through zeichenkette
-			int j = 1;
-			while ( j < gliederAnzahl) {
-				//muss man ein rekord habenn ob alle nachbarschaftsstrukturen bereits besucht sind
-				ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, feld);
-				int nachbarnGroesse = nachbarn.size() - 1 ;
-				Feld nextFeld;
-				do {
-					Random randomNacharschaftsFeld = new Random();
-					int randFeld = randomNacharschaftsFeld.nextInt(nachbarnGroesse);
-					nextFeld = nachbarn.get(randFeld);
-					if (nextFeld.getZeichen() == ' '){
-							feldIstLeer = true;
-							nachbarn.remove(randFeld);
-					}
-					//für den fall dass es kein platz mehr für eine neue schlangenart gefunden ist
-					if (nachbarn.size() == 0) {
-						continue;
-					}
-				}while(!feldIstLeer);
-				if (nachbarn.size() == 0) {
-					j = j - 1;
-					continue;
-				}
-				feldIstLeer = false;
 				
-				nextFeld.setZeichen(schlangenart.getZeichenkette().charAt(j));
-				j++;
-				 
-			}*/
-			
-				
-				
-			
 			
 		}
 		
@@ -169,63 +130,10 @@ public class DschungelGenerator {
 				}//if feld nicht belegt
 			}//spalten iteration
 		}//zeilen iteration
-		
-		
-		
+	
 		return dschungel;
 	}
-	/*
-	private ArrayList<Feld> zulaessigeFelder(Dschungel dschungel,Schlangenart schlangenart, Feld feld){
-		ArrayList<Feld> zulaessigeFelder = new ArrayList<Feld>();
-		int gliederAnzahl = schlangenart.getZeichenLength();
-		
-		
-		ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, feld);
-		nachbarn.remove(feld);
-		
-		
-		
-		if(nachbarn.size() = 0) {
-			return false;
-		}
-		
-		//Random randomPosition = new Random();
-		if (gliederAnzahl == 1) {
-			do {
-				if (nachbarn.size() == 0) {
-					break;
-				}
-				Random randomNacharschaftsFeld = new Random();
-				int randFeld = randomNacharschaftsFeld.nextInt(nachbarn.size());
-				Feld nextFeld = nachbarn.get(randFeld);
-				if (nextFeld.getZeichen() == ' '){
-						feldIstLeer = true;
-						zulaessigeFelder.add(nextFeld);
-						//return zulaessigeFelder;
-				}
-				//für den fall dass es kein platz mehr für eine neue schlangenart gefunden ist
-				
-			}while(!feldIstLeer);
-			
-			return zulaessigeFelder;
-		}
-		do {
-			if (nachbarn.size() == 0) {
-				break;
-			}
-			Random randomNacharschaftsFeld = new Random();
-			int randFeld = randomNacharschaftsFeld.nextInt(nachbarn.size());
-			Feld nextFeld = nachbarn.get(randFeld);
-			if (nextFeld.getZeichen() == ' '){
-					feldIstLeer = true;
-					nachbarn.remove(randFeld);
-			}
-			//für den fall dass es kein platz mehr für eine neue schlangenart gefunden ist
-			
-		}while(!feldIstLeer);
-		
-		return zulaessigeFelder;
-	}*/
+	
 	//zu optemieren
 	private boolean istZulaessigBT(Dschungel dschungel,Schlangenart schlangenart,int schlangenZeichenIterator, Feld thisFeld, Feld nextFeld, ArrayList<Feld> felderlist) {
 		ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, nextFeld);
@@ -276,28 +184,6 @@ public class DschungelGenerator {
 			}
 			nachbarn.remove(nextFeld);
 		}
-		
-		/*
-		while (true) {
-			if (nachbarn.size() == 0) {
-				return false;
-			}
-			Random randomNacharschaftsFeld = new Random();
-			int randFeld = randomNacharschaftsFeld.nextInt(nachbarn.size());
-			Feld nextFeld = nachbarn.get(randFeld);
-			if (nextFeld.getZeichen() == ' '){
-				felderlist.add(nextFeld);	
-				return true;
-					
-			}
-			nachbarn.remove(randFeld);
-			//für den fall dass es kein platz mehr für eine neue schlangenart gefunden ist
-			
-		}
-		
-		
-		isZulaessig(dschungel, schlangenart,  feld, felderlist);
-		}*/
 		
 	}
 	private boolean alleMatrixFelderBesucht(ArrayList<ArrayList<Feld>> pruefMatrix) {
