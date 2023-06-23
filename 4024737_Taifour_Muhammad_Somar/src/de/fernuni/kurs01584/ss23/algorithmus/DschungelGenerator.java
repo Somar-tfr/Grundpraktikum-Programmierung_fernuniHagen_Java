@@ -59,9 +59,9 @@ public class DschungelGenerator {
 			//schlangenart wählen und benötigte informationen speichern
 			Schlangenart schlangenart = schlangenarten.getSchlangeByIndex(i);
 			int gliederAnzahl = schlangenart.getZeichenLength();
-			
+			//int schlangenlangenMaxIndex = schlangenart.getZeichenLength() - 1;
 			ArrayList<Feld> felderlist = new ArrayList<Feld>();//felderliste für  felder die recursiv belegt sind und die schlange zulässig ist
-			
+			System.out.println(schlangenart.getZeichenkette());
 			ArrayList<ArrayList<Feld>> pruefMatrix = new ArrayList<>();//eine prüfmatrix um sicher zu stellen ob alle felder vom random besucht sind
 			//pruefMatrix initieeren
 			for(int k = 0 ; k < zeilen; k++) {
@@ -73,11 +73,12 @@ public class DschungelGenerator {
 				}//for l
 				pruefMatrix.add(zeile);
 			}// for k
-			
+			//MUSS NOCH DIE PUNKTE UND VERWENDBARKEIT ADDIEREN!!
 			//ein random feld wählen
 			Feld feld = null;
 			Feld nextFeld;
-			
+			int schlangenlangenMaxIndex = gliederAnzahl - 1;//23.06 10:00
+			char erstesChar = schlangenart.getZeichenkette().charAt(schlangenlangenMaxIndex);//23.06 10:00
 			//looop für ein random position in dem dschungel für die schlange
 			while(true) {
 				
@@ -88,29 +89,51 @@ public class DschungelGenerator {
 				nextFeld = dschungel.getFeld(randPosZ, randPosS);
 				
 				//die gewälte feld in paralell matrix markieren
-				if(pruefMatrix.get(randPosZ).get(randPosS) == null){
+				/*if(pruefMatrix.get(randPosZ).get(randPosS) == null){
 					pruefMatrix.get(randPosZ).add(randPosS, nextFeld);
-				}
+				}*/
 				
 				//sicher stellen dass den random gewählten feld leer ist und rekursiv dass die bis letzte char geht
-				if ((nextFeld.getZeichen() == ' ') && (istZulaessigBT(dschungel, schlangenart, gliederAnzahl-1,feld, nextFeld, felderlist))){
+				if ((istZulaessigBT(dschungel, schlangenart, gliederAnzahl-1,feld, nextFeld, felderlist))&& (nextFeld.getZeichen() == ' ') ){
 					//istZulaessigBT(dschungel, schlangenart, gliederAnzahl-1,feld, nextFeld, felderlist);
+					nextFeld.setZeichen(erstesChar);  //23.06 10:00
 					felderlist.add(nextFeld);
+					System.out.println(nextFeld.getId());
+					System.out.println(gliederAnzahl);
+					System.out.println(nextFeld.getZeichen());
+					
+					//felderlist nach jede schlange entleeren;
+					for(int j = schlangenlangenMaxIndex; j >= 0; j--) {
+						//System.out.println(schlangenlangenMaxIndex);
+						//System.out.println(j);
+						
+						felderlist.remove(j);
+					}
 					break;
+				}else {
+					//um die felderliste wieder leer zu machen und die zeichen zurückzusetzen DAS KANN IN EIMEN SEPERATEN FUNKTION
+					for(int j = felderlist.size() - 1; j >= 0; j--) { // hier angepasst 23.06.12:07
+						//System.out.println(schlangenlangenMaxIndex);
+						//System.out.println(j);
+						felderlist.get(j).setZeichen(' ') ;
+						felderlist.remove(j);
+					}
 				}
+				//DAS PROBLEM IST DAS DIE FELDER OHNE ZEICHEN BLEIBEN BIS ERST NACH DEM LAUF!! ALSO DIE ZWEITE KONDITION KOMMT IMMER ALS WAHR!!!
+				
 				//prüfen ob alle felder besucht sind
-				if(alleMatrixFelderBesucht(pruefMatrix)) {
+				/*if(alleMatrixFelderBesucht(pruefMatrix)) {
 					break;
 					//Muss ich hier eine error geben falls nicht all die schlangenarten positionert sind?
-				}
+				}*/
 				
 			}
 			
-			
+		/*	
 			//der inhalt vom gefundenen felderliste mit schlange belegen
 			for(int j = 0; j < gliederAnzahl; j++) {
 				felderlist.get(j).setZeichen(schlangenart.getZeichenkette().charAt(j)) ;
-			}
+			}*/
 				
 			
 		}
@@ -138,10 +161,13 @@ public class DschungelGenerator {
 	private boolean istZulaessigBT(Dschungel dschungel,Schlangenart schlangenart,int schlangenZeichenIterator, Feld thisFeld, Feld nextFeld, ArrayList<Feld> felderlist) {
 		ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, nextFeld);
 		nachbarn.remove(thisFeld);
+		 
+		 char appendChar = schlangenart.getZeichenkette().charAt(schlangenZeichenIterator - 1);//23.06 10:00
 		
 		//die n0 position mit dem letzten element
 		if (schlangenZeichenIterator == 1){
 			//wiederhole für alle nachbarschaftsstruktur
+			
 			while (true) {
 				if (nachbarn.size() == 0) {
 					//falls keine weitere generierung möglich
@@ -153,7 +179,12 @@ public class DschungelGenerator {
 				thisFeld = nextFeld;
 				nextFeld = nachbarn.get(randFeld);
 				if (nextFeld.getZeichen() == ' '){
+					nextFeld.setZeichen(appendChar);  //23.06 10:00
 					felderlist.add(nextFeld);	
+					System.out.println(nextFeld.getId());
+					System.out.println(nextFeld.getZeichen());
+					System.out.println(schlangenZeichenIterator);//test
+					
 					return true;
 						
 				}
@@ -174,18 +205,29 @@ public class DschungelGenerator {
 			thisFeld = nextFeld;
 			nachbarn.remove(thisFeld);
 			nextFeld = nachbarn.get(randFeld);
+			
 			//rekursive funktion
-			if (nextFeld.getZeichen() == ' ') {
+			if (istZulaessigBT(dschungel, schlangenart, schlangenZeichenIterator-1,thisFeld, nextFeld, felderlist) && (nextFeld.getZeichen() == ' ')) {
 				//System.out.println(nextFeld.getZeichen());
-				if(istZulaessigBT(dschungel, schlangenart, schlangenZeichenIterator-1,thisFeld, nextFeld, felderlist)) {
-					felderlist.add(nextFeld);
-					return true;
-				}
+				
+				nextFeld.setZeichen(appendChar);//23.06 10:00
+				felderlist.add(nextFeld);
+				System.out.println(nextFeld.getId());
+				System.out.println(nextFeld.getZeichen());
+				System.out.println(schlangenZeichenIterator);//test
+				return true;
+				
+			}else {
+			for(int j = felderlist.size() - 1; j >= 0; j--) { //?????????
+			felderlist.get(j).setZeichen(' ') ;
+			felderlist.remove(j);
+				};
 			}
 			nachbarn.remove(nextFeld);
 		}
 		
 	}
+	/*
 	private boolean alleMatrixFelderBesucht(ArrayList<ArrayList<Feld>> pruefMatrix) {
 		for(int i = 0 ; i < zeilen; i++) {
 			
@@ -197,7 +239,7 @@ public class DschungelGenerator {
 			
 		}
 		return true;
-	}
+	}*/
 	
 
 }

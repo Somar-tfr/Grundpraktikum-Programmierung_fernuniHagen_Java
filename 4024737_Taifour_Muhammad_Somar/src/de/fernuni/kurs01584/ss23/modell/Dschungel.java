@@ -101,26 +101,37 @@ public class Dschungel {
 		
 		Schlangenarten schlangenarten = new Schlangenarten();
 		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
-		Schlangenart schlangenart = new Schlangenart("fernuni", nachb );
+		Schlangenart schlangenart0 = new Schlangenart("DIE", nachb );
+		Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
+		Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
+		Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
+		Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
+		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
 		
-		schlangenarten.add(schlangenart);
+		schlangenarten.add(schlangenart0);
+		schlangenarten.add(schlangenart1);
+		schlangenarten.add(schlangenart2);
+		schlangenarten.add(schlangenart3);
+		schlangenarten.add(schlangenart4);
+		schlangenarten.add(schlangenart5);
+		
 		schlangenarten.print();
 		
-		DschungelGenerator  testgenerator = new DschungelGenerator(5,6,"abcdefghijklmnopqrstuvwxyz",schlangenarten, 1);
+		DschungelGenerator  testgenerator = new DschungelGenerator(5,10,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten, 1);
 		Dschungel test = testgenerator.erzeugeDschungel();
 		
 		test.print();
 		test.printid();
 		//test.getFeld(2,1).setZeichen('A');
-		System.out.println(test.getFeld(2,1).getZeichen());
+		//System.out.println(test.getFeld(2,1).getZeichen());
 		System.out.println("---");
 		
-		Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
-		Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
+		//Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
+		//Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
 		
-		(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
+		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 		System.out.println("---");
 		
-		(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
+		//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 	}
 }
