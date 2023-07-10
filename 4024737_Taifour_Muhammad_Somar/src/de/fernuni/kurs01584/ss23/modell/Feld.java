@@ -40,8 +40,17 @@ public class Feld {
 		id = "F" + nummer;
 	}
 	
-	public void setZeichen(char eingabeZeichen) {
-		zeichen = eingabeZeichen;
+	public void setZeichen(char zeichen) {
+		this.zeichen = zeichen;
+	}
+	
+	public void setPunkte(int punkte) {
+		this.punkte = punkte;
+		
+	}
+	
+	public void setVerwendbarkeit(int verwendbarkeit) {
+		this.verwendbarkeit = verwendbarkeit;
 	}
 	
 	
@@ -77,6 +86,7 @@ public class Feld {
 			System.out.println("nicht verwendbar?"); //?
 		}
 	}
+	
 
 
 }

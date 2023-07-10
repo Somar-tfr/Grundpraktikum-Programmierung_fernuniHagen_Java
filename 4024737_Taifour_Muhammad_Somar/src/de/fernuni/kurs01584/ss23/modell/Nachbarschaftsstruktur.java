@@ -6,8 +6,9 @@ public class Nachbarschaftsstruktur {
 	private String typ;
 	private int parameter1;
 	private int parameter2;
+
 	
-	Nachbarschaftsstruktur(String typ, int parameter1, int parameter2){
+	public Nachbarschaftsstruktur(String typ, int parameter1, int parameter2){
 		if (parameter1 < 0 || parameter2 < 0 || typ.length() == 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Nachbarschaftsstruktur' darf die Attribut 'parameter' keine negativen Werte und nicht höher als 2 annehmen.\n 'typ' darf nicht leer sein");
@@ -24,7 +25,7 @@ public class Nachbarschaftsstruktur {
 		
 	}
 	
-	Nachbarschaftsstruktur(String typ, int parameter1){
+	public Nachbarschaftsstruktur(String typ, int parameter1){
 		if (parameter1 < 0 || typ.length() == 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Nachbarschaftsstruktur' darf die Attribut 'parameter' keine negativen Werte und nicht höher als 2 annehmen.\n 'typ' darf nicht leer sein");

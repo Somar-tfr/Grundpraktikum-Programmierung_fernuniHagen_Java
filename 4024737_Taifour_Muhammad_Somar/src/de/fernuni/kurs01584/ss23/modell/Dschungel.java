@@ -96,6 +96,7 @@ public class Dschungel {
 		}
 		
 	//a test main
+		/*
 	public static void main(String[] args) {
 		
 		
@@ -108,12 +109,14 @@ public class Dschungel {
 		Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
 		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
 		
+		//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
 		schlangenarten.add(schlangenart0);
 		schlangenarten.add(schlangenart1);
 		schlangenarten.add(schlangenart2);
 		schlangenarten.add(schlangenart3);
 		schlangenarten.add(schlangenart4);
 		schlangenarten.add(schlangenart5);
+		
 		
 		schlangenarten.print();
 		
@@ -133,5 +136,5 @@ public class Dschungel {
 		System.out.println("---");
 		
 		//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-	}
+	}*/
 }

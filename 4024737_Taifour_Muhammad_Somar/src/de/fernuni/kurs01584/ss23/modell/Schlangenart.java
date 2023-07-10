@@ -9,7 +9,7 @@ public class Schlangenart {
 	private Nachbarschaftsstruktur nachbarschaftsstruktur;
 	
 	// TODO: Konstruktoren
-	Schlangenart(String zeichenkette, Nachbarschaftsstruktur nachbarschaftsstruktur){
+	public Schlangenart(String zeichenkette, Nachbarschaftsstruktur nachbarschaftsstruktur){
 		if (zeichenkette.length() == 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Schlangenart' duerfen die Attribute 'zeichenkette' nicht leer sein");
@@ -18,7 +18,6 @@ public class Schlangenart {
 		this.nachbarschaftsstruktur = nachbarschaftsstruktur;
 		this.punkte = 0;
 		this.anzahl = 0;
-		this.id = null;
 		
 	}
 	
@@ -41,6 +40,10 @@ public class Schlangenart {
 		return nachbarschaftsstruktur;
 	}
 	
+	public int getSize() {
+		return zeichenkette.length();
+	}
+	
 	//setters
 	public void setPunkte(int punkte) {
 		this.punkte = punkte;
@@ -50,8 +53,10 @@ public class Schlangenart {
 	}
 	
 	public void setID(String i) {
-		this.id = i;
+		id = i;
 	}
+	
+	
 	
 	
 	
