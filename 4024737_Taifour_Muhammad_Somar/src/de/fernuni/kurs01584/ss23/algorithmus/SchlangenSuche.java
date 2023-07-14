@@ -9,89 +9,132 @@ import de.fernuni.kurs01584.ss23.modell.*;
 
 
 public class SchlangenSuche {
-	private int maxZeit;
-	private Dschungel dschungel;
-	private int punkte;
-	private Random randomGenerator = new Random();
+	//alle Felder iterieren? 
+	//oder eine andere algorithmus benutzen die parallel mehrere felder sucht??
 	
-	SchlangenSuche(Dschungel dschungel, int maxZeit){
-		this.dschungel = dschungel;
-		this.maxZeit = maxZeit;
-		this.punkte = 0;
-	}
-	
-	public static void sucheSchlange(Dschungel dschungel, Schlangenarten schlangenarten) { // muss hier anpassen und mehr überlegen
+	public static ArrayList<Schlange> sucheSchlangen(Dschungel dschungel,
+													Schlangenarten schlangenarten,
+													int zeitAngabe,
+													char angabeZeichen){
+		/* nimmt eine Dschungel, schlangenarten, zeitangeben, angabeZeichen als eingabe
+		 * und gibt die in dem Dschungel gefundene Schlangen von den schlangenarten
+		 *  innerhalb der vorgegebenen Zeit 
+		 * Zurück, mit dem angabeZeichen option.
+		 * 
+		 */
+		ArrayList<Schlange> ergebnisSchlangen = null;
 		ArrayList<ArrayList<Feld>>matrix = dschungel.getMatrix();
-		
+
 		for(ArrayList<Feld> zeile : matrix) {
 			for (Feld element : zeile) {
-				HashSet<Feld> verwendeteFelder = new HashSet<>();
-				if (istZulaessigBt(dschungel, schlangenarten, ,element, ,verwendeteFelder)) {
-					
+				// zeichen mit dem ersten buchstabe in dem jeweiligen schlange vergleichen
+				ArrayList<Schlange> testSchlangen = null;
+				if (schlangenZulaessigBT( element,  schlangenarten,  testSchlangen)) {
+					ergebnisSchlangen.add(erfuelltKreterien(testSchlangen));
 				}
+				
+				
+				
+				
+				
 				}
 		}
+		
+		return ergebnisSchlangen;
+		
+
 	}
 	
-	private boolean istZulaessigBT(Dschungel dschungel,Schlangenarten schlangenarten,int schlangenZeichenIterator, Feld thisFeld, ArrayList<Feld> felderlist,HashSet<Feld> verwendeteFelder) {
-		//ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, thisFeld);
-		//nachbarn.remove(thisFeld);
-		
-		//ITERIERE SCHLANGENARTEN VERGLEICH MIT FELD, ERSTE MIT ERSTE DANN ZWEITE MIT SZEITE USW
-		int zeilen = dschungel.getZeilen();
-		int spalten = dschungel.getSpalten();
-		//die n0 position
-		if (schlangenZeichenIterator == -1) {
-			return true;
-		}
-			
-		char appendChar = schlangenarten.getZeichenkette().charAt(schlangenart.getSize() - schlangenZeichenIterator -1 );
-		int appendPunkte = schlangenarten.getPunkte();
-		//erstes Lauf
-		if (thisFeld == null) {
-			int randPosZ = randomGenerator.nextInt(zeilen - 1);
-			int randPosS = randomGenerator.nextInt(spalten - 1);
-			thisFeld = dschungel.getFeld(randPosZ, randPosS);
-
-		}
-		
-
-		//die negative positionen die bereits belegt sind
-		if(thisFeld.getZeichen() != ' ' || verwendeteFelder.contains(thisFeld)) {
-			return false;
-		}
-		
-		
-		//Rekursive Position
-		ArrayList<Feld> nachbarn = schlangenarten.getNachbarschaftsstruktur().getNachbarschaft(dschungel, thisFeld);
-		
-		Collections.shuffle(nachbarn);
-		
-		for(Feld feld: nachbarn) {
-			verwendeteFelder.add(thisFeld);
-			thisFeld.setZeichen(appendChar);
-			int prevPunkte = thisFeld.getPunkte();
-			thisFeld.setPunkte(appendPunkte);
-			felderlist.add(thisFeld);
-			
-			if(istZulaessigBT(dschungel, schlangenarten, schlangenZeichenIterator - 1, feld, felderlist, verwendeteFelder)) {
-				System.out.println(thisFeld.getId());
-				return true;
-			}else {
-				verwendeteFelder.remove(thisFeld);
-				
-				thisFeld.setZeichen(' ');
-				thisFeld.setPunkte(prevPunkte);
-				felderlist.remove(thisFeld);
-				
-			}
-				
-				
-		}
-		return false;
-
-		
-		
+	
+	private static Schlange erfuelltKreterien(ArrayList<Schlange> testSchlangen) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+
+	private static boolean schlangenZulaessigBT(Feld inElement, Schlangenarten inSchlangenarten, ArrayList<Schlange> ioTestSchlangen){
+		/*nimmt einen Feld element, schlangenarten, arraylist schlangen und nachbarschaftsstruktur
+		 * und sucht in die Nachbarschaftsstruktur vom feld die Schlangenarten in dem gegebenen zeit
+		 * rekursiv
+		 * addiert die gefundine schlangen die die kreterium erfüllen
+		 * und geben true aus falls schlangen gefunden sind und false falls keine
+		 * VIELLEICHT MUSS ICH DIESE ALGORITHMUS IN ZWEI TEILE ZERLEGEN
+		 * EINS FOR SUCHE FÜR EINE SCHLANGE
+		 * UND DIE ANDERE FÜR DIE ALLE GEFUNDENE SCHLANGEN?  ES MUSS NUR EINE 
+		 * SCHLANGE AM ENDE ZURÜCK GEGEBEN UND NICHT EINE LISTE
+		 * DIE MIT DEM BESTEN ZEIT UND PUNKTE UND WEITERE KRETERIEN
+		 */
+		//code kommt hier!
+		
+		
+		return false;
+	}
+	
+	public static void reset() {
+		
+	}
+	
+		
+	
+	
+	
+	
+	//wenn es gleich mit eine oder mehrere schlangen führe den funktion / threads?
+	
+	
+	//rekursive funktion die die buchstaben mit schlangen vergleicht, hachtabelle? 
+	
+	
+	//wenn eine schlange gefunden würde schreibe mit punkte und zeit
+	
+	
+	//gebe die mit maximale punkte innerhalb das zeit zurück
+	
+	
+	//die gefundene schlange in einer liste antragen und zurückgeben
+	
+	
+	//eine reset funktion?
+	
+	/*
+	METHODE sucheSchlange() {
+		 WENN (aktuelle Punkte > bisher maximale Punkte) {
+			 speichere Lösung
+		 }
+		 WENN (Zeitvorgabe erreicht) {
+			 beende Suche und gebe Lösung zurück
+		 }
+		 erzeuge zulässige Startfelder
+		 priorisiere und sortiere zulässige Startfelder
+		 FÜR (Startfeld in zulässige Startfelder) {
+			 bestimme zulässige Schlangenarten für Startfeld
+			 priorisiere und sortiere zulässige Schlangenarten
+			 FÜR (Schlangenart in Schlangenarten)
+			 	erzeuge neue Schlange mit Schlangenkopf
+			 			für Schlangenart
+			 	setze Schlangenkopf auf Startfeld
+			 	sucheSchlangenglied(Schlangenkopf)
+			 	entferne Schlangenkopf und Schlange
+		 	}
+		 }
+		
+		 }
+		
+		 METHODE sucheSchlangenglied(vorherigesGlied) {
+			 WENN (vorherigesGlied ist letztes Schlangenglied) {
+				 	sucheSchlange()
+				 	RUECKGABE
+		 }
+		 erzeuge zulässige Nachbarfelder für vorherigesGlied
+		 priorisiere und sortiere zulässige Nachbarfelder
+		 FÜR (Nachbarfeld in zulässige Nachbarfelder) {
+			 erzeuge neues Schlangenglied
+			 setze Schlangenglied auf Nachbarfeld
+			 sucheSchlangenglied(Schlangenglied)
+			 entferne Schlangenglied
+		 }
+		 }*/
+
+	
+	
 }
