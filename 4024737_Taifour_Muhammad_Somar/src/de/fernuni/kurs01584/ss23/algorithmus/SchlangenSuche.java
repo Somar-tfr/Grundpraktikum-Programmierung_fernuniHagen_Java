@@ -19,16 +19,20 @@ import de.fernuni.kurs01584.ss23.modell.*;
 public class SchlangenSuche {
 	Dschungel dschungel;
 	Schlangenarten schlangenarten;
-	int zeitAngabe;
-	int temp;
-	char angabeZeichen;
 	int aktuellePunkte;
 	int maxPunkte;
+	
+	int aktuelleMatrixPunkte;
+	int maxMatrixPunkte;
 	Schlange schlange;
 	Schlange tempSchlange;
 	Schlangenart tempSchlangenart;
 	ArrayList<Schlange> schlangenArray;
+	ArrayList<ArrayList<Schlange>> loesungen;
 	Map<Schlangenart, Integer> keyValuePairs;
+	int zeitAngabe;
+	char angabeZeichen;
+	ArrayList<ArrayList<Integer>> tempVerwendbarkeit;
 	
 	
 	
@@ -36,13 +40,16 @@ public class SchlangenSuche {
 			Schlangenarten schlangenarten,
 			int zeiAngabe,
 			char angabeZeichen) {
-		this.temp = 0;
 		this.dschungel = dschungel;
 		this.schlangenarten = schlangenarten;
 		this.zeitAngabe = zeitAngabe;
 		this.angabeZeichen = angabeZeichen;
 		this.aktuellePunkte = 0;
 		this.maxPunkte = 0;
+		
+		int aktuelleMatrixPunkte = 0;
+		int maxMatrixPunkte = 0;
+		
 		this.schlange = new Schlange();
 		this.tempSchlange = new Schlange();
 		this.keyValuePairs = new HashMap<>();
@@ -50,6 +57,8 @@ public class SchlangenSuche {
 			this.keyValuePairs.put(schlangenart, schlangenart.getAnzahl());
 		}
 		this.schlangenArray = new ArrayList<Schlange>();
+		this.loesungen =  new ArrayList<ArrayList<Schlange>>() ;
+		this.tempVerwendbarkeit = new ArrayList<ArrayList<Integer>>();
 	}
 	
 	public ArrayList<Schlange> getResult(){
@@ -57,127 +66,95 @@ public class SchlangenSuche {
 	}
 	
 	public void sucheSchlange2() {
+		setTempVerwendbarkeit();
+		int count = 5000;
 		
-		/*if (aktuellePunkte > maxPunkte) {
-			schlange = tempSchlange;
-			schlangenArray.add(schlange);
-			aktuellePunkte = 0;
-			return;
-		}
-		
-		/*
-		if (zeitAngabe >= 0) {
-			schlangenArray.add(schlange);
-			return;
-		}*/
 		do {
-			iterateTemp();
-		ArrayList<Feld> zulaessigeFelder = new ArrayList<Feld>();
-		for(ArrayList<Feld> zeile : dschungel.getMatrix()) {
-			for (Feld element : zeile) {
-				if(element.getVerwendbarkeit() > 0) {
-					zulaessigeFelder.add(element);
-				}
-			}
-		}
-		Collections.sort(zulaessigeFelder, feldComparator);
-			
-		
-			for (Feld startFeld: zulaessigeFelder) {
-				
-				
-				
-				ArrayList<Schlangenart> tempSchlangenarten = new ArrayList<Schlangenart>();
-				for(Schlangenart schlangenart : schlangenarten) {
-					System.out.println("keyValuePairs.values()");
-					System.out.println(keyValuePairs.values());
-					System.out.println(keyValuePairs.keySet());
-					if (schlangenart.getZeichenkette().charAt(0) == startFeld.getZeichen()
-							&& keyValuePairs.get(schlangenart) > 0) {
-						tempSchlangenarten.add(schlangenart);
-						
-						;
+			ArrayList<Feld> zulaessigeFelder = new ArrayList<Feld>();
+			for(ArrayList<Feld> zeile : dschungel.getMatrix()) {
+				for (Feld element : zeile) {
+					if(element.getVerwendbarkeit() > 0) {
+						zulaessigeFelder.add(element);
 					}
 				}
-				System.out.println("weiter3");
-				System.out.println("tempschlangenarten size: " + tempSchlangenarten.size());
-				Collections.sort(tempSchlangenarten, schlangenartComparator);
-				for (Schlangenart schlangenart : tempSchlangenarten) {
-					System.out.println("Iteration!");
-					tempSchlange = new Schlange();
-					Schlangenglied glied = new Schlangenglied(startFeld);
-					tempSchlange.addGlied(glied);
-					aktuellePunkte = startFeld.getPunkte();
+			}
+			Collections.shuffle(zulaessigeFelder);
+			Collections.sort(zulaessigeFelder, feldComparator);
+			int countin = dschungel.getFelderAnzahl();
+			do {
+				for (Feld startFeld: zulaessigeFelder) {
 					
-					if (sucheSchlangenGlied(glied, 1, schlangenart)){
-						tempSchlange.setPunkte(maxPunkte) ;
-						schlangenArray.add(tempSchlange);
+					
+					
+					ArrayList<Schlangenart> tempSchlangenarten = new ArrayList<Schlangenart>();
+					for(Schlangenart schlangenart : schlangenarten) {
 						
-						//
-						reduceValue(schlangenart);
-						//
-						aktuellePunkte = 0;
-						maxPunkte = 0;
-						System.out.println("+++++++++++++++++++++++++");
-						System.out.println("ZeitAngabe :" + zeitAngabe);
-						System.out.println("+++++++++++++++++++++++++");
-						/*if (zeitAngabe == 0) {
-							break;
+						if (schlangenart.getZeichenkette().charAt(0) == startFeld.getZeichen()
+								&& keyValuePairs.get(schlangenart) > 0) {
+							tempSchlangenarten.add(schlangenart);
+							
+							;
 						}
-						zeitAngabe = zeitAngabe - 1;*/
-
 					}
 					
 					
+					Collections.shuffle(tempSchlangenarten);
+					Collections.sort(tempSchlangenarten, schlangenartComparator);
+					for (Schlangenart schlangenart : tempSchlangenarten) {
+						tempSchlange = new Schlange();
+						Schlangenglied glied = new Schlangenglied(startFeld);
+						tempSchlange.addGlied(glied);
+						aktuellePunkte = startFeld.getPunkte();
+						
+						if (sucheSchlangenGlied(glied, 1, schlangenart)){
+							tempSchlange.setPunkte(maxPunkte) ;
+							schlangenArray.add(tempSchlange);
+							
+							//
+							reduceValue(schlangenart);
+							//
+							aktuellePunkte = 0;
+							maxPunkte = 0;
+							
+							/*if (zeitAngabe == 0) {
+								break;
+							}
+							zeitAngabe = zeitAngabe - 1;*/
+	
+						}
+						
+						
+					}
 				}
-			}
-			if (zeitAngabe == 0) {
-				System.out.println("+++++++++++++++++++++++++");
-				System.out.println("ZeitAngabe :" + zeitAngabe);
-				System.out.println("+++++++++++++++++++++++++");
+				countin -= 1;
+				System.out.println("countin = " + countin);
+			}while(countin > 0);
+			loesungen.add(schlangenArray);
+			resetVerwendbarkeit();
+			
+			if (/*this.zeitAngabe == 0 || */this.schlangenArray.size() == this.schlangenarten.getAnzahl()) {
+				
 				break;
 			}
-			reduceZeit();
-			System.out.println("+++++++++++++++++++++++++");
-			System.out.println("ZeitAngabe :" + zeitAngabe);
-			System.out.println("+++++++++++++++++++++++++");
 			
-		}while(zeitAngabe > 0);
-		System.out.println("TTEEMMPP == " + this.temp);
+			count -= 1;
+			System.out.println("count = " + count);
+		}while(count > 0);
+		
+		Collections.sort(this.loesungen,loesungComparator );
+		this.schlangenArray = this.loesungen.get(0);
 		
 		
 		
-		//return false;
+		
+		
 	}
 	
 	
 
-	/*
-	METHODE sucheSchlange() {
-		 WENN (aktuelle Punkte > bisher maximale Punkte) {
-			 speichere Lösung
-		 }
-		 WENN (Zeitvorgabe erreicht) {
-			 beende Suche und gebe Lösung zurück
-		 }
-		 erzeuge zulässige Startfelder
-		 priorisiere und sortiere zulässige Startfelder
-		 FÜR (Startfeld in zulässige Startfelder) {
-			 bestimme zulässige Schlangenarten für Startfeld
-			 priorisiere und sortiere zulässige Schlangenarten
-			 FÜR (Schlangenart in Schlangenarten)
-			 	erzeuge neue Schlange mit Schlangenkopf
-			 			für Schlangenart
-			 	setze Schlangenkopf auf Startfeld
-			 	sucheSchlangenglied(Schlangenkopf)
-			 	entferne Schlangenkopf und Schlange
-		 	}
-		 }
-		
-		 }*/
+	
 		 private boolean sucheSchlangenGlied(Schlangenglied vorGlied, int iterator, Schlangenart schlangenart) {
 		// TODO Auto-generated method stub
-			 System.out.println("Gliedloop!");
 			if (iterator == schlangenart.getSize() ) {
 				
 				if(aktuellePunkte > maxPunkte) {
@@ -234,28 +211,51 @@ public class SchlangenSuche {
 			 int sum = this.keyValuePairs.values().stream().mapToInt(Integer::intValue).sum();
 			 return sum;
 		 }
-		 private void iterateTemp() {
-			 this.temp += 1;
-		 }
+		 
 		 
 		 private void reduceZeit() {
 			 this.zeitAngabe -= 1;
 		 }
+		 private void setTempVerwendbarkeit() {
+			 
+				
+				ArrayList<ArrayList<Integer>> x = new ArrayList<ArrayList<Integer>>();
+				ArrayList<Integer> y = new ArrayList<Integer>();
+				for (int i = 0; i < dschungel.getZeilen(); i++) {
+					
+					for (int j = 0; j < dschungel.getSpalten(); j++) {
+						int v = dschungel.getFeld(i, j).getVerwendbarkeit();
+						
+						y.add(v);
+						
+					}
+					x.add(y);
+				}
+				this.tempVerwendbarkeit = x;
+		 }
+		 
+		 private void resetVerwendbarkeit() {
+			 for (int i = 0; i < dschungel.getZeilen(); i++) {
+					
+					for (int j = 0; j < dschungel.getSpalten(); j++) {
+						int v = dschungel.getFeld(i, j).getVerwendbarkeit();
+						
+						dschungel.getFeld(i, j).setVerwendbarkeit(this.tempVerwendbarkeit.get(i).get(j));
+						
+					}
+				}
+		 }
+		 
+		 private int getArrayPunkte(ArrayList<Schlange> o) {
+				// TODO Auto-generated method stub
+			 int pnkt = 0;
+			 for (Schlange i : o) {
+				 pnkt += i.getPunkte();
+			 }
+				return pnkt;
+			}
 		
-		 /*METHODE sucheSchlangenglied(vorherigesGlied) {
-			 WENN (vorherigesGlied ist letztes Schlangenglied) {
-				 	sucheSchlange()
-				 	RUECKGABE
-		 }
-		 erzeuge zulässige Nachbarfelder für vorherigesGlied
-		 priorisiere und sortiere zulässige Nachbarfelder
-		 FÜR (Nachbarfeld in zulässige Nachbarfelder) {
-			 erzeuge neues Schlangenglied
-			 setze Schlangenglied auf Nachbarfeld
-			 sucheSchlangenglied(Schlangenglied)
-			 entferne Schlangenglied
-		 }
-		 }*/
+		 
 	Comparator<Feld> feldComparator = new Comparator<Feld>() {
 	    @Override
 	    public int compare(Feld o1, Feld o2) {
@@ -289,9 +289,28 @@ public class SchlangenSuche {
 	    	return 1;
 	    	
 	    	
-	        // Return a negative integer, zero, or a positive integer
-	        // based on whether o1 is less than, equal to, or greater than o2
+	        
 	    }
+	};
+	
+	Comparator<ArrayList<Schlange>> loesungComparator = new Comparator<ArrayList<Schlange>>() {
+	    @Override
+	    public int compare(ArrayList<Schlange> o1, ArrayList<Schlange> o2) {
+	        // Define your comparison logic here
+	    	if (getArrayPunkte(o1) > getArrayPunkte(o2)){
+	    		return -1;
+	    	}
+	    	
+	    	if (getArrayPunkte(o1) == getArrayPunkte(o2)) {
+	    		return 0;
+	    	}
+	    	return 1;
+	    	
+	    	
+	        
+	    }
+
+		
 	};
 
 	
