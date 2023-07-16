@@ -103,7 +103,8 @@ public class DschungelGenerator {
 					
 					char zeichen = zulaessigeZeichen.charAt(randomGenerator.nextInt(randMax));
 					feld.setZeichen(zeichen);
-
+					feld.setVerwendbarkeit(1);
+					feld.setPunkte(1); //hier muss ich anpassen
 				}//if feld nicht belegt
 			}//spalten iteration
 		}//zeilen iteration
@@ -112,7 +113,12 @@ public class DschungelGenerator {
 	}
 
 	//zu optemieren
-	private boolean istZulaessigBT(Dschungel dschungel,Schlangenart schlangenart,int schlangenZeichenIterator, Feld thisFeld, ArrayList<Feld> felderlist,HashSet<Feld> verwendeteFelder) {
+	private boolean istZulaessigBT(Dschungel dschungel,
+			Schlangenart schlangenart,
+			int schlangenZeichenIterator, 
+			Feld thisFeld,
+			ArrayList<Feld> felderlist,
+			HashSet<Feld> verwendeteFelder) {
 		//ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, thisFeld);
 		//nachbarn.remove(thisFeld);
 
@@ -148,6 +154,7 @@ public class DschungelGenerator {
 			thisFeld.setZeichen(appendChar);
 			int prevPunkte = thisFeld.getPunkte();
 			thisFeld.setPunkte(appendPunkte);
+			thisFeld.setVerwendbarkeit(1);
 			felderlist.add(thisFeld);
 			
 			if(istZulaessigBT(dschungel, schlangenart, schlangenZeichenIterator - 1, feld, felderlist, verwendeteFelder)) {
@@ -158,6 +165,7 @@ public class DschungelGenerator {
 				
 				thisFeld.setZeichen(' ');
 				thisFeld.setPunkte(prevPunkte);
+				thisFeld.setVerwendbarkeit(0);
 				felderlist.remove(thisFeld);
 				
 			}

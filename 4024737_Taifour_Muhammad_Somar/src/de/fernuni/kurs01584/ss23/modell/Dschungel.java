@@ -3,6 +3,7 @@ package de.fernuni.kurs01584.ss23.modell;
 import java.util.ArrayList;
 
 import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
+import de.fernuni.kurs01584.ss23.algorithmus.SchlangenSuche;
 
 public class Dschungel {
 	private int zeilen;
@@ -70,6 +71,11 @@ public class Dschungel {
 		return false;
 	}
 	
+	//andere weg??
+	public ArrayList<ArrayList<Feld>> getMatrix() {
+		return dschungelMatrix;
+	}
+	
 	
 	//a test method
 	public void print(/*String zeichen*/) {
@@ -96,18 +102,24 @@ public class Dschungel {
 		}
 		
 	//a test main
-		/*
+		
 	public static void main(String[] args) {
 		
 		
 		Schlangenarten schlangenarten = new Schlangenarten();
 		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
 		Schlangenart schlangenart0 = new Schlangenart("DIE", nachb );
+		schlangenart0.setAnzahl(1);
 		Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
+		schlangenart1.setAnzahl(1);
 		Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
+		schlangenart2.setAnzahl(1);
 		Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
+		schlangenart3.setAnzahl(1);
 		Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
+		schlangenart4.setAnzahl(1);
 		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
+		schlangenart5.setAnzahl(1);
 		
 		//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
 		schlangenarten.add(schlangenart0);
@@ -120,11 +132,12 @@ public class Dschungel {
 		
 		schlangenarten.print();
 		
-		DschungelGenerator  testgenerator = new DschungelGenerator(5,10,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten, 1);
+		DschungelGenerator  testgenerator = new DschungelGenerator(5,10,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
 		Dschungel test = testgenerator.erzeugeDschungel();
 		
 		test.print();
 		test.printid();
+		test.printverwendbarkeit();
 		//test.getFeld(2,1).setZeichen('A');
 		//System.out.println(test.getFeld(2,1).getZeichen());
 		System.out.println("---");
@@ -134,7 +147,32 @@ public class Dschungel {
 		
 		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 		System.out.println("---");
+		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 200, 'a');
+		schlangensuche.sucheSchlange2();
+		ArrayList<Schlange> schlangen = schlangensuche.getResult();
+		
+		System.out.println(schlangen.size());
+		if (schlangen.size() != 0){
+			for (Schlange s : schlangen) {
+				s.print();
+			}
+			//System.out.println(schlangen.get(0).getGlied(0));
+
+		}
+		test.printverwendbarkeit();
 		
 		//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-	}*/
+	}
+
+	private void printverwendbarkeit() {
+		// TODO Auto-generated method stub
+		for(ArrayList<Feld> zeile : dschungelMatrix) {
+			for (Feld element : zeile) {
+				//System.out.print(element.getId());
+				System.out.print(element.getVerwendbarkeit());
+				}
+			
+			System.out.println();
+		}
+	}
 }

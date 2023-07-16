@@ -4,17 +4,18 @@ public class Schlangenglied{
 	// TODO: Attribute
 	private int index;
 	private Schlangenglied next;
+	private Schlangenglied prev;
 	private Feld feld;
+	private int punkte;
+	
 	
 	// TODO: Konstruktoren
-	Schlangenglied(int index, Feld feld){
-		if (index < 0 ) {
-			throw new IllegalArgumentException(
-					"Fuer die Klasse 'Schlangenglied' duerfen die Attribute 'index' keine negativen Werte annehmen.");
-		}
-		this.index = index;
+	public Schlangenglied(Feld feld){
+		
+		
 		this.next = null;
-		this.feld = null;
+		this.feld = feld;
+		this.punkte = feld.getPunkte();
 	}
 	// TODO: Methoden
 	//setters
@@ -41,6 +42,10 @@ public class Schlangenglied{
 	}
 	public Feld getFeld() {
 		return feld;
+	}
+	
+	public int getPunkte() {
+		return this.punkte;
 	}
 
 }
