@@ -5,70 +5,69 @@ import java.util.ArrayList;
 public class Schlange {
 	// TODO: Attribute
 	//private Schlangenglied anfang;
-	private ArrayList<Schlangenglied> glieder;
+	private Schlangenglied kopf;
 	private int punkte;
-	private int zeit;
+	private int length;
+	private String art;
 	
 	public Schlange() {
-		this.glieder = new ArrayList<Schlangenglied>();
+		
+		this.kopf = new Schlangenglied();
 		this.punkte = 0;
-		this.zeit = 0;
-	}
-	public void print() {
-		System.out.print("P -> ");
-		for(Schlangenglied glied : glieder) {
-			System.out.print("id: " + glied.getFeld().getId() + " : " + glied.getFeld().getZeichen() + " ->");
-		}
-		System.out.print(" null !");
-		System.out.println();
+		this.length = 0;
+		this.art = "";
 	}
 	
-	//MUSS NOCH ANPASSENم
 	// TODO: Konstruktoren
 
 	
-	public ArrayList<Schlangenglied> getSchlange(){
-		return this.glieder;
+	public Schlangenglied getKopf(){
+		return this.kopf;
 	}
 	
 	public int getPunkte() {
 		return this.punkte;
 	}
 	
-	public int getZeit() {
-		return this.zeit;
-	}
 	
-	public int getSize() {
+	public int getLength() {
 		
-		return glieder.size();
+		return this.length;
 	}
 	
-	public Schlangenglied getGlied(int index) {
-		return this.glieder.get(index);
+	public String getArt() {
+		return this.art;
 	}
 	
-	public void addGlied(Schlangenglied glied) {
-		glieder.add(glied);
-		this.punkte += glied.getPunkte();
+	public void setArt(String art) {
+		this.art = art;
 	}
 	
-	public void removeGlied(Schlangenglied glied) {
-		glieder.remove(glied);
-		this.punkte -= glied.getPunkte();
+	public void setKopf(Schlangenglied kopf) {
+		this.kopf = kopf;
 	}
 	
-	
-	
-	public void clearSchlange() {
-		this.glieder.clear();
-		this.punkte = 0;
-		this.zeit = 0;
+	public void resetKopf() {
+		this.kopf = null;
 	}
+	
 	public void setPunkte(int punkte) {
-		// TODO Auto-generated method stub
 		this.punkte = punkte;
 		
+	}
+	
+	public void print() {
+		Schlangenglied glied = new Schlangenglied();
+		glied = this.kopf;
+		
+		while ((glied.getNext() != null) && (glied != null)) {
+			System.out.print( "->" );
+			System.out.print(glied.getFeld().getZeichen() + " : ");
+			System.out.print(glied.getFeld().getId() );
+			glied = glied.getNext();
+		};
+		System.out.print( "." );
+		System.out.println();
 	}
 	
 	// TODO: Methoden

@@ -4,12 +4,17 @@ public class Schlangenglied{
 	// TODO: Attribute
 	private int index;
 	private Schlangenglied next;
-	private Schlangenglied prev;
 	private Feld feld;
 	private int punkte;
 	
 	
 	// TODO: Konstruktoren
+	public Schlangenglied() {
+		this.next = null;
+		this.feld = null;
+		this.punkte = 0;
+	}
+	
 	public Schlangenglied(Feld feld){
 		
 		

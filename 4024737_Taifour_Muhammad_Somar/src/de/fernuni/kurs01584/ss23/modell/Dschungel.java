@@ -147,9 +147,9 @@ public class Dschungel {
 		
 		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 		System.out.println("---");
-		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 200, 'a');
-		schlangensuche.sucheSchlange2();
-		ArrayList<Schlange> schlangen = schlangensuche.getResult();
+		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten);
+		schlangensuche.sucheSchlange();
+		ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
 		
 		System.out.println(schlangen.size());
 		if (schlangen.size() != 0){
