@@ -100,7 +100,7 @@ class FeldTest {
 	@DisplayName("Einfacher setZeichen getZeichen Test")
 	@Test
 	void testSetZeichen() {
-		String zeichen = "a";
+		char zeichen = 'a';
 		Feld feld = new Feld(0,0);
 		
 		feld.setZeichen(zeichen);
