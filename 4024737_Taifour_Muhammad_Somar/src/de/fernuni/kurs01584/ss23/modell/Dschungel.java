@@ -147,13 +147,13 @@ public class Dschungel {
 		//test.getFeld(2,1).setZeichen('A');
 		//System.out.println(test.getFeld(2,1).getZeichen());
 		System.out.println("---");
-		
+		System.out.println("---");
 		//Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
 		//Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
 		
 		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 		System.out.println("---");
-		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 1000);
+		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 10000);
 		schlangensuche.sucheSchlange();
 		ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
 		
@@ -166,7 +166,7 @@ public class Dschungel {
 
 		}
 		test.printverwendbarkeit();
-		
+		System.out.println("abgabezeit ms: " + schlangensuche.getAbgabeZeit());
 		//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 	}
 

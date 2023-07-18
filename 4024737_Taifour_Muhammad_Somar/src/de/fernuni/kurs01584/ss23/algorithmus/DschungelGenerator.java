@@ -68,7 +68,10 @@ public class DschungelGenerator {
 				//int schlangenlangenMaxIndex = gliederAnzahl - 1;//23.06 10:00
 				//looop für ein random position in dem dschungel für die schlange
 				HashSet<Feld> verwendeteFelder = new HashSet<>();
-				istZulaessigBT(dschungel, schlangenart, gliederAnzahl -1, null, felderlist, verwendeteFelder);
+				while(!istZulaessigBT(dschungel, schlangenart, gliederAnzahl -1, null, felderlist, verwendeteFelder)) {
+			        felderlist.clear(); // clear the list and set to generate a new snake
+			        verwendeteFelder.clear();
+			    } //diese do while addiert 18.07.2023 um sicher zu stellen dass es eine schlange zu ende platziert wird
 
 			}
 

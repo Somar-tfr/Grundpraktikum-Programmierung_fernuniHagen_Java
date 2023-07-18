@@ -17,6 +17,7 @@ import de.fernuni.kurs01584.ss23.modell.*;
 	
 
 public class SchlangenSuche {
+	private long abgabeZeit;
 	private Dschungel dschungel;
 	private Schlangenarten schlangenarten;
 	private ArrayList<Schlange> loesung;
@@ -36,6 +37,7 @@ public class SchlangenSuche {
 		this.gmaxPunkte = 0;
 		this.gaktPunkte = 0;
 		this.zeitLimit = zeitLimit;
+		this.abgabeZeit = 0;
 	}
 	
 	public ArrayList<Schlange> getLoesung(){
@@ -69,10 +71,8 @@ public class SchlangenSuche {
 				Schlange schlange = new Schlange();
 				
 				for (Feld feld : zulaessigeFelder) {
-					System.out.println("for looop");
 					Schlangenglied glied = new Schlangenglied(feld);
 					if(sucheSchlangenGlied(glied, schlangenart, 1) /*&& (aktPunkte > maxPunkte)*/) {
-						System.out.println("hier!");
 						schlange.setKopf(glied);
 						/*schlange.setPunkte(aktPunkte);*/
 						schlange.setArt(schlangenart.getId());
@@ -80,28 +80,33 @@ public class SchlangenSuche {
 						this.gmaxPunkte = 0;
 					}
 				}
+				
 				if (schlange.getKopf().getFeld() != null){
-					loesung.add(schlange);
+				    // check if the solution already has a Schlange of this type
+				    boolean alreadyExists = loesung.stream().anyMatch(existingSchlange -> existingSchlange.getArt().equals(schlange.getArt()));
+				    if (!alreadyExists) {
+				        loesung.add(schlange);
+				    }
+				}
+				if (loesung.size() == schlangenarten.getAnzahl()){
+					this.abgabeZeit = System.currentTimeMillis() - startZeit;
 				}
 				
 			}
 			
 		}while(loesung.size() != schlangenarten.getAnzahl() && (System.currentTimeMillis() - startZeit < zeitLimit));
-		
+		this.abgabeZeit = System.currentTimeMillis() - startZeit;
 	}
 	
 	private boolean sucheSchlangenGlied(Schlangenglied vorGlied, Schlangenart schlangenart, int iterator) {
 		// TODO Auto-generated method stub
-		System.out.println("suche1");
 		if(iterator == schlangenart.getSize()) {
-			System.out.println("iterator last");
 			
 			
 			return true;
 		}
 		if( iterator == 1) {
 			this.gaktPunkte = 0;
-			System.out.println("iterator erst");
 		}
 
 		
@@ -115,19 +120,15 @@ public class SchlangenSuche {
 		for (Feld feld : nachbarn) {
 			Schlangenglied glied = new Schlangenglied(feld);
 			this.gaktPunkte += feld.getPunkte();
-			System.out.println("feld punkte : " + feld.getPunkte());
 			vorGlied.setNext(glied);
-			;
-			System.out.println("punkte  is : " + this.gaktPunkte);
+			
 			if((this.gaktPunkte > this.gmaxPunkte) && sucheSchlangenGlied(glied, schlangenart, iterator + 1) ) {
-				System.out.println("in suche loop");
 				this.gmaxPunkte = this.gaktPunkte ;
 				
 				
 				
 				
 				
-				System.out.println("punkte in " + iterator + "it is : " + this.gaktPunkte);
 				return true;
 			}else {
 				this.gaktPunkte -= feld.getPunkte();
@@ -162,5 +163,10 @@ public class SchlangenSuche {
 	    }
 	};
 	//hier kann angapasst dass die nach die maximale punkte sortiert sein können
+
+	public long getAbgabeZeit() {
+		// TODO Auto-generated method stub
+		return this.abgabeZeit;
+	}
 	
 }
