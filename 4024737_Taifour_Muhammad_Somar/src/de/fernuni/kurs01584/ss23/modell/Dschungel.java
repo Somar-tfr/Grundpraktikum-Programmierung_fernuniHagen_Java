@@ -110,16 +110,22 @@ public class Dschungel {
 		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
 		Schlangenart schlangenart0 = new Schlangenart("DIE", nachb );
 		schlangenart0.setAnzahl(1);
+		schlangenart0.setPunkte(1);
 		Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
 		schlangenart1.setAnzahl(1);
+		schlangenart1.setPunkte(1);
 		Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
 		schlangenart2.setAnzahl(1);
+		schlangenart2.setPunkte(1);
 		Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
 		schlangenart3.setAnzahl(1);
+		schlangenart3.setPunkte(1);
 		Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
 		schlangenart4.setAnzahl(1);
+		schlangenart4.setPunkte(1);
 		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
 		schlangenart5.setAnzahl(1);
+		schlangenart5.setPunkte(1);
 		
 		//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
 		schlangenarten.add(schlangenart0);
@@ -147,7 +153,7 @@ public class Dschungel {
 		
 		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
 		System.out.println("---");
-		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten);
+		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 1000);
 		schlangensuche.sucheSchlange();
 		ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
 		

@@ -19,18 +19,19 @@ import org.jdom2.output.XMLOutputter;
 public class Vorgabe {
 	private String eingabeDatei;
 	private String ausgabeDatei;
-	
+	private SchlangenSuche schlangensuche;
+	private Dschungel hauptDschungel;
 	Vorgabe(String eingabe, String ausgabe){
 		this.eingabeDatei = eingabe;
 		this.ausgabeDatei = ausgabe;
-	}
+	}	
 	
 	public static void main(String[] args)  {
 		
 		
 	}
 
-	private static Dschungel read(String name) throws JDOMException, IOException {
+	private void read(String name) throws JDOMException, IOException {
 		try {
 			//Dokument builder erstellen
 			SAXBuilder reader = new SAXBuilder();		
@@ -45,7 +46,11 @@ public class Vorgabe {
 			Element zeitElement = rootElement.getChild("Zeit");
 			Attribute einheit = zeitElement.getAttribute("einheit");
 			Element vorgabeElement = zeitElement.getChild("Vorgabe");
-			String vorgabe = vorgabeElement.getValue();
+			int vorgabe = Integer.parseInt(vorgabeElement.getValue());
+			
+			if (einheit.equals("s")){
+				vorgabe = vorgabe * 1000;
+			}
 			
 			//dschungel
 	        Element dschungelElement = rootElement.getChild("Dschungel");
@@ -145,11 +150,72 @@ public class Vorgabe {
 	        });
 	        
 	        //muss schauen dass für schlangen mit anzahl mehr als 1 entsprechend weitere loop in generator durchzuführen
+	        if (dschungelElement.getChildren() == null){
+	        	DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
+		        
+		        Dschungel dschungel = dschungelGenerator.erzeugeDschungel();
+		        this.hauptDschungel = dschungel;
+	        } else {
+	        	Dschungel dschungel = new Dschungel(dschungelZeilenInt, dschungelSpaltenInt, dschungelZeichenStr);
+	        	List<Element> dschungelkinder = dschungelElement.getChildren();
+	        	dschungelkinder.forEach ( i -> {
+	        		Attribute FeldId = i.getAttribute("id");
+	        		String FeldIdStr = FeldId.getValue();
+	        		
+	        		Attribute feldZeile = i.getAttribute("zeile");
+	        		int feldZeileInt = 0;
+					try {
+						feldZeileInt = feldZeile.getIntValue();
+					} catch (DataConversionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        		
+	        		Attribute feldSpalte = i.getAttribute("spalte");
+	        		int feldSpalteInt = 0;
+					try {
+						feldSpalteInt = feldSpalte.getIntValue();
+					} catch (DataConversionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        		
+	        		Attribute feldVerwendbarkeit = i.getAttribute("verwendbarkeit");
+	        		int feldVerwendbarkeitInt = 0;
+					try {
+						feldVerwendbarkeitInt = feldVerwendbarkeit.getIntValue();
+					} catch (DataConversionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        		
+	        		Attribute feldPunkte = i.getAttribute("punkte");
+	        		int feldPunkteInt = 0;
+					try {
+						feldPunkteInt = feldPunkte.getIntValue();
+					} catch (DataConversionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        		
+	        		char FeldZeichen = i.getValue().charAt(0);
+	        		
+	        		Feld mowgli = dschungel.getFeld(feldZeileInt, feldSpalteInt);
+	        		mowgli.setId(dschungelSpaltenInt);
+	        		mowgli.setPunkte(feldPunkteInt);
+	        		mowgli.setVerwendbarkeit(feldVerwendbarkeitInt);
+	        		mowgli.setZeichen(FeldZeichen);
+	        		
+	        		
+	        	});
+	        	this.hauptDschungel = dschungel;
+	        }
 	        
-	        DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
 	        
-	        Dschungel dschungel = dschungelGenerator.erzeugeDschungel();
-	        return dschungel;
+	        this.schlangensuche = new SchlangenSuche(this.hauptDschungel,schlangenarten, vorgabe );
+	        
+	        write(schlangensuche);
+	        /*return dschungel;*/
 	        /*Element element = rootElement.getChild("Dschungel");
 	        String value = element.getText();
 	        
@@ -168,12 +234,12 @@ public class Vorgabe {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		/*return null;*/
 		
 		
 	}
 	
-	private static void write() throws FileNotFoundException, IOException {
+	private void write(SchlangenSuche schlangensuche) throws FileNotFoundException, IOException {
 		Document document = new Document();
 		Element root = new Element("document");
 		root.setAttribute("file", "file.xml");

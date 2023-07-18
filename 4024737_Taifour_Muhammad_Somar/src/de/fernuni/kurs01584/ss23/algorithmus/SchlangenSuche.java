@@ -22,13 +22,20 @@ public class SchlangenSuche {
 	private ArrayList<Schlange> loesung;
 	private int maxPunkte;
 	private int aktPunkte;
+	private int gmaxPunkte;
+	private int gaktPunkte;
+	private long startZeit;
+    private long zeitLimit;
 	
-	public SchlangenSuche(Dschungel dschungel, Schlangenarten schlangenarten){
+	public SchlangenSuche(Dschungel dschungel, Schlangenarten schlangenarten, long zeitLimit){
 		this.dschungel = dschungel;
 		this.schlangenarten = schlangenarten;
 		this.loesung = new ArrayList<Schlange>();
 		this.maxPunkte = 0;
 		this.aktPunkte = 0;
+		this.gmaxPunkte = 0;
+		this.gaktPunkte = 0;
+		this.zeitLimit = zeitLimit;
 	}
 	
 	public ArrayList<Schlange> getLoesung(){
@@ -36,6 +43,8 @@ public class SchlangenSuche {
 	}
 	
 	public void sucheSchlange() {
+		startZeit = System.currentTimeMillis();
+		
 		ArrayList<Feld> tempFelder = new ArrayList<Feld>();
 		ArrayList<ArrayList<Feld>> dschungelMatrix = dschungel.getMatrix();
 		for (ArrayList<Feld> zeile : dschungelMatrix) {
@@ -65,34 +74,36 @@ public class SchlangenSuche {
 					if(sucheSchlangenGlied(glied, schlangenart, 1) /*&& (aktPunkte > maxPunkte)*/) {
 						System.out.println("hier!");
 						schlange.setKopf(glied);
-						schlange.setPunkte(aktPunkte);
+						/*schlange.setPunkte(aktPunkte);*/
 						schlange.setArt(schlangenart.getId());
-						aktPunkte = 0;
+						this.gaktPunkte = 0;
+						this.gmaxPunkte = 0;
 					}
 				}
-				loesung.add(schlange);
+				if (schlange.getKopf().getFeld() != null){
+					loesung.add(schlange);
+				}
+				
 			}
 			
-		}while(loesung.size() != schlangenarten.getAnzahl());
+		}while(loesung.size() != schlangenarten.getAnzahl() && (System.currentTimeMillis() - startZeit < zeitLimit));
 		
 	}
 	
 	private boolean sucheSchlangenGlied(Schlangenglied vorGlied, Schlangenart schlangenart, int iterator) {
 		// TODO Auto-generated method stub
 		System.out.println("suche1");
-		Feld feldG = vorGlied.getFeld();
 		if(iterator == schlangenart.getSize()) {
 			System.out.println("iterator last");
+			
+			
 			return true;
 		}
-		
-		
-		/*if(schlangenart.getZeichenkette().charAt(iterator) != feldG.getZeichen()) {
-			System.out.println("false");
-			return false;
-		}*/
-		
-		
+		if( iterator == 1) {
+			this.gaktPunkte = 0;
+			System.out.println("iterator erst");
+		}
+
 		
 		ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, vorGlied.getFeld())
 			    .stream()
@@ -100,29 +111,32 @@ public class SchlangenSuche {
 			    .collect(Collectors.toCollection(ArrayList::new));
 		Collections.shuffle(nachbarn);
 		Collections.sort(nachbarn, feldComparator);
-		int temp = 0;
+		
 		for (Feld feld : nachbarn) {
 			Schlangenglied glied = new Schlangenglied(feld);
-			aktPunkte += feld.getPunkte();
-			
-			if(sucheSchlangenGlied(glied, schlangenart, iterator + 1) /*&& (aktPunkte > internMaxPunkte)*/) {
+			this.gaktPunkte += feld.getPunkte();
+			System.out.println("feld punkte : " + feld.getPunkte());
+			vorGlied.setNext(glied);
+			;
+			System.out.println("punkte  is : " + this.gaktPunkte);
+			if((this.gaktPunkte > this.gmaxPunkte) && sucheSchlangenGlied(glied, schlangenart, iterator + 1) ) {
 				System.out.println("in suche loop");
+				this.gmaxPunkte = this.gaktPunkte ;
 				
 				
-				if(iterator == 1) {
-					aktPunkte += schlangenart.getPunkte();
-				}
 				
-				vorGlied.setNext(glied);
 				
+				
+				System.out.println("punkte in " + iterator + "it is : " + this.gaktPunkte);
 				return true;
+			}else {
+				this.gaktPunkte -= feld.getPunkte();
+				vorGlied.setNext(null);
 			}
 			
 			
-			aktPunkte -= feld.getPunkte();
-			if(iterator == 0) {
-				aktPunkte -= schlangenart.getPunkte();
-			}
+			
+			
 		}
 		
 		return false;

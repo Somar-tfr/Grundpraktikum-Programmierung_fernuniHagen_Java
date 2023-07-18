@@ -10,6 +10,7 @@ public class Schlange {
 	private int length;
 	private String art;
 	
+	//erstelle Kaa Schlange
 	public Schlange() {
 		
 		this.kopf = new Schlangenglied();
@@ -59,12 +60,17 @@ public class Schlange {
 	public void print() {
 		Schlangenglied glied = new Schlangenglied();
 		glied = this.kopf;
+		if (glied.getFeld() != null) {
+			System.out.print(glied.getFeld().getZeichen() + " : ");
+			System.out.print(glied.getFeld().getId() );
+		}
 		
-		while ((glied.getNext() != null) && (glied != null)) {
+		while ((glied.getNext() != null)) {
+			glied = glied.getNext();
 			System.out.print( "->" );
 			System.out.print(glied.getFeld().getZeichen() + " : ");
 			System.out.print(glied.getFeld().getId() );
-			glied = glied.getNext();
+			
 		};
 		System.out.print( "." );
 		System.out.println();
