@@ -52,7 +52,7 @@ public class DschungelGenerator {
 			/*if(schlangeZeichenkettenZulaessig) {
 
 			}*/
-
+			
 			//schlangenart wählen und benötigte informationen speichern
 			Schlangenart schlangenart = schlangenarten.getSchlangeByIndex(i);
 			int gliederAnzahl = schlangenart.getSize();
@@ -161,7 +161,7 @@ public class DschungelGenerator {
 			felderlist.add(thisFeld);
 			
 			if(istZulaessigBT(dschungel, schlangenart, schlangenZeichenIterator - 1, feld, felderlist, verwendeteFelder)) {
-				System.out.println(thisFeld.getId());
+				//System.out.println(thisFeld.getId());
 				return true;
 			}else {
 				verwendeteFelder.remove(thisFeld);

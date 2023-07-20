@@ -108,10 +108,10 @@ public class Dschungel {
 		
 		Schlangenarten schlangenarten = new Schlangenarten();
 		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
-		Schlangenart schlangenart0 = new Schlangenart("DIE", nachb );
+		Schlangenart schlangenart0 = new Schlangenart("FERNUNI", nachb );
 		schlangenart0.setAnzahl(1);
 		schlangenart0.setPunkte(1);
-		Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
+		/*Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
 		schlangenart1.setAnzahl(1);
 		schlangenart1.setPunkte(1);
 		Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
@@ -125,20 +125,20 @@ public class Dschungel {
 		schlangenart4.setPunkte(1);
 		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
 		schlangenart5.setAnzahl(1);
-		schlangenart5.setPunkte(1);
+		schlangenart5.setPunkte(1);*/
 		
 		//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
 		schlangenarten.add(schlangenart0);
-		schlangenarten.add(schlangenart1);
+		/*schlangenarten.add(schlangenart1);
 		schlangenarten.add(schlangenart2);
 		schlangenarten.add(schlangenart3);
 		schlangenarten.add(schlangenart4);
-		schlangenarten.add(schlangenart5);
+		schlangenarten.add(schlangenart5);*/
 		
 		
 		schlangenarten.print();
 		
-		DschungelGenerator  testgenerator = new DschungelGenerator(5,10,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
+		DschungelGenerator  testgenerator = new DschungelGenerator(2,4,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
 		Dschungel test = testgenerator.erzeugeDschungel();
 		
 		test.print();

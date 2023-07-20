@@ -12,6 +12,7 @@ import java.util.*;
 
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 
@@ -19,20 +20,30 @@ import org.jdom2.output.XMLOutputter;
 public class Vorgabe {
 	private String eingabeDatei;
 	private String ausgabeDatei;
-	private SchlangenSuche schlangensuche;
+	private SchlangenSuche loesung;
 	private Dschungel hauptDschungel;
+	private Schlangenarten hauptSchlangenarten;
+	
+	private double zeitVorgabe;
+	private double zeitAbgabe;
+	
+	
 	Vorgabe(String eingabe, String ausgabe){
 		this.eingabeDatei = eingabe;
 		this.ausgabeDatei = ausgabe;
 	}	
 	
-	public static void main(String[] args)  {
-		
+	public static void main(String[] args) throws JDOMException, IOException  {
+		Vorgabe vorgabe = new Vorgabe("./sj_p5_probleminstanz.xml", "loesung1");
+		vorgabe.read("./res/sj_p5_unvollstaendig.xml");
+		vorgabe.write("loesung");
 		
 	}
 
 	private void read(String name) throws JDOMException, IOException {
 		try {
+			
+			
 			//Dokument builder erstellen
 			SAXBuilder reader = new SAXBuilder();		
 			
@@ -46,7 +57,9 @@ public class Vorgabe {
 			Element zeitElement = rootElement.getChild("Zeit");
 			Attribute einheit = zeitElement.getAttribute("einheit");
 			Element vorgabeElement = zeitElement.getChild("Vorgabe");
-			int vorgabe = Integer.parseInt(vorgabeElement.getValue());
+			double vorgabe = Double.parseDouble(vorgabeElement.getValue());
+			
+			setZeitVorgabe(vorgabe);
 			
 			if (einheit.equals("s")){
 				vorgabe = vorgabe * 1000;
@@ -139,22 +152,22 @@ public class Vorgabe {
 	        	
 	        	 
 	        	Schlangenart schlangenart = new Schlangenart(zeichenkette, nchbrsstr);
-	        	schlangenart.setID(dschungelZeichenStr);
+	        	schlangenart.setID(schlangenartIdStr);
 	        	schlangenart.setAnzahl(schlangenartAnzahlInt);
 	        	schlangenart.setPunkte(schlangenartPunkteInt);
 	        	
 	        	 
-	        	
 	        	schlangenarten.add(schlangenart);
 	        
 	        });
-	        
+	        setSchlangenarten(schlangenarten);
 	        //muss schauen dass für schlangen mit anzahl mehr als 1 entsprechend weitere loop in generator durchzuführen
-	        if (dschungelElement.getChildren() == null){
+	        if (dschungelElement.getChildren().size() == 0){
 	        	DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
-		        
+	        	dschungelGenerator.erzeugeDschungel();
 		        Dschungel dschungel = dschungelGenerator.erzeugeDschungel();
-		        this.hauptDschungel = dschungel;
+		        
+		        setDschungel(dschungel);
 	        } else {
 	        	Dschungel dschungel = new Dschungel(dschungelZeilenInt, dschungelSpaltenInt, dschungelZeichenStr);
 	        	List<Element> dschungelkinder = dschungelElement.getChildren();
@@ -208,13 +221,17 @@ public class Vorgabe {
 	        		
 	        		
 	        	});
-	        	this.hauptDschungel = dschungel;
+	        	setDschungel(dschungel);
+	        	 
 	        }
 	        
+	        SchlangenSuche loesung = new SchlangenSuche(getDschungel(),getSchlangenarten(), vorgabe );
+	        loesung.sucheSchlange();
+	        double zeitAbg = loesung.getAbgabeZeit();
+	        setZeitAbgabe(zeitAbg);
+	        setLoesung(loesung);
 	        
-	        this.schlangensuche = new SchlangenSuche(this.hauptDschungel,schlangenarten, vorgabe );
 	        
-	        write(schlangensuche);
 	        /*return dschungel;*/
 	        /*Element element = rootElement.getChild("Dschungel");
 	        String value = element.getText();
@@ -239,16 +256,191 @@ public class Vorgabe {
 		
 	}
 	
-	private void write(SchlangenSuche schlangensuche) throws FileNotFoundException, IOException {
+	public void write(String name) throws FileNotFoundException, IOException {
+		
+        String currentDir = System.getProperty("user.dir");
+
+        String dateiPfad = currentDir  + File.separator +"res" + File.separator + name + ".xml";
+		String dateiname = name + ".xml";
+		
+		System.out.println(dateiPfad);
+		
 		Document document = new Document();
-		Element root = new Element("document");
-		root.setAttribute("file", "file.xml");
-		root.addContent(new Element("style"));//hier addieren
+		Element root = new Element("Schlangenjagd");
+		//root.setAttribute("file", dateiname);
+		//root.addContent(new Element("style"));//hier addieren
 		document.setRootElement(root);
-		XMLOutputter outputter = new XMLOutputter();
-		outputter.output(document, new FileOutputStream(new File("file.xml")));
-				
+		
+		//Zeit Element
+		Element zeit = new Element("Zeit");
+        zeit.setAttribute("einheit", "s");
+
+        Element vorgabe = new Element("Vorgabe");
+        String zeitVorgabeStr = String.valueOf(getZeitVorgabe());
+        vorgabe.setText(zeitVorgabeStr);
+        zeit.addContent(vorgabe);
+        
+        Element abgabe = new Element("Abgabe");
+        
+        String zeitAbgabeStr = String.valueOf(getZeitAbgabe());
+        abgabe.setText(zeitAbgabeStr);
+        zeit.addContent(abgabe);
+       
+        root.addContent(zeit);
+        
+        //dschungel element
+        
+        Element dschungel = new Element("Dschungel");
+        String zeilenStr = String.valueOf(getDschungel().getZeilen());
+        String spaltenStr = String.valueOf(getDschungel().getSpalten());
+        String zeichen = getDschungel().getZeichenMenge();
+        dschungel.setAttribute("zeilen", zeilenStr);
+        dschungel.setAttribute("spalten", spaltenStr);
+        dschungel.setAttribute("zeichen", zeichen);
+        
+        int zeilen = getDschungel().getZeilen();
+        int spalten = getDschungel().getSpalten();
+        
+        //feld elemet
+        for(int i = 0;  i < zeilen; i++) {
+        	for (int j = 0; j < spalten; j++) {
+        		Feld feld = getDschungel().getFeld(i, j);
+        		
+        		Element feldE = new Element("Feld");
+        		feldE.setAttribute("id", feld.getId());
+        		feldE.setAttribute("zeile", String.valueOf(feld.getZeile()));
+        		feldE.setAttribute("spalte", String.valueOf(feld.getSpalte()));
+        		feldE.setAttribute("verwendbarkeit", String.valueOf(feld.getVerwendbarkeit()));
+        		feldE.setAttribute("punkte", String.valueOf(feld.getPunkte()));
+        		
+        		feldE.setText(String.valueOf(feld.getZeichen()));
+        		
+        		dschungel.addContent(feldE);
+        		
+        	}
+        }
+        root.addContent(dschungel);
+        //Schlangenarten
+        Element schlangenartenE = new Element("Schlangenarten");
+        Schlangenarten schlangenarten = getSchlangenarten();
+        for (int i = 0; i < schlangenarten.getSize(); i++) {
+        	Schlangenart schlangenart = schlangenarten.getSchlangeByIndex(i);
+        	
+        	Element schlangenartE = new Element ("Schlangenart");
+        	schlangenartE.setAttribute("id", schlangenart.getId());
+        	schlangenartE.setAttribute("punkte", String.valueOf(schlangenart.getPunkte()));
+        	schlangenartE.setAttribute("anzahl", String.valueOf(schlangenart.getAnzahl()));
+        	
+        	//Zecihenkette
+        	Element zeichenketteE = new Element("Zeichenkette");
+        	zeichenketteE.setText(schlangenart.getZeichenkette());
+        	schlangenartE.addContent(zeichenketteE);
+        	
+        	//Nachbarschaftsstruktur
+        	Element nachbE = new Element("Nachbarschaftsstruktur");
+        	nachbE.setAttribute("typ", schlangenart.getNachbarschaftsstruktur().getTyp());
+        	//werte
+        	Element par1E = new Element ("Parameter");
+        	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert1()));
+        	nachbE.setContent(par1E);
+        	if (schlangenart.getNachbarschaftsstruktur().getTyp() == "Sprung") {
+        		Element par2E = new Element ("Parameter");
+            	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert2()));
+            	nachbE.setContent(par2E);
+        	}
+        	schlangenartE.addContent(nachbE);
+        	
+        	schlangenartenE.addContent(schlangenartE);
+        	
+        
+        }
+        
+        root.addContent(schlangenartenE);
+        
+      //loesung
+        Element schlangenE = new Element ("Schlangen");
+        
+        SchlangenSuche schlagnensuche = getLoesung();
+        ArrayList<Schlange> schlangen = schlagnensuche.getLoesung();
+        for (int i = 0; i < schlagnensuche.getAnzahl(); i++) {
+        	Schlange schlange = schlangen.get(i);
+        	Element schlangeE = new Element("Schlange");
+        	schlangeE.setAttribute("art", schlange.getArt());
+        	Schlangenglied glied = schlange.getKopf();
+        	if (glied.getFeld() != null) {
+    			Element gliedE = new Element("Schlangenglied");
+    			gliedE.setAttribute("feld", (glied.getFeld().getId()));
+    			schlangeE.addContent(gliedE);
+    		}
+        	while ((glied.getNext() != null)) {
+    			glied = glied.getNext();
+    			Element gliedE = new Element("Schlangenglied");
+    			gliedE.setAttribute("feld", (glied.getFeld().getId()));
+    			schlangeE.addContent(gliedE);
+    			
+    		};
+    		schlangenE.addContent(schlangeE);
+        	
+        }
+        root.addContent(schlangenE);
+		//doctype
+		DocType dt = new DocType("Schlangenjagd", "schlangenjagd.dtd");
+        document.setDocType(dt);
+        
+        try {
+        	XMLOutputter outputter = new XMLOutputter();
+    		outputter.setFormat(Format.getPrettyFormat());
+            
+    		outputter.output(document, new FileOutputStream(new File(dateiPfad)));
+        }catch (IOException e){
+        	e.printStackTrace();
+        }
+		
+		
 	}
+	
+	private void setDschungel(Dschungel dschungel) {
+		this.hauptDschungel = dschungel;
+	}
+	
+	private void setSchlangenarten(Schlangenarten schlangenarten) {
+		this.hauptSchlangenarten = schlangenarten;
+	}
+	
+	private void setZeitVorgabe(double zeitVorgabe) {
+		this.zeitVorgabe = zeitVorgabe;
+	}
+	
+	private void setZeitAbgabe(double zeitAbg) {
+		this.zeitAbgabe = zeitAbg;
+	}
+	
+	private void setLoesung(SchlangenSuche loesung) {
+		this.loesung = loesung;
+	}
+	
+	private Dschungel getDschungel() {
+		return this.hauptDschungel;
+	}
+	
+	private Schlangenarten getSchlangenarten() {
+		return this.hauptSchlangenarten;
+	}
+	
+	private SchlangenSuche getLoesung() {
+		return this.loesung;
+	}
+	
+	
+	
+	private double getZeitVorgabe() {
+		return this.zeitVorgabe;
+	}
+	
+	private double getZeitAbgabe() {
+		return this.zeitAbgabe;
+	}
+	
 	
 	
 }

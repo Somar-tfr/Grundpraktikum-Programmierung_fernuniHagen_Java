@@ -112,6 +112,20 @@ public class Nachbarschaftsstruktur {
 				return null;*/
 		
 	}
+
+	public String getTyp() {
+		// TODO Auto-generated method stub
+		return this.typ;
+	}
+
+	public int getWert1() {
+		// TODO Auto-generated method stub
+		return this.parameter1;
+	}
+	public int getWert2() {
+		// TODO Auto-generated method stub
+		return this.parameter2;
+	}
 		
 	
 }
