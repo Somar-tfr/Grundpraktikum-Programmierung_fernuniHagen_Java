@@ -32,7 +32,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 	@Override
 	public String getName() {
 		// TODO Implementierung der API-Methode zur Rueckgabe Ihres vollstaenigen Namens.
-		return "Muhammad Somar Taifour";
+		return "Somar Taifour";
 	}
 
 	@Override
