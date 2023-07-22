@@ -2,6 +2,7 @@ package de.fernuni.kurs01584.ss23.modell;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Schlangenarten implements Iterable<Schlangenart>{
@@ -50,9 +51,14 @@ public class Schlangenarten implements Iterable<Schlangenart>{
 	
 	public Schlangenart getSchlangeByArt(String s) {
 		try {
-			return getSchlangenarten().stream()
+			Optional<Schlangenart> a = getSchlangenarten().stream()
 				    .filter(schlange -> schlange.getId().equals(s))
-				    .collect(Collectors.toList()).get(0);
+				    .findFirst();
+			if(a.isPresent()) {
+				return a.get();
+			}else {
+				return null;
+			}
 			
 		}catch (IndexOutOfBoundsException e){
 			e.printStackTrace();

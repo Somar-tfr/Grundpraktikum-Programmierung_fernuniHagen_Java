@@ -1,6 +1,10 @@
 package de.fernuni.kurs01584.ss23.modell;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
 import de.fernuni.kurs01584.ss23.algorithmus.SchlangenSuche;
@@ -90,7 +94,7 @@ public class Dschungel {
 	}
 	
 	//a test method
-		public void printid(/*String zeichen*/) {
+	public void printid(/*String zeichen*/) {
 			for(ArrayList<Feld> zeile : dschungelMatrix) {
 				for (Feld element : zeile) {
 					//System.out.print(element.getId());
@@ -104,71 +108,74 @@ public class Dschungel {
 	//a test main
 		
 	public static void main(String[] args) {
-		
-		
-		Schlangenarten schlangenarten = new Schlangenarten();
-		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
-		Schlangenart schlangenart0 = new Schlangenart("FERNUNI", nachb );
-		schlangenart0.setAnzahl(1);
-		schlangenart0.setPunkte(1);
-		/*Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
-		schlangenart1.setAnzahl(1);
-		schlangenart1.setPunkte(1);
-		Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
-		schlangenart2.setAnzahl(1);
-		schlangenart2.setPunkte(1);
-		Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
-		schlangenart3.setAnzahl(1);
-		schlangenart3.setPunkte(1);
-		Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
-		schlangenart4.setAnzahl(1);
-		schlangenart4.setPunkte(1);
-		Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
-		schlangenart5.setAnzahl(1);
-		schlangenart5.setPunkte(1);*/
-		
-		//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
-		schlangenarten.add(schlangenart0);
-		/*schlangenarten.add(schlangenart1);
-		schlangenarten.add(schlangenart2);
-		schlangenarten.add(schlangenart3);
-		schlangenarten.add(schlangenart4);
-		schlangenarten.add(schlangenart5);*/
-		
-		
-		schlangenarten.print();
-		
-		DschungelGenerator  testgenerator = new DschungelGenerator(2,4,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
-		Dschungel test = testgenerator.erzeugeDschungel();
-		
-		test.print();
-		test.printid();
-		test.printverwendbarkeit();
-		//test.getFeld(2,1).setZeichen('A');
-		//System.out.println(test.getFeld(2,1).getZeichen());
-		System.out.println("---");
-		System.out.println("---");
-		//Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
-		//Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
-		
-		//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-		System.out.println("---");
-		SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 10000);
-		schlangensuche.sucheSchlange();
-		ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
-		
-		System.out.println(schlangen.size());
-		if (schlangen.size() != 0){
-			for (Schlange s : schlangen) {
-				s.print();
-			}
-			//System.out.println(schlangen.get(0).getGlied(0));
+			
+			
+			Schlangenarten schlangenarten = new Schlangenarten();
+			Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
+			Schlangenart schlangenart0 = new Schlangenart("FERNUNI", nachb );
+			schlangenart0.setAnzahl(1);
+			schlangenart0.setPunkte(1);
+			/*Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
+			schlangenart1.setAnzahl(1);
+			schlangenart1.setPunkte(1);
+			Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
+			schlangenart2.setAnzahl(1);
+			schlangenart2.setPunkte(1);
+			Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
+			schlangenart3.setAnzahl(1);
+			schlangenart3.setPunkte(1);
+			Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
+			schlangenart4.setAnzahl(1);
+			schlangenart4.setPunkte(1);
+			Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
+			schlangenart5.setAnzahl(1);
+			schlangenart5.setPunkte(1);*/
+			
+			//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
+			schlangenarten.add(schlangenart0);
+			/*schlangenarten.add(schlangenart1);
+			schlangenarten.add(schlangenart2);
+			schlangenarten.add(schlangenart3);
+			schlangenarten.add(schlangenart4);
+			schlangenarten.add(schlangenart5);*/
+			
+			
+			schlangenarten.print();
+			
+			DschungelGenerator  testgenerator = new DschungelGenerator(2,4,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
+			Dschungel test = testgenerator.erzeugeDschungel();
+			
+			test.print();
+			test.printid();
+			test.printverwendbarkeit();
+			//test.getFeld(2,1).setZeichen('A');
+			//System.out.println(test.getFeld(2,1).getZeichen());
+			System.out.println("---");
+			System.out.println("---");
+			//Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
+			//Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
+			
+			//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
+			System.out.println("---");
+			SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 10000);
+			schlangensuche.sucheSchlange();
+			ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
+			
+			System.out.println(schlangen.size());
+			if (schlangen.size() != 0){
+				for (Schlange s : schlangen) {
+					s.print();
+				}
+				//System.out.println(schlangen.get(0).getGlied(0));
 
+			}
+			test.printverwendbarkeit();
+			System.out.println("abgabezeit ms: " + schlangensuche.getAbgabeZeit());
+			//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
+			
+			test.getFelderList().forEach(i->System.out.println(test.getFeldById(i.getId()).getId()));
+			
 		}
-		test.printverwendbarkeit();
-		System.out.println("abgabezeit ms: " + schlangensuche.getAbgabeZeit());
-		//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-	}
 
 	private void printverwendbarkeit() {
 		// TODO Auto-generated method stub
@@ -181,4 +188,30 @@ public class Dschungel {
 			System.out.println();
 		}
 	}
+	
+	public Feld getFeldById(String s) {
+		try {
+			Optional<Feld> kriteria = getFelderList().stream()
+				    .filter(feld -> feld.getId().equals(s))
+				    .findFirst();
+			if (kriteria.isPresent()) {
+				return kriteria.get();
+			}else {
+				return null;
+			}
+				    
+			
+		}catch (IndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private ArrayList<Feld> getFelderList(){
+		ArrayList<Feld> felderList = new ArrayList<Feld>();
+		getMatrix().forEach(i -> i.forEach(j -> felderList.add(j)));
+		return felderList;
+	}
+
+	
 }

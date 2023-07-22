@@ -10,40 +10,12 @@ import de.fernuni.kurs01584.ss23.algorithmus.*;
 
 
 public class Darstellung {
-	public static void main(String[] args) {
-		//test
-		Schlangenarten schlangenarten = new Schlangenarten();
-		Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
-		Schlangenart schlangenart0 = new Schlangenart("DIE", nachb );
-		schlangenart0.setAnzahl(1);
-		schlangenart0.setPunkte(1);
-		schlangenarten.add(schlangenart0);
-		Schlangenart schlangenart1 = new Schlangenart("DAS", nachb );
-		schlangenart1.setAnzahl(1);
-		schlangenart1.setPunkte(1);
-		schlangenarten.add(schlangenart1);
-		
-		DschungelGenerator generator = new DschungelGenerator(5,5,"ABCDEFGHI", schlangenarten);
-		Dschungel neueDschungel = generator.erzeugeDschungel();
-		
-		SchlangenSuche loesung = new SchlangenSuche(neueDschungel, schlangenarten, 1000);
-		loesung.sucheSchlange();
-		//Darstellung.printDschungelZeichen(neueDschungel);
-		//Darstellung.printDschungelFeldId(neueDschungel);
-		//Darstellung.printDschungelPunkte(neueDschungel);
-		Darstellung.printDarstellung(neueDschungel);
-		Darstellung.printSchlangenarten(schlangenarten);
-		System.out.println("+++");
-
-		Darstellung.printLoesung(loesung, schlangenarten, neueDschungel);
-		System.out.println("+++");
-	}
 	
-	/*Dschungel dschungel = null;
 	
-	public Darstellung(Dschungel dschungel){
-		this.dschungel = dschungel;
-	}*/
+	
+	
+	
+	
 	public static void printDarstellung(Dschungel dschungel) {
 		ArrayList<ArrayList<Feld>> matrix = dschungel.getMatrix();
 		printDschungelInformation(dschungel)	;
@@ -84,10 +56,11 @@ public class Darstellung {
 		
 		
 	}
+	
 	public static void printDschungelZeichen(Dschungel dschungel) {
 		ArrayList<ArrayList<Feld>> matrix = dschungel.getMatrix();
-		printDschungelInformation(dschungel)	;
-		System.out.println("Dschungel Zeichen\n"
+		//printDschungelInformation(dschungel)	;
+		System.out.println("Dschungel Zeichen"
 						 + "\n=======================================");
 		for(ArrayList<Feld> zeile : matrix) {
 			for (Feld element : zeile) {
@@ -107,91 +80,7 @@ public class Darstellung {
 
 	}
 	
-	public static void printDschungelFeldId(Dschungel dschungel) {
-		ArrayList<ArrayList<Feld>> matrix = dschungel.getMatrix();
-		printDschungelInformation(dschungel)	;
-		System.out.println("Dschungel Feld Id\n"
-						 + "=================");
-		//finde den laengsten Feld id
-		int maxLen = 0;
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				//System.out.print(element.getId());
-				maxLen = Math.max(maxLen, element.getId().length());
-				}
-		}
-		
-		// format erstellen
-		
-		String formatSpecifier = "%-" + maxLen + "s ";
-		
-		
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				System.out.print(String.format(formatSpecifier, element.getId()));
-				}
-				
-			
-			System.out.println();
-		}
-	}
-	
-	public static void printDschungelPunkte(Dschungel dschungel) {
-		ArrayList<ArrayList<Feld>> matrix = dschungel.getMatrix();
-		printDschungelInformation(dschungel)	;
-		System.out.println("Dschungel Punkte\n"
-						 + "================");
-		int maxLen = 0;
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				//System.out.print(element.getId());
-				maxLen = Math.max(maxLen, String.valueOf(element.getPunkte()).length());
-				}
-		}
-		
-		// format erstellen
-		
-		String formatSpecifier = "%-" + maxLen + "d ";
-		
-		
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				System.out.print(String.format(formatSpecifier, element.getPunkte()));
-				}
-				
-			
-			System.out.println();
-		}
-		
-	}
-	
-	public static void printDschungelVerwendbarkeit(Dschungel dschungel) {
-		ArrayList<ArrayList<Feld>> matrix = dschungel.getMatrix();
-		printDschungelInformation(dschungel)	;	
-		System.out.println("Dschungel Verwedndbarkeit\n"
-						 + "=========================");
-		int maxLen = 0;
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				maxLen = Math.max(maxLen, String.valueOf(element.getVerwendbarkeit()).length());
-				}
-		}
-		
-		// format erstellen
-		
-		String formatSpecifier = "%-" + maxLen + "d ";
-		
-		
-		for(ArrayList<Feld> zeile : matrix) {
-			for (Feld element : zeile) {
-				System.out.print(String.format(formatSpecifier, element.getVerwendbarkeit()));
-				}
-				
-			
-			System.out.println();
-		}
-		
-	}
+
 	
 	private static void printSchlangenarten(Schlangenarten schlangenarten) {
 		System.out.println("\n=======================================");
@@ -217,6 +106,8 @@ public class Darstellung {
 	}
 	
 	private static void printSchlange(Schlange schlange, Schlangenarten schlangenarten, Dschungel dschungel) {
+		
+		//Schlangenart mit Zeichenkette und Nachbarschaftsstruktur,
 		String pr = "";
 		Schlangenglied glied = schlange.getKopf();
 		if (glied.getFeld() != null) {
@@ -245,6 +136,9 @@ public class Darstellung {
 							+" . Zecihenkette : " + schlangenart.getZeichenkette()
 							+ ". Nachbarschaftsstruktur : " + nachbS
 							);
+		
+		//Hervorhebung der im Zeichendschungel angeordneten Schlange,
+		
 		int zeilen = dschungel.getZeilen();
 		int spalten = dschungel.getSpalten();
 		ArrayList <Schlangenglied> glieder = new ArrayList<Schlangenglied>();
@@ -276,6 +170,15 @@ public class Darstellung {
 			}
 			System.out.println();
 		}
+		
+		System.out.println("SCHLANGENGLIEDER : ");
+		//Zeile und Spalte der aufeinanderfolgenden Schlangenglieder.
+		glieder.forEach(i ->{
+			System.out.print(i.getFeld().getZeichen() + " : " + "(" + i.getFeld().getZeile() + " , " + i.getFeld().getSpalte() + " ) -> ");
+		});
+		System.out.print("null");
+		System.out.println("\n");
+		
 		
 		
 	}
