@@ -82,7 +82,7 @@ public class Darstellung {
 	
 
 	
-	private static void printSchlangenarten(Schlangenarten schlangenarten) {
+	public static void printSchlangenarten(Schlangenarten schlangenarten) {
 		System.out.println("\n=======================================");
 		System.out.println("SCHLANGENARTEN :");
 		for(int i = 0; i < schlangenarten.getSize(); i++) {
@@ -176,15 +176,15 @@ public class Darstellung {
 		glieder.forEach(i ->{
 			System.out.print(i.getFeld().getZeichen() + " : " + "(" + i.getFeld().getZeile() + " , " + i.getFeld().getSpalte() + " ) -> ");
 		});
-		System.out.print("null");
+		System.out.print("|");
 		System.out.println("\n");
 		
 		
 		
 	}
 	
-	private static void printLoesung( SchlangenSuche schlangenSuche, Schlangenarten schlangenarten, Dschungel dschungel) {
-		ArrayList<Schlange> loesung = schlangenSuche.getLoesung();
+	public static void printLoesung( ArrayList<Schlange> loesung, Schlangenarten schlangenarten, Dschungel dschungel) {
+		//ArrayList<Schlange> loesung = schlangenSuche.getLoesung();
 		for(int i = 0; i < loesung.size(); i++) {
 			printSchlange(loesung.get(i), schlangenarten, dschungel);
 		}

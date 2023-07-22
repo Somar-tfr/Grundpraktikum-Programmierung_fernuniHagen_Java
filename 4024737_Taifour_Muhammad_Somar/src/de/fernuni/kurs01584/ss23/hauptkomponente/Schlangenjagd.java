@@ -20,6 +20,86 @@ import de.fernuni.kurs01584.ss23.modell.*;
 public class Schlangenjagd implements SchlangenjagdAPI {
 	// TODO: Implementierung von Schnittstelle und Programm-Einstieg
 	public static void main(String[] args) {
+		if (args.length < 2 || args.length > 3){
+			throw new IllegalArgumentException(
+					"Ein vollstaendiger Parameteraufruf kann wie folgt aussehen:\r\n"
+					+ "ablauf=ld eingabe=res\\sj1.xml ausgabe=res\\sj1_loesung.xml"
+					+ "\nl (loesen): Fuer eine gegebene Probleminstanz wird nach einer neuen Loesung gesucht"
+					+ "\ne (erzeugen): Eine neue Probleminstanz wird auf Basis der gegebenen Parameter\r\n"
+					+ "erzeugt und bei Angabe einer Ausgabedatei gespeichert"
+					+ "\np (pruefen): Die Zulaessigkeit der gegebenen Loesung wird ueberprueft. Bei Unzulaessigkeit\r\n"
+					+ "werden die Art und Anzahl der verletzten Bedingungen in der Konsole ausgegeben"
+					+ "\nb (bewerten): Die Gesamtpunktzahl der Loesung wird unabhaengig von der Zulaessigkeit\r\n"
+					+ "berechnet und in der Konsole ausgegeben"
+					+ "\nd (darstellen): Die Probleminstanz und die zugehoerige Loesung werden in der Konsole\r\n"
+					+ "dargestellt\n");
+		}
+		String ablauf = args[0].substring(args[0].indexOf('=') + 1);
+		String eingabe = args[1].substring(args[1].indexOf('=') + 1);
+		String ausgabe = "";
+		//Vorgabe vorgabeDatei = new Vorgabe(eingabe);
+		if (args.length == 3) {
+			//vorgabeDatei = new Vorgabe(eingabe, ausgabe);
+			ausgabe = args[2].substring(args[2].indexOf('=') + 1);
+		}
+		
+		Schlangenjagd schlangenJagd = new Schlangenjagd();
+		if(ablauf.contains("l") && !ablauf.contains("e")) {
+			schlangenJagd.loeseProbleminstanz(eingabe, ausgabe);
+			
+		}
+		if(ablauf.contains("e") && !ablauf.contains("l")) {
+			schlangenJagd.erzeugeProbleminstanz(eingabe,ausgabe);
+			
+		}
+		if(ablauf.contains("e") && ablauf.contains("l")) {
+			String zwischenOrt = "res/zwischen.xml";
+			schlangenJagd.erzeugeProbleminstanz(eingabe,zwischenOrt);
+			schlangenJagd.loeseProbleminstanz(zwischenOrt, ausgabe);
+			
+		}
+		
+		if(ablauf.contains("d")) {
+			schlangenJagd.darstellen(ausgabe);
+		}
+		
+		if(ablauf.contains("p")) {
+			List<Fehlertyp> fehler = new ArrayList<>();
+			if(args.length == 2) {
+				fehler = schlangenJagd.pruefeLoesung(eingabe);
+				
+			}else if(args.length == 3) {
+				fehler = schlangenJagd.pruefeLoesung(ausgabe);
+			}
+			if(fehler != null) {
+				System.out.println("Anzahl der Fehlern gefunden : " + fehler.size());
+			
+				System.out.println("Fehlern gefunden Sind : " );
+				fehler.forEach(i -> System.out.print(i + " ,"));
+			}
+			
+			
+			
+		}
+		if(ablauf.contains("b")) {
+			int punkte = 0;
+			if(args.length == 2) {
+				 punkte = schlangenJagd.bewerteLoesung(eingabe);
+				
+			}else if(args.length == 3) {
+				punkte = schlangenJagd.bewerteLoesung(ausgabe);
+			}
+			System.out.println("Bewrtung zur loesung : Anzahl der erreichte Punkte : " + punkte);
+		}
+		
+		
+		System.out.println("Ablauf: " + ablauf);
+        System.out.println("Eingabe: " + eingabe);
+        System.out.println("Ausgabe: " + ausgabe);
+
+		
+		// muss den fehler zeigen
+		
 		Schlangenjagd jagd = new Schlangenjagd();
 		System.out.println(jagd.loeseProbleminstanz("res/sj_p1_unvollstaendig.xml", "res/xmlAusgabeDatei1.xml"));
 		System.out.println(jagd.erzeugeProbleminstanz("res/sj_p1_unvollstaendig.xml", "res/xmlAusgabeDatei2.xml"));
@@ -158,7 +238,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 	@Override
 	public int bewerteLoesung(String xmlEingabeDatei) {
 		// TODO Implementierung der API-Methode zur Bewertung von Loesungen.
-Vorgabe vorgabeDatei = new Vorgabe(xmlEingabeDatei);
+		Vorgabe vorgabeDatei = new Vorgabe(xmlEingabeDatei);
 		
 		try {
 			vorgabeDatei.readPruefe();
@@ -205,5 +285,25 @@ Vorgabe vorgabeDatei = new Vorgabe(xmlEingabeDatei);
 	public String getEmail() {
 		// TODO Implementierung der API-Methode zur Rueckgabe Ihrer E-Mail Adresse.
 		return "somar.taifour@outlook.com";
+	}
+	
+	public void darstellen(String darstellungsdatei) {
+		Vorgabe vorgabeDatei = new Vorgabe(darstellungsdatei);
+		
+		try {
+			vorgabeDatei.readPruefe();
+		} catch (JDOMException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Dschungel dschungel = vorgabeDatei.getDschungel();
+		
+		Schlangenarten schlangenarten = vorgabeDatei.getSchlangenarten();
+		ArrayList<Schlange> schlangen = vorgabeDatei.getXMLSchlangenLoesung();
+		Darstellung.printDarstellung(dschungel);
+		Darstellung.printSchlangenarten(schlangenarten);
+		Darstellung.printLoesung(schlangen, schlangenarten, dschungel);
+		
+		
 	}
 }

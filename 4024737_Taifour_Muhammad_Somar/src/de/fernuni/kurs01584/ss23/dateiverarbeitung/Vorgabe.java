@@ -54,14 +54,14 @@ public class Vorgabe {
 	}	
 	
 	
-	public static void main(String[] args) throws JDOMException, IOException  {
+	/*public static void main(String[] args) throws JDOMException, IOException  {
 		Vorgabe vorgabe = new Vorgabe("res/sj_p1_loesung.xml");
 		vorgabe.readPruefe();
 		
-	}
+	}*/
 	
 	public void readLoese() throws JDOMException, IOException {
-try {
+		try {
 			
 			String name = getEingabeDatei();
 			//Dokument builder erstellen
