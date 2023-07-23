@@ -76,6 +76,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			
 				System.out.println("Fehlern gefunden Sind : " );
 				fehler.forEach(i -> System.out.print(i + " ,"));
+				System.out.println();
 			}
 			
 			
@@ -93,18 +94,11 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		
 		
-		System.out.println("Ablauf: " + ablauf);
-        System.out.println("Eingabe: " + eingabe);
-        System.out.println("Ausgabe: " + ausgabe);
-
+		
 		
 		// muss den fehler zeigen
 		
-		Schlangenjagd jagd = new Schlangenjagd();
-		System.out.println(jagd.loeseProbleminstanz("res/sj_p1_unvollstaendig.xml", "res/xmlAusgabeDatei1.xml"));
-		System.out.println(jagd.erzeugeProbleminstanz("res/sj_p1_unvollstaendig.xml", "res/xmlAusgabeDatei2.xml"));
-		System.out.println(jagd.pruefeLoesung("res/sj_p1_loesung.xml"));
-		System.out.println(jagd.bewerteLoesung("res/sj_p1_loesung.xml"));
+		
 		
 	}
 	@Override
@@ -177,7 +171,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		//13:34
 		for(Schlange schlange: vorgabeDatei.getXMLSchlangenLoesung()) {
 			String art = schlange.getArt();
-
+			
 			Schlangenart schlangenart = schlangenarten.getSchlangeByArt(art);
 			ArrayList<Schlangenglied> gliederListe = new ArrayList<Schlangenglied>();
 			
@@ -188,11 +182,18 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			gliederListe.add(glied);
 			while(glied.getNext() != null) {
 				ArrayList<Feld> nachbarn = new ArrayList<Feld>();
+				/*if(nachStrukt.getTyp() == "Distanz") {
+					nachbarn = nachStrukt.getNachbarschaft(dschungel, glied.getFeld());
+				}else if (nachStrukt.getTyp() == "Sprung")*/
 				nachbarn = nachStrukt.getNachbarschaft(dschungel, glied.getFeld());
-				
+				System.out.println("[" + glied.getFeld().getZeile() + " , " +glied.getFeld().getSpalte() + "]" );
+				nachbarn.forEach(i -> System.out.print("(" + i.getZeile() + " , " + i.getSpalte() + ")"));
+				System.out.println();
 				glied =  glied.getNext();
 				gliederListe.add(glied);
 				if(!nachbarn.contains(glied.getFeld())) {
+					System.out.println("Struktur : " + nachStrukt.getTyp() + nachStrukt.getWert1() + nachStrukt.getWert2());
+					System.out.println("up"+ nachbarn.contains(glied.getFeld()));
 					fehler.add(Fehlertyp.NACHBARSCHAFT);
 				}
 				

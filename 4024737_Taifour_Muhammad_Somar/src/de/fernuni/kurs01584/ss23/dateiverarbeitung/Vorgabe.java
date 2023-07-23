@@ -577,13 +577,15 @@ public class Vorgabe {
         	Element nachbE = new Element("Nachbarschaftsstruktur");
         	nachbE.setAttribute("typ", schlangenart.getNachbarschaftsstruktur().getTyp());
         	//werte
+        	//PROBLEM HIER
         	Element par1E = new Element ("Parameter");
         	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert1()));
-        	nachbE.setContent(par1E);
-        	if (schlangenart.getNachbarschaftsstruktur().getTyp() == "Sprung") {
+        	nachbE.addContent(par1E);
+        	
+        	if (schlangenart.getNachbarschaftsstruktur().getTyp().equals("Sprung") ) {
         		Element par2E = new Element ("Parameter");
-            	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert2()));
-            	nachbE.setContent(par2E);
+            	par2E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert2()));
+            	nachbE.addContent(par2E);
         	}
         	schlangenartE.addContent(nachbE);
         	
@@ -726,11 +728,11 @@ public class Vorgabe {
         	//werte
         	Element par1E = new Element ("Parameter");
         	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert1()));
-        	nachbE.setContent(par1E);
+        	nachbE.addContent(par1E);
         	if (schlangenart.getNachbarschaftsstruktur().getTyp() == "Sprung") {
         		Element par2E = new Element ("Parameter");
-            	par1E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert2()));
-            	nachbE.setContent(par2E);
+            	par2E.setAttribute("wert", String.valueOf(schlangenart.getNachbarschaftsstruktur().getWert2()));
+            	nachbE.addContent(par2E);
         	}
         	schlangenartE.addContent(nachbE);
         	

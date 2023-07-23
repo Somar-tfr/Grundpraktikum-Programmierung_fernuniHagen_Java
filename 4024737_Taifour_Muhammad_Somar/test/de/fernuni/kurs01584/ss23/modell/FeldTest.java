@@ -36,6 +36,7 @@ class FeldTest {
 
 	@BeforeEach
 	void init() {
+		Feld feld = null;
 		System.out.println("Vor jedem Testfall.");
 	}
 
@@ -49,6 +50,181 @@ class FeldTest {
 		System.out.println("Nach allen Testfaellen.");
 	}
 	
+	@DisplayName("test FeldKonstruktor Mit Zeile Und Spalte")
+	@Test
+    void testFeldKonstruktorMitZeileUndSpalte() {
+        int zeile = 3;
+        int spalte = 5;
+
+        Feld feld = new Feld(zeile, spalte);
+
+        assertEquals(zeile, feld.getZeile());
+        assertEquals(spalte, feld.getSpalte());
+        assertEquals(' ', feld.getZeichen());
+        assertEquals(1, feld.getVerwendbarkeit());
+        assertEquals(1, feld.getPunkte());
+    }
+
+	@DisplayName("test FeldKonstruktor Mit Negativer Zeile")
+    @Test
+    void testFeldKonstruktorMitNegativerZeile() {
+        int zeile = -1;
+        int spalte = 5;
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Feld(zeile, spalte);
+        });
+    }
+
+	@DisplayName("testFeldKonstruktorMitNegativerSpalte")
+    @Test
+    void testFeldKonstruktorMitNegativerSpalte() {
+        int zeile = 3;
+        int spalte = -1;
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Feld(zeile, spalte);
+        });
+    }
+    
+	@DisplayName("testFeldKonstruktorMitAllenParametern")
+	@Test
+    void testFeldKonstruktorMitAllenParametern() {
+        int zeil = 2;
+        int spalt = 4;
+        int verwendbarkei = 3;
+        int punkt = 5;
+        char zeiche = ' ';
+
+        Feld feld = new Feld(zeil, spalt, verwendbarkei, punkt);
+
+        assertEquals(zeil, feld.getZeile());
+        assertEquals(spalt, feld.getSpalte());
+        assertEquals(verwendbarkei, feld.getVerwendbarkeit());
+        assertEquals(punkt, feld.getPunkte());
+    }
+
+	@DisplayName("testFeldKonstruktorMitNegativenParametern")
+    @Test
+    void testFeldKonstruktorMitNegativenParametern() {
+        int zeile = 2;
+        int spalte = 4;
+        int verwendbarkeit = -3;
+        int punkte = 5;
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Feld(zeile, spalte, verwendbarkeit, punkte);
+        });
+    }
+    
+	@DisplayName("testSetId")
+    @Test
+    void testSetId() {
+        int zeile = 1;
+        int spalte = 2;
+        int spaltenImDschungel = 4;
+        Feld feld = new Feld(zeile, spalte);
+        feld.setId(spaltenImDschungel);
+
+        assertEquals("F6", feld.getId());
+    }
+
+	@DisplayName("testSetIdMitNegativenSpaltenImDschungel")
+    @Test
+    void testSetIdMitNegativenSpaltenImDschungel() {
+        int zeile = 1;
+        int spalte = 2;
+        int spaltenImDschungel = -4;
+        Feld feld = new Feld(zeile, spalte);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            feld.setId(spaltenImDschungel);
+        });
+    }
+    
+	@DisplayName("testSetZeichenGesamt")
+    @Test
+    void testSetZeichenGesamt() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte);
+        char zeichen = 'X';
+        feld.setZeichen(zeichen);
+
+        assertEquals(zeichen, feld.getZeichen());
+    }
+    
+	@DisplayName("testSetPunkte")
+    @Test
+    void testSetPunkte() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte);
+        int punkte = 5;
+        feld.setPunkte(punkte);
+
+        assertEquals(punkte, feld.getPunkte());
+    }
+
+	@DisplayName("testSetPunkteMitNegativemWert")
+    @Test
+    void testSetPunkteMitNegativemWert() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            feld.setPunkte(-5);
+        });
+    }
+    
+	@DisplayName("testSetVerwendbarkeit")
+    @Test
+    void testSetVerwendbarkeit() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte);
+        int verwendbarkeit = 3;
+        feld.setVerwendbarkeit(verwendbarkeit);
+
+        assertEquals(verwendbarkeit, feld.getVerwendbarkeit());
+    }
+
+	@DisplayName("testSetVerwendbarkeitMitNegativemWert")
+    @Test
+    void testSetVerwendbarkeitMitNegativemWert() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            feld.setVerwendbarkeit(-3);
+        });
+    }
+	
+	@DisplayName("testVerwenden")
+    @Test
+    void testVerwenden() {
+        int zeile = 1;
+        int spalte = 2;
+        int verwendbarkeit = 3;
+        Feld feld = new Feld(zeile, spalte, verwendbarkeit, 5);
+        feld.verwenden();
+
+        assertEquals(verwendbarkeit - 1, feld.getVerwendbarkeit());
+    }
+
+	@DisplayName("testVerwendenMitNichtVerwendbaremFeld")
+    @Test
+    void testVerwendenMitNichtVerwendbaremFeld() {
+        int zeile = 1;
+        int spalte = 2;
+        Feld feld = new Feld(zeile, spalte, 0, 5);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            feld.verwenden();
+        });
+    }
 
 
 	@DisplayName("Einfacher positiver Test.")
@@ -165,4 +341,5 @@ class FeldTest {
 					() -> "Fuer den (negativen) Zeilenwert '" + zeile + "' wird keine Ausnahme erzeugt.");
 		}
 	}
+	
 }

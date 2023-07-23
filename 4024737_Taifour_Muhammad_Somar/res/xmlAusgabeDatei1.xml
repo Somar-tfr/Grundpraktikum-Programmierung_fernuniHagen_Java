@@ -7,13 +7,13 @@
   </Zeit>
   <Dschungel zeilen="2" spalten="4" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
     <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="1">N</Feld>
-    <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="1">N</Feld>
+    <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="1">U</Feld>
     <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="1">F</Feld>
-    <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="1">E</Feld>
-    <Feld id="F4" zeile="1" spalte="0" verwendbarkeit="1" punkte="1">U</Feld>
+    <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="1">R</Feld>
+    <Feld id="F4" zeile="1" spalte="0" verwendbarkeit="1" punkte="1">G</Feld>
     <Feld id="F5" zeile="1" spalte="1" verwendbarkeit="1" punkte="1">I</Feld>
-    <Feld id="F6" zeile="1" spalte="2" verwendbarkeit="1" punkte="1">R</Feld>
-    <Feld id="F7" zeile="1" spalte="3" verwendbarkeit="1" punkte="1">B</Feld>
+    <Feld id="F6" zeile="1" spalte="2" verwendbarkeit="1" punkte="1">N</Feld>
+    <Feld id="F7" zeile="1" spalte="3" verwendbarkeit="1" punkte="1">E</Feld>
   </Dschungel>
   <Schlangenarten>
     <Schlangenart id="A0" punkte="1" anzahl="1">
@@ -26,11 +26,11 @@
   <Schlangen>
     <Schlange art="A0">
       <Schlangenglied feld="F2" />
+      <Schlangenglied feld="F7" />
       <Schlangenglied feld="F3" />
       <Schlangenglied feld="F6" />
       <Schlangenglied feld="F1" />
-      <Schlangenglied feld="F4" />
-      <Schlangenglied feld="F1" />
+      <Schlangenglied feld="F0" />
       <Schlangenglied feld="F5" />
     </Schlange>
   </Schlangen>

@@ -5,20 +5,28 @@ import java.util.Random;
 import de.fernuni.kurs01584.ss23.modell.*;
 import java.util.*;
 
-//import de.fernuni.kurs01584.ss23.modell.*;
-
+/**
+ * Der DschungelGenerator erzeugt ein Dschungel Objekt mit spezifizierten Eigenschaften.
+ * Er stellt sicher, dass zulässige Zeichen und Schlangenarten im Dschungel platziert werden.
+ */
 public class DschungelGenerator {
-	/*Die Beschränkung auf einfache
-	*Probleminstanzen bedeutet, dass bei der geforderten Funktionalität zur Erzeugung von
-	*Schlangen Überschneidungen ausgeschlossen werden und jedes Feld maximal einmal
-	*verwendet werden darf. Für die Schlangensuche gilt diese Einschränkung nicht.
-	*/
+
+
 	private int zeilen;
 	private int spalten;
 	private String zulaessigeZeichen;
 	private Schlangenarten schlangenarten;
 	private Random randomGenerator = new Random();
 
+	/**
+     * Konstruiert einen neuen DschungelGenerator mit spezifizierten Eigenschaften.
+     *
+     * @param zeilen Anzahl der Zeilen im Dschungel
+     * @param spalten Anzahl der Spalten im Dschungel
+     * @param zulaessigeZeichen Zeichen, die im Dschungel verwendet werden können
+     * @param schlangenarten Ein Satz von Schlangenarten, die im Dschungel platziert werden können
+     * @throws IllegalArgumentException wenn ungültige Argumente bereitgestellt werden
+     */
 	public DschungelGenerator(int zeilen,
 			int spalten,
 			String zulaessigeZeichen,
@@ -36,6 +44,12 @@ public class DschungelGenerator {
 		this.zulaessigeZeichen = zulaessigeZeichen;
 		this.schlangenarten = schlangenarten;
 	}
+	
+	/**
+     * Erzeugt einen Dschungel und füllt ihn mit zufällig verteilten Schlangen und zufälligen Zeichen.
+     * 
+     * @return Dschungel Objekt mit initialisierter Belegung.
+     */
 	public Dschungel erzeugeDschungel() {
 		Dschungel dschungel = new Dschungel(zeilen, spalten, zulaessigeZeichen);
 
@@ -61,39 +75,16 @@ public class DschungelGenerator {
 			for(int j = 0 ; j < schlangenAnzahl; j++) {
 				ArrayList<Feld> felderlist = new ArrayList<Feld>();//felderliste für  felder die recursiv belegt sind und die schlange zulässig ist
 
-				//MUSS NOCH DIE PUNKTE (UND VERWENDBARKEIT?) ADDIEREN!!
-				//ein random feld wählen
-				//Feld feld = null;
-				//Feld nextFeld;
-				//int schlangenlangenMaxIndex = gliederAnzahl - 1;//23.06 10:00
 				//looop für ein random position in dem dschungel für die schlange
 				HashSet<Feld> verwendeteFelder = new HashSet<>();
 				while(!istZulaessigBT(dschungel, schlangenart, gliederAnzahl -1, null, felderlist, verwendeteFelder)) {
 			        felderlist.clear(); // clear the list and set to generate a new snake
 			        verwendeteFelder.clear();
-			    } //diese do while addiert 18.07.2023 um sicher zu stellen dass es eine schlange zu ende platziert wird
-
+			    } //diese do while addiert um sicher zu stellen dass es eine schlange zu ende platziert wird
 			}
 
-			
-
-				//DAS PROBLEM IST DAS DIE FELDER OHNE ZEICHEN BLEIBEN BIS ERST NACH DEM LAUF!! ALSO DIE ZWEITE KONDITION KOMMT IMMER ALS WAHR!!!
-
-				//prüfen ob alle felder besucht sind
-				/*if(alleMatrixFelderBesucht(pruefMatrix)) {
-					break;
-					//Muss ich hier eine error geben falls nicht all die schlangenarten positionert sind?
-				}*/
 
 			}
-
-		/*
-			//der inhalt vom gefundenen felderliste mit schlange belegen
-			for(int j = 0; j < gliederAnzahl; j++) {
-				felderlist.get(j).setZeichen(schlangenart.getZeichenkette().charAt(j)) ;
-			}*/
-
-
 
 
 		//Belegung verbliebenden Felder mit zufällige zeichen
@@ -103,8 +94,14 @@ public class DschungelGenerator {
 				Feld feld = dschungel.getFeld(i, j);
 				//prüfe ob das feld leer ist
 				if ( feld.getZeichen() == ' ') {
+					char zeichen = ' ';
+					if (randMax == 0){
+						 zeichen = zulaessigeZeichen.charAt(0);
+					}else {
+						 zeichen = zulaessigeZeichen.charAt(randomGenerator.nextInt(randMax));
+					}
 					
-					char zeichen = zulaessigeZeichen.charAt(randomGenerator.nextInt(randMax));
+					
 					feld.setZeichen(zeichen);
 					feld.setVerwendbarkeit(1);
 					feld.setPunkte(1); //hier muss ich anpassen
@@ -115,15 +112,25 @@ public class DschungelGenerator {
 		return dschungel;
 	}
 
-	//zu optemieren
+	/**
+     * Überprüft, ob die Platzierung einer Schlange in einem bestimmten Feld zulässig ist, 
+     * und platziert sie, falls zulässig, mit Backtracking.
+     *
+     * @param dschungel Der Dschungel, in dem die Schlange platziert werden soll
+     * @param schlangenart Die Art der Schlange, die platziert werden soll
+     * @param schlangenZeichenIterator Der Iterator, der die aktuelle Position in der Schlange anzeigt
+     * @param thisFeld Das aktuelle Feld, in dem die Schlange platziert werden soll
+     * @param felderlist Eine Liste von Feldern, die bereits von der Schlange belegt sind
+     * @param verwendeteFelder Ein Set von Feldern, die bereits von der Schlange verwendet wurden
+     * @return true, wenn die Platzierung der Schlange in dem Feld zulässig ist, sonst false
+     */
 	private boolean istZulaessigBT(Dschungel dschungel,
 			Schlangenart schlangenart,
 			int schlangenZeichenIterator, 
 			Feld thisFeld,
 			ArrayList<Feld> felderlist,
 			HashSet<Feld> verwendeteFelder) {
-		//ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, thisFeld);
-		//nachbarn.remove(thisFeld);
+		
 
 		//die n0 position
 		if (schlangenZeichenIterator == -1) {

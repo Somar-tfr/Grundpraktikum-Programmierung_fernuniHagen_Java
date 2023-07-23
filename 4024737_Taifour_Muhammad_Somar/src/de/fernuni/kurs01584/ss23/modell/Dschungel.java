@@ -9,6 +9,9 @@ import java.util.stream.Stream;
 import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
 import de.fernuni.kurs01584.ss23.algorithmus.SchlangenSuche;
 
+/**
+ * Klasse, welche den Dschungel repräsentiert. Ein Dschungel besteht aus mehreren Feldern, die in einer Matrix angeordnet sind.
+ */
 public class Dschungel {
 	private int zeilen;
 	private int spalten;
@@ -16,6 +19,15 @@ public class Dschungel {
 	private ArrayList<ArrayList<Feld>> dschungelMatrix;
 	
 	//Konstruktoren
+	
+	/**
+	 * Konstruktor zur Erstellung eines neuen Dschungels.
+	 *
+	 * @param zeilen Anzahl der Zeilen im Dschungel.
+	 * @param spalten Anzahl der Spalten im Dschungel.
+	 * @param zeichenMenge Die Zeichen, die im Dschungel verwendet werden können.
+	 * @throws IllegalArgumentException wenn zeilen oder spalten kleiner oder gleich 0 sind, oder zeichenMenge leer ist.
+	 */
 	public Dschungel(int zeilen, int spalten,String zeichenMenge) {
 		if (zeilen <= 0 || spalten <= 0 || zeichenMenge.length() == 0) {
 			throw new IllegalArgumentException(
@@ -42,30 +54,60 @@ public class Dschungel {
 	
 	//getters
 
+	/**
+	 * Gibt die Anzahl der Zeilen im Dschungel zurück.
+	 *
+	 * @return Die Anzahl der Zeilen.
+	 */
 	public int getZeilen() {
 		return zeilen;
 	}
 
+	/**
+	 * Gibt die Anzahl der Spalten im Dschungel zurück.
+	 *
+	 * @return Die Anzahl der Spalten.
+	 */
 	public int getSpalten() {
 		return spalten;
 	}
 	
+	/**
+	 * Gibt die Zeichen zurück, die im Dschungel verwendet werden können.
+	 *
+	 * @return Die verwendbaren Zeichen.
+	 */
 	public String getZeichenMenge() {
 		return zeichenMenge;
 	}
 	
+	/**
+	 * Gibt das Feld an einer bestimmten Position im Dschungel zurück.
+	 *
+	 * @param zNummer Die Zeilennummer des Felds.
+	 * @param sNummer Die Spaltennummer des Felds.
+	 * @return Das Feld an der gegebenen Position.
+	 */
 	public Feld getFeld(int zNummer, int sNummer) {
 		return dschungelMatrix.get(zNummer).get(sNummer);
 	}
-	/*
-	public Feld getFeldById(String id) {
-		return dschungelMatrix.get
-	}*/
 	
+	/**
+	 * Gibt die Gesamtzahl der Felder im Dschungel zurück.
+	 *
+	 * @return Die Gesamtzahl der Felder.
+	 */
 	public int getFelderAnzahl() {
 		return (zeilen * spalten);
 	}
 	
+	/**
+	 * Prüft, ob ein Feld in einer bestimmten Position im Dschungel existiert.
+	 *
+	 * @param zeile Die Zeilennummer des Felds.
+	 * @param spalte Die Spaltennummer des Felds.
+	 * @return True, wenn das Feld existiert, sonst false.
+	 */
 	public boolean feldExistiert(int zeile, int spalte){
 		if (zeile >= 0 && zeile < zeilen ) {
 			if (spalte >= 0 && spalte < spalten) {
@@ -75,124 +117,25 @@ public class Dschungel {
 		return false;
 	}
 	
-	//andere weg??
+	/**
+	 * Gibt die Matrix des Dschungels zurück.
+	 *
+	 * @return Die Matrix des Dschungels.
+	 */
 	public ArrayList<ArrayList<Feld>> getMatrix() {
 		return dschungelMatrix;
 	}
-	
-	
-	//a test method
-	public void print(/*String zeichen*/) {
-		for(ArrayList<Feld> zeile : dschungelMatrix) {
-			for (Feld element : zeile) {
-				//System.out.print(element.getId());
-				System.out.print(element.getZeichen());
-				}
-			
-			System.out.println();
-		}
-	}
-	
-	//a test method
-	public void printid(/*String zeichen*/) {
-			for(ArrayList<Feld> zeile : dschungelMatrix) {
-				for (Feld element : zeile) {
-					//System.out.print(element.getId());
-					System.out.print(element.getId());
-					}
-				
-				System.out.println();
-			}
-		}
-		
-	//a test main
-		
-	public static void main(String[] args) {
-			
-			
-			Schlangenarten schlangenarten = new Schlangenarten();
-			Nachbarschaftsstruktur nachb = new Nachbarschaftsstruktur("Distanz",1);
-			Schlangenart schlangenart0 = new Schlangenart("FERNUNI", nachb );
-			schlangenart0.setAnzahl(1);
-			schlangenart0.setPunkte(1);
-			/*Schlangenart schlangenart1 = new Schlangenart("DIES", nachb );
-			schlangenart1.setAnzahl(1);
-			schlangenart1.setPunkte(1);
-			Schlangenart schlangenart2 = new Schlangenart("DIESE", nachb );
-			schlangenart2.setAnzahl(1);
-			schlangenart2.setPunkte(1);
-			Schlangenart schlangenart3 = new Schlangenart("DIESES", nachb );
-			schlangenart3.setAnzahl(1);
-			schlangenart3.setPunkte(1);
-			Schlangenart schlangenart4 = new Schlangenart("DIESEN", nachb );
-			schlangenart4.setAnzahl(1);
-			schlangenart4.setPunkte(1);
-			Schlangenart schlangenart5 = new Schlangenart("DIESER", nachb );
-			schlangenart5.setAnzahl(1);
-			schlangenart5.setPunkte(1);*/
-			
-			//DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAF
-			schlangenarten.add(schlangenart0);
-			/*schlangenarten.add(schlangenart1);
-			schlangenarten.add(schlangenart2);
-			schlangenarten.add(schlangenart3);
-			schlangenarten.add(schlangenart4);
-			schlangenarten.add(schlangenart5);*/
-			
-			
-			schlangenarten.print();
-			
-			DschungelGenerator  testgenerator = new DschungelGenerator(2,4,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",schlangenarten);
-			Dschungel test = testgenerator.erzeugeDschungel();
-			
-			test.print();
-			test.printid();
-			test.printverwendbarkeit();
-			//test.getFeld(2,1).setZeichen('A');
-			//System.out.println(test.getFeld(2,1).getZeichen());
-			System.out.println("---");
-			System.out.println("---");
-			//Nachbarschaftsstruktur nach = new Nachbarschaftsstruktur("Distanz", 1);
-			//Nachbarschaftsstruktur spr = new Nachbarschaftsstruktur("Sprung", 2, 3);
-			
-			//(nach.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-			System.out.println("---");
-			SchlangenSuche schlangensuche = new SchlangenSuche(test, schlangenarten, 10000);
-			schlangensuche.sucheSchlange();
-			ArrayList<Schlange> schlangen = schlangensuche.getLoesung();
-			
-			System.out.println(schlangen.size());
-			if (schlangen.size() != 0){
-				for (Schlange s : schlangen) {
-					s.print();
-				}
-				//System.out.println(schlangen.get(0).getGlied(0));
 
-			}
-			test.printverwendbarkeit();
-			System.out.println("abgabezeit ms: " + schlangensuche.getAbgabeZeit());
-			//(spr.getNachbarschaft(test, test.getFeld(2, 1))).forEach(i -> System.out.println(i.getId()));
-			
-			test.getFelderList().forEach(i->System.out.println(test.getFeldById(i.getId()).getId()));
-			
-		}
-
-	private void printverwendbarkeit() {
-		// TODO Auto-generated method stub
-		for(ArrayList<Feld> zeile : dschungelMatrix) {
-			for (Feld element : zeile) {
-				//System.out.print(element.getId());
-				System.out.print(element.getVerwendbarkeit());
-				}
-			
-			System.out.println();
-		}
-	}
-	
-	public Feld getFeldById(String s) {
+	/**
+	 * Gibt das Feld mit der gegebenen ID zurück.
+	 *
+	 * @param s Die ID des Felds.
+	 * @return Das Feld mit der gegebenen ID, oder null wenn es nicht existiert.
+	 */
+	public Feld getFeldById(String feldId) {
 		try {
 			Optional<Feld> kriteria = getFelderList().stream()
-				    .filter(feld -> feld.getId().equals(s))
+				    .filter(feld -> feld.getId().equals(feldId))
 				    .findFirst();
 			if (kriteria.isPresent()) {
 				return kriteria.get();
@@ -207,6 +150,11 @@ public class Dschungel {
 		return null;
 	}
 	
+	/**
+	 * Gibt eine Liste aller Felder im Dschungel zurück.
+	 *
+	 * @return Eine Liste aller Felder im Dschungel.
+	 */
 	private ArrayList<Feld> getFelderList(){
 		ArrayList<Feld> felderList = new ArrayList<Feld>();
 		getMatrix().forEach(i -> i.forEach(j -> felderList.add(j)));
