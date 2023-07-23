@@ -54,12 +54,14 @@ public class Vorgabe {
 	}	
 	
 	
-	/*public static void main(String[] args) throws JDOMException, IOException  {
-		Vorgabe vorgabe = new Vorgabe("res/sj_p1_loesung.xml");
-		vorgabe.readPruefe();
-		
-	}*/
-	
+	/**
+	 * Liest Daten aus einer XML-Datei ein und verarbeitet sie, um den Dschungel und
+	 * Informationen über Schlangen für eine Schlangen-Suchsimulation einzurichten.
+	 * Anschließend führt sie die Schlangensuche durch und berechnet die dafür benötigte Zeit.
+	 *
+	 * @throws JDOMException Falls ein Fehler beim Parsen der XML-Datei auftritt.
+	 * @throws IOException Falls ein Ein-/Ausgabefehler beim Lesen der XML-Datei auftritt.
+	 */
 	public void readLoese() throws JDOMException, IOException {
 		try {
 			
@@ -252,16 +254,6 @@ public class Vorgabe {
 	        setLoesung(loesung);
 	        
 	        
-	        /*return dschungel;*/
-	        /*Element element = rootElement.getChild("Dschungel");
-	        String value = element.getText();
-	        
-	        System.out.println("Element value: " + value);
-
-	        
-			System.out.println(document.getRootElement());
-			//System.out.println(document.get);
-			System.out.println(document.getRootElement().getAttributeValue("Zeit"));*/
 			
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -271,12 +263,17 @@ public class Vorgabe {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*return null;*/
 		
 		
 		
 	}
-	
+	/**
+	 * Liest Daten aus einer XML-Datei ein und erzeugt den Dschungel und Schlangeninformationen
+	 * für eine Schlangen-Suchsimulation.
+	 *
+	 * @throws JDOMException Falls ein Fehler beim Parsen der XML-Datei auftritt.
+	 * @throws IOException Falls ein Ein-/Ausgabefehler beim Lesen der XML-Datei auftritt.
+	 */
 	public void readErzeuge() throws JDOMException, IOException {
 		try {
 			
@@ -398,7 +395,6 @@ public class Vorgabe {
 	        
 	        });
 	        setSchlangenarten(schlangenarten);
-	        //muss schauen dass für schlangen mit anzahl mehr als 1 entsprechend weitere loop in generator durchzuführen
 	        if (dschungelElement.getChildren().size() == 0){
 	        	DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
 	        	dschungelGenerator.erzeugeDschungel();
@@ -461,24 +457,7 @@ public class Vorgabe {
 	        	setDschungel(dschungel);
 	        	 
 	        }
-	        /*
-	        SchlangenSuche loesung = new SchlangenSuche(getDschungel(),getSchlangenarten(), vorgabe );
-	        loesung.sucheSchlange();
-	        double zeitAbg = loesung.getAbgabeZeit();
-	        setZeitAbgabe(zeitAbg);
-	        setLoesung(loesung);
-	        */
-	        
-	        /*return dschungel;*/
-	        /*Element element = rootElement.getChild("Dschungel");
-	        String value = element.getText();
-	        
-	        System.out.println("Element value: " + value);
-
-	        
-			System.out.println(document.getRootElement());
-			//System.out.println(document.get);
-			System.out.println(document.getRootElement().getAttributeValue("Zeit"));*/
+	       
 			
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -488,24 +467,27 @@ public class Vorgabe {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*return null;*/
 		
 		
 	}
 	
+	/**
+	 * Schreibt die Ergebnisse der Schlangen-Suchsimulation in eine XML-Datei.
+	 *
+	 * @throws FileNotFoundException Falls die Ausgabedatei nicht gefunden werden kann.
+	 * @throws IOException Falls ein Ein-/Ausgabefehler beim Schreiben der XML-Datei auftritt.
+	 */
 	public void writeLoese() throws FileNotFoundException, IOException {
 		String name = getAusgabeDatei();
 		
         String currentDir = System.getProperty("user.dir");
 
         String dateiPfad = currentDir  + "/" + name ;
-		//String dateiname = name + ".xml";
 		
 		
 		Document document = new Document();
 		Element root = new Element("Schlangenjagd");
-		//root.setAttribute("file", dateiname);
-		//root.addContent(new Element("style"));//hier addieren
+		
 		document.setRootElement(root);
 		
 		//Zeit Element
@@ -641,20 +623,23 @@ public class Vorgabe {
 		
 	}
 	
-	
+	/**
+	 * Schreibt die erzeugten Dschungel- und Schlangeninformationen in eine XML-Datei.
+	 *
+	 * @throws FileNotFoundException Falls die Ausgabedatei nicht gefunden werden kann.
+	 * @throws IOException Falls ein Ein-/Ausgabefehler beim Schreiben der XML-Datei auftritt.
+	 */
 	public void writeErzeuge() throws FileNotFoundException, IOException {
 		String name = getAusgabeDatei();
 		
         String currentDir = System.getProperty("user.dir");
 
         String dateiPfad = currentDir  + "/" + name ;
-		//String dateiname = name + ".xml";
 		
 		
 		Document document = new Document();
 		Element root = new Element("Schlangenjagd");
-		//root.setAttribute("file", dateiname);
-		//root.addContent(new Element("style"));//hier addieren
+		
 		document.setRootElement(root);
 		
 		//Zeit Element
@@ -665,16 +650,7 @@ public class Vorgabe {
         String zeitVorgabeStr = String.valueOf(getZeitVorgabe());
         vorgabe.setText(zeitVorgabeStr);
         zeit.addContent(vorgabe);
-        /*
-        Element abgabe = new Element("Abgabe");
         
-        String zeitAbgabeStr = String.valueOf(getZeitAbgabe());
-        abgabe.setText(zeitAbgabeStr);
-        zeit.addContent(abgabe);
-       
-        root.addContent(zeit);
-        */
-        //dschungel element
         
         Element dschungel = new Element("Dschungel");
         String zeilenStr = String.valueOf(getDschungel().getZeilen());
@@ -742,36 +718,7 @@ public class Vorgabe {
         }
         
         root.addContent(schlangenartenE);
-        /*
-      //loesung
-        Element schlangenE = new Element ("Schlangen");
-        
-        SchlangenSuche schlagnensuche = getLoesung();
-        ArrayList<Schlange> schlangen = schlagnensuche.getLoesung();
-        if (schlangen.size() > 0) {
-        	setErfolgTrue();
-        }
-        for (int i = 0; i < schlagnensuche.getAnzahl(); i++) {
-        	Schlange schlange = schlangen.get(i);
-        	Element schlangeE = new Element("Schlange");
-        	schlangeE.setAttribute("art", schlange.getArt());
-        	Schlangenglied glied = schlange.getKopf();
-        	if (glied.getFeld() != null) {
-    			Element gliedE = new Element("Schlangenglied");
-    			gliedE.setAttribute("feld", (glied.getFeld().getId()));
-    			schlangeE.addContent(gliedE);
-    		}
-        	while ((glied.getNext() != null)) {
-    			glied = glied.getNext();
-    			Element gliedE = new Element("Schlangenglied");
-    			gliedE.setAttribute("feld", (glied.getFeld().getId()));
-    			schlangeE.addContent(gliedE);
-    			
-    		};
-    		schlangenE.addContent(schlangeE);
-        	
-        }
-        root.addContent(schlangenE);*/
+       
 		//doctype
 		DocType dt = new DocType("Schlangenjagd", "schlangenjagd.dtd");
         document.setDocType(dt);
@@ -789,6 +736,12 @@ public class Vorgabe {
 		
 	}
 	
+	/**
+	 * Liest die Informationen aus der Eingabe-XML-Datei und überprüft sie auf Gültigkeit.
+	 *
+	 * @throws JDOMException Falls ein Fehler beim Parsen der XML-Datei auftritt.
+	 * @throws IOException Falls ein Ein-/Ausgabefehler beim Lesen der XML-Datei auftritt.
+	 */
 	public void readPruefe() throws JDOMException, IOException {
 		
 		
@@ -1028,7 +981,6 @@ public class Vorgabe {
 		}catch (IOException e) {
 			e.printStackTrace();
 		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -1036,78 +988,162 @@ public class Vorgabe {
 	
 
 	
-	
+	/**
+	 * Setzt den übergebenen Dschungel als den Haupt-Dschungel für das Schlangenjagd-Spiel.
+	 *
+	 * @param dschungel Der Dschungel, der als Haupt-Dschungel gesetzt werden soll.
+	 */
 	private void setDschungel(Dschungel dschungel) {
 		this.hauptDschungel = dschungel;
 	}
 	
+	/**
+	 * Setzt die übergebene Schlangenarten als die Haupt-Schlangenarten für das Schlangenjagd-Spiel.
+	 *
+	 * @param schlangenarten Die Schlangenarten, die als Haupt-Schlangenarten gesetzt werden sollen.
+	 */
 	private void setSchlangenarten(Schlangenarten schlangenarten) {
 		this.hauptSchlangenarten = schlangenarten;
 	}
 	
+	/**
+	 * Setzt die übergebene Zeitvorgabe für das Schlangenjagd-Spiel.
+	 *
+	 * @param zeitVorgabe Die Zeitvorgabe in Sekunden.
+	 */
 	private void setZeitVorgabe(double zeitVorgabe) {
 		this.zeitVorgabe = zeitVorgabe;
 	}
 	
+	/**
+	 * Setzt die übergebene Zeitabgabe für das Schlangenjagd-Spiel.
+	 *
+	 * @param zeitAbg Die Zeitabgabe in Sekunden.
+	 */
 	private void setZeitAbgabe(double zeitAbg) {
 		this.zeitAbgabe = zeitAbg;
 	}
 	
+	/**
+	 * Setzt die übergebene Schlangensuche als die Lösung für das Schlangenjagd-Spiel.
+	 *
+	 * @param loesung Die Schlangensuche, die als Lösung gesetzt werden soll.
+	 */
 	private void setLoesung(SchlangenSuche loesung) {
 		this.loesung = loesung;
 	}
 	
+	/**
+	 * Gibt den Haupt-Dschungel für das Schlangenjagd-Spiel zurück.
+	 *
+	 * @return Der Haupt-Dschungel.
+	 */
 	public Dschungel getDschungel() {
 		return this.hauptDschungel;
 	}
 	
+	/**
+	 * Gibt die Haupt-Schlangenarten für das Schlangenjagd-Spiel zurück.
+	 *
+	 * @return Die Haupt-Schlangenarten.
+	 */
 	public Schlangenarten getSchlangenarten() {
 		return this.hauptSchlangenarten;
 	}
 	
+	/**
+	 * Gibt die Lösung für das Schlangenjagd-Spiel zurück, die durch die Schlangensuche ermittelt wurde.
+	 *
+	 * @return Die Lösung des Schlangenjagd-Spiels.
+	 */
 	private SchlangenSuche getLoesung() {
 		return this.loesung;
 	}
 	
 	
-	
+	/**
+	 * Gibt die Zeitvorgabe für das Schlangenjagd-Spiel zurück.
+	 *
+	 * @return Die Zeitvorgabe in Sekunden.
+	 */
 	private double getZeitVorgabe() {
 		return this.zeitVorgabe;
 	}
 	
+	/**
+	 * Gibt die Zeitabgabe für das Schlangenjagd-Spiel zurück.
+	 *
+	 * @return Die Zeitabgabe in Sekunden.
+	 */
 	private double getZeitAbgabe() {
 		return this.zeitAbgabe;
 	}
 	
+	/**
+	 * Gibt den Dateinamen der Eingabe-XML-Datei zurück.
+	 *
+	 * @return Der Dateiname der Eingabe-XML-Datei.
+	 */
 	private String getEingabeDatei() {
 		return this.eingabeDatei;
 	}
 	
+	/**
+	 * Gibt den Dateinamen der Ausgabe-XML-Datei zurück.
+	 *
+	 * @return Der Dateiname der Ausgabe-XML-Datei.
+	 */
 	private String getAusgabeDatei() {
 		return this.ausgabeDatei;
 	}
 	
+	/**
+	 * Gibt den Status zurück, ob das Schlangenjagd-Spiel erfolgreich gelöst wurde.
+	 *
+	 * @return true, wenn das Spiel erfolgreich gelöst wurde, ansonsten false.
+	 */
 	public boolean getErfolgLoese() {
 		return this.erfolgLoese;
 	}
 	
+	/**
+	 * Setzt den Status, dass das Schlangenjagd-Spiel erfolgreich gelöst wurde.
+	 */
 	private void setErfolgLoeseTrue() {
 		this.erfolgLoese = true;
 	}
 	
+	/**
+	 * Gibt den Status zurück, ob das Schlangenjagd-Spiel erfolgreich erzeugt wurde.
+	 *
+	 * @return true, wenn das Spiel erfolgreich erzeugt wurde, ansonsten false.
+	 */
 	public boolean getErfolgErzeuge() {
 		return this.erfolgErzeuge;
 	}
 	
+	/**
+	 * Setzt den Status, dass das Schlangenjagd-Spiel erfolgreich erzeugt wurde.
+	 */
 	private void setErfolgErzeugeTrue() {
 		this.erfolgErzeuge = true;
 	}
 	
+	/**
+	 * Setzt die XML-Schlangenlösung, die aus einer XML-Datei gelesen wurde.
+	 *
+	 * @param xmlSchlangenLoesung Die XML-Schlangenlösung, die gesetzt werden soll.
+	 */
 	private void setXMLSchlangenLoesung(ArrayList<Schlange> xmlSchlangenLoesung){
 		this.xmlSchlangenloesung = xmlSchlangenLoesung;
 		
 	}
 	
+	/**
+	 * Gibt die XML-Schlangenlösung zurück, die aus einer XML-Datei gelesen wurde.
+	 *
+	 * @return Die XML-Schlangenlösung.
+	 */
 	public ArrayList<Schlange> getXMLSchlangenLoesung(){
 		return this.xmlSchlangenloesung;
 		

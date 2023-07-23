@@ -186,14 +186,14 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 					nachbarn = nachStrukt.getNachbarschaft(dschungel, glied.getFeld());
 				}else if (nachStrukt.getTyp() == "Sprung")*/
 				nachbarn = nachStrukt.getNachbarschaft(dschungel, glied.getFeld());
-				System.out.println("[" + glied.getFeld().getZeile() + " , " +glied.getFeld().getSpalte() + "]" );
-				nachbarn.forEach(i -> System.out.print("(" + i.getZeile() + " , " + i.getSpalte() + ")"));
-				System.out.println();
+				//System.out.println("[" + glied.getFeld().getZeile() + " , " +glied.getFeld().getSpalte() + "]" );
+				//nachbarn.forEach(i -> System.out.print("(" + i.getZeile() + " , " + i.getSpalte() + ")"));
+				//System.out.println();
 				glied =  glied.getNext();
 				gliederListe.add(glied);
 				if(!nachbarn.contains(glied.getFeld())) {
-					System.out.println("Struktur : " + nachStrukt.getTyp() + nachStrukt.getWert1() + nachStrukt.getWert2());
-					System.out.println("up"+ nachbarn.contains(glied.getFeld()));
+					//System.out.println("Struktur : " + nachStrukt.getTyp() + nachStrukt.getWert1() + nachStrukt.getWert2());
+					//System.out.println("up"+ nachbarn.contains(glied.getFeld()));
 					fehler.add(Fehlertyp.NACHBARSCHAFT);
 				}
 				
