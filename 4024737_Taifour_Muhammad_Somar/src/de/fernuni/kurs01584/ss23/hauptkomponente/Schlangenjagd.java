@@ -49,7 +49,9 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			
 		}
 		if(ablauf.contains("e") && !ablauf.contains("l")) {
+			System.out.println("started1");
 			schlangenJagd.erzeugeProbleminstanz(eingabe,ausgabe);
+			System.out.println("finished1");
 			
 		}
 		if(ablauf.contains("e") && ablauf.contains("l")) {
@@ -60,15 +62,20 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		
 		if(ablauf.contains("d")) {
-			schlangenJagd.darstellen(ausgabe);
+			if(!ablauf.contains("l") && !ablauf.contains("e")) {
+				schlangenJagd.darstellen(eingabe);
+			}else{
+				schlangenJagd.darstellen(ausgabe);
+			}
+			
 		}
 		
 		if(ablauf.contains("p")) {
 			List<Fehlertyp> fehler = new ArrayList<>();
-			if(args.length == 2) {
+			if(!ablauf.contains("l") && !ablauf.contains("e")) {
 				fehler = schlangenJagd.pruefeLoesung(eingabe);
 				
-			}else if(args.length == 3) {
+			}else{
 				fehler = schlangenJagd.pruefeLoesung(ausgabe);
 			}
 			if(fehler != null) {
@@ -84,10 +91,10 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		if(ablauf.contains("b")) {
 			int punkte = 0;
-			if(args.length == 2) {
+			if(!ablauf.contains("l") && !ablauf.contains("e")) {
 				 punkte = schlangenJagd.bewerteLoesung(eingabe);
 				
-			}else if(args.length == 3) {
+			}else  {
 				punkte = schlangenJagd.bewerteLoesung(ausgabe);
 			}
 			System.out.println("Bewrtung zur loesung : Anzahl der erreichte Punkte : " + punkte);
@@ -134,13 +141,17 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		// TODO Implementierung der API-Methode zur Erzeugung von Probleminstanzen.
 		Vorgabe vorgabeDatei = new Vorgabe(xmlEingabeDatei, xmlAusgabeDatei);
 		try {
+			System.out.println("started readerzeuge");
 			vorgabeDatei.readErzeuge();
+			System.out.println("finished readerzeuge");
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
+			System.out.println("started writeErzeuge");
 			vorgabeDatei.writeErzeuge();
+			System.out.println("finished writeErzeuge");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,6 +180,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		Schlangenarten schlangenarten = vorgabeDatei.getSchlangenarten();
 		//Schlangenart schlangenart = schlangenarten.getSchlangeByArt("A0");
 		//13:34
+		ArrayList<String> verwendbarkeit = new ArrayList<String>() ;
 		for(Schlange schlange: vorgabeDatei.getXMLSchlangenLoesung()) {
 			String art = schlange.getArt();
 			
@@ -204,18 +216,28 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			}
 				
 				
-			
-			for (int i = 0; i < schlangenart.getSize(); i++) {
-				if (schlangenart.getZeichenkette().charAt(i) != gliederListe.get(i).getFeld().getZeichen()) {
-					fehler.add(Fehlertyp.ZUORDNUNG);
+			//hier soll ich die schlangen mit gliederfehler ausschließen können
+			if (schlangenart.getSize() == gliederListe.size()){
+				for (int i = 0; i < schlangenart.getSize(); i++) {
+					if (schlangenart.getZeichenkette().charAt(i) != gliederListe.get(i).getFeld().getZeichen()) {
+						fehler.add(Fehlertyp.ZUORDNUNG);
+					}
+					
 				}
-				
 			}
 			
-			ArrayList<String> verwendbarkeit = new ArrayList<String>() ;
+			
+			//gliederListe.remove(0);
+			
 			for(Schlangenglied g : gliederListe) {
-				if(Collections.frequency(verwendbarkeit, g.getFeld().getId()) > g.getFeld().getVerwendbarkeit()) {
+				if(g == schlange.getKopf()) {
+					continue;
+				}//8:53
+				System.out.println("vorhanden: " + Collections.frequency(verwendbarkeit, g.getFeld().getId()));
+				System.out.println("vaerwendbarkeit: " +  g.getFeld().getVerwendbarkeit());
+				if(Collections.frequency(verwendbarkeit, g.getFeld().getId()) >= g.getFeld().getVerwendbarkeit()) {
 					fehler.add(Fehlertyp.VERWENDUNG);
+					
 				}
 				verwendbarkeit.add(g.getFeld().getId());
 			}

@@ -19,8 +19,9 @@ public class Vorgabe {
 	private Dschungel hauptDschungel;
 	private Schlangenarten hauptSchlangenarten;
 	
-	private double zeitVorgabe;
-	private double zeitAbgabe;
+	private double zeitVorgabe;//immer in ms
+	private double zeitAbgabe;//immer in ms
+	private String zeitVorgabeEinheit;
 	
 	private boolean erfolgLoese;
 	private boolean erfolgErzeuge;
@@ -53,6 +54,49 @@ public class Vorgabe {
 		this.erfolgErzeuge = false;
 	}	
 	
+	private double leseZeitKonvertieren(double eingabe , String string ) {
+		double ausgabe = 0;
+		
+		if (string.equals("s")){
+			ausgabe = eingabe * 1000;
+		}
+		if (string.equals("min")){
+			ausgabe = eingabe * 1000 * 60;
+		}
+		if (string.equals("h")){
+			ausgabe = eingabe * 1000 * 60 * 60;
+		}
+		if (string.equals("d")){
+			ausgabe = eingabe * 1000 * 60 * 60 *24;
+		}
+		
+		if (string.equals("ms")){
+			ausgabe = eingabe;
+		}
+		return ausgabe;
+	}
+	
+	private double schreibZeitKonvertieren(double eingabe, String einheit) {
+		double ausgabe = 0;
+		
+		if (einheit.equals("s")){
+			ausgabe = eingabe / 1000;
+		}
+		if (einheit.equals("min")){
+			ausgabe = eingabe / ( 1000 * 60 );
+		}
+		if (einheit.equals("h")){
+			ausgabe = eingabe / ( 1000 * 60 * 60 );
+		}
+		if (einheit.equals("d")){
+			ausgabe = eingabe / ( 1000 * 60 * 60 *24 );
+		}
+		
+		if (einheit.equals("ms")){
+			ausgabe = eingabe;
+		}
+		return ausgabe;
+	}
 	
 	/**
 	 * Liest Daten aus einer XML-Datei ein und verarbeitet sie, um den Dschungel und
@@ -81,11 +125,11 @@ public class Vorgabe {
 			Element vorgabeElement = zeitElement.getChild("Vorgabe");
 			double vorgabe = Double.parseDouble(vorgabeElement.getValue());
 			
-			setZeitVorgabe(vorgabe);
+			setEinheit(einheit.getValue());
+			vorgabe = leseZeitKonvertieren(vorgabe, getEinheit());
 			
-			if (einheit.equals("s")){
-				vorgabe = vorgabe * 1000;
-			}
+			
+			setZeitVorgabe(vorgabe);
 			
 			//dschungel
 	        Element dschungelElement = rootElement.getChild("Dschungel");
@@ -247,9 +291,13 @@ public class Vorgabe {
 	        	 
 	        }
 	        
-	        SchlangenSuche loesung = new SchlangenSuche(getDschungel(),getSchlangenarten(), vorgabe );
+	        
+	        SchlangenSuche loesung = new SchlangenSuche(getDschungel(),getSchlangenarten(), getZeitVorgabe() );
 	        loesung.sucheSchlange();
 	        double zeitAbg = loesung.getAbgabeZeit();
+	        /*zeitAbg = leseZeitKonvertieren(zeitAbg, getEinheit());
+	        String zeitEinheit = einheit.getValue();*/
+	        //setEinheit(zeitEinheit);
 	        setZeitAbgabe(zeitAbg);
 	        setLoesung(loesung);
 	        
@@ -292,12 +340,12 @@ public class Vorgabe {
 			Attribute einheit = zeitElement.getAttribute("einheit");
 			Element vorgabeElement = zeitElement.getChild("Vorgabe");
 			double vorgabe = Double.parseDouble(vorgabeElement.getValue());
+			setEinheit(einheit.getValue());
+			vorgabe = leseZeitKonvertieren(vorgabe, getEinheit());
+			
+			System.out.println("inside readerzeuge");
 			
 			setZeitVorgabe(vorgabe);
-			
-			if (einheit.equals("s")){
-				vorgabe = vorgabe * 1000;
-			}
 			
 			//dschungel
 	        Element dschungelElement = rootElement.getChild("Dschungel");
@@ -309,7 +357,6 @@ public class Vorgabe {
 	        
 	        Attribute dschungelZeichen = dschungelElement.getAttribute("zeichen");
 	        String dschungelZeichenStr = dschungelZeichen.getValue();
-	        
 	        
 	        //schlangenarten
 	        Element schlangenartenElement = rootElement.getChild("Schlangenarten");
@@ -380,7 +427,7 @@ public class Vorgabe {
 	        		nchbrsstr = new Nachbarschaftsstruktur(typString, par1, par2);
 	        	}
 	        	
-	        	
+	        	System.out.println("inside readerzeuge3");
 	        	
 	        	
 	        	
@@ -392,16 +439,20 @@ public class Vorgabe {
 	        	
 	        	 
 	        	schlangenarten.add(schlangenart);
-	        
+	        	System.out.println("inside readerzeuge6");
 	        });
+	        System.out.println("inside readerzeuge7");
 	        setSchlangenarten(schlangenarten);
+	        System.out.println("inside readerzeuge10");
 	        if (dschungelElement.getChildren().size() == 0){
+	        	System.out.println("inside readerzeuge11");
 	        	DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
-	        	dschungelGenerator.erzeugeDschungel();
+	        	System.out.println("inside readerzeuge12");
 		        Dschungel dschungel = dschungelGenerator.erzeugeDschungel();
-		        
+		        System.out.println("inside readerzeuge5");
 		        setDschungel(dschungel);
 	        } else {
+	        	System.out.println("inside readerzeuge8");
 	        	Dschungel dschungel = new Dschungel(dschungelZeilenInt, dschungelSpaltenInt, dschungelZeichenStr);
 	        	List<Element> dschungelkinder = dschungelElement.getChildren();
 	        	dschungelkinder.forEach ( i -> {
@@ -455,7 +506,7 @@ public class Vorgabe {
 	        		
 	        	});
 	        	setDschungel(dschungel);
-	        	 
+	        	System.out.println("inside readerzeuge4");
 	        }
 	       
 			
@@ -492,16 +543,22 @@ public class Vorgabe {
 		
 		//Zeit Element
 		Element zeit = new Element("Zeit");
-        zeit.setAttribute("einheit", "s");
+		String eingabeEinheit = getEinheit();
+        zeit.setAttribute("einheit", getEinheit());
 
         Element vorgabe = new Element("Vorgabe");
-        String zeitVorgabeStr = String.valueOf(getZeitVorgabe());
+        
+        double vorgabeZeitEinheitlich = schreibZeitKonvertieren(getZeitVorgabe(), getEinheit());
+        String zeitVorgabeStr = String.valueOf(vorgabeZeitEinheitlich);
         vorgabe.setText(zeitVorgabeStr);
         zeit.addContent(vorgabe);
         
         Element abgabe = new Element("Abgabe");
         
-        String zeitAbgabeStr = String.valueOf(getZeitAbgabe());
+        double abgabeZeitEinheitlich = schreibZeitKonvertieren(getZeitAbgabe(), getEinheit());
+        
+        
+        String zeitAbgabeStr = String.valueOf(abgabeZeitEinheitlich);
         abgabe.setText(zeitAbgabeStr);
         zeit.addContent(abgabe);
        
@@ -644,13 +701,14 @@ public class Vorgabe {
 		
 		//Zeit Element
 		Element zeit = new Element("Zeit");
-        zeit.setAttribute("einheit", "s");
+        zeit.setAttribute("einheit", String.valueOf(getEinheit()));
 
         Element vorgabe = new Element("Vorgabe");
-        String zeitVorgabeStr = String.valueOf(getZeitVorgabe());
+        double vorgabeZeitEinheitlich = schreibZeitKonvertieren(getZeitVorgabe(), getEinheit());
+        String zeitVorgabeStr = String.valueOf(vorgabeZeitEinheitlich);
         vorgabe.setText(zeitVorgabeStr);
         zeit.addContent(vorgabe);
-        
+        root.addContent(zeit);
         
         Element dschungel = new Element("Dschungel");
         String zeilenStr = String.valueOf(getDschungel().getZeilen());
@@ -763,14 +821,16 @@ public class Vorgabe {
 			Element vorgabeElement = zeitElement.getChild("Vorgabe");
 			double vorgabe = Double.parseDouble(vorgabeElement.getValue());
 			
-			setZeitVorgabe(vorgabe);
+			setEinheit(einheit.getValue());
 			
-			if (einheit.equals("s")){
-				vorgabe = vorgabe * 1000;
-			}
+			vorgabe = leseZeitKonvertieren(vorgabe, getEinheit());
+			setZeitVorgabe(vorgabe);
+			System.out.println(vorgabe);
+			System.out.println(zeitElement.getChildren());
 			
 			Element abgabeElement = zeitElement.getChild("Abgabe");
-			double abgabe = Double.parseDouble(vorgabeElement.getValue());
+			double abgabe = Double.parseDouble(abgabeElement.getValue());
+			abgabe = leseZeitKonvertieren(abgabe, getEinheit());
 			
 			setZeitAbgabe(abgabe);
 			
@@ -1025,6 +1085,15 @@ public class Vorgabe {
 	}
 	
 	/**
+	 * Setzt die übergebene Zeitabgabe Einheit für das Schlangenjagd-Spiel.
+	 *
+	 * @param einheit Die Zeitabgabe Einheit.
+	 */
+	private void setEinheit(String einheit) {
+		this.zeitVorgabeEinheit = einheit;
+	}
+	
+	/**
 	 * Setzt die übergebene Schlangensuche als die Lösung für das Schlangenjagd-Spiel.
 	 *
 	 * @param loesung Die Schlangensuche, die als Lösung gesetzt werden soll.
@@ -1078,6 +1147,12 @@ public class Vorgabe {
 	private double getZeitAbgabe() {
 		return this.zeitAbgabe;
 	}
+	
+	private String getEinheit() {
+		return this.zeitVorgabeEinheit;
+	}
+	
+	
 	
 	/**
 	 * Gibt den Dateinamen der Eingabe-XML-Datei zurück.
@@ -1148,6 +1223,7 @@ public class Vorgabe {
 		return this.xmlSchlangenloesung;
 		
 	}
+	
 
 	
 	
