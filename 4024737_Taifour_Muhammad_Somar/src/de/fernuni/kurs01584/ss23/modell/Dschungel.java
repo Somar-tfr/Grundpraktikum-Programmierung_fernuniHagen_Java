@@ -160,6 +160,7 @@ public class Dschungel {
 		getMatrix().forEach(i -> i.forEach(j -> felderList.add(j)));
 		return felderList;
 	}
+	
 
 	
 }

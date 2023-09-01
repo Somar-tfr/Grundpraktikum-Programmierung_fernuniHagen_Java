@@ -49,9 +49,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			
 		}
 		if(ablauf.contains("e") && !ablauf.contains("l")) {
-			System.out.println("started1");
 			schlangenJagd.erzeugeProbleminstanz(eingabe,ausgabe);
-			System.out.println("finished1");
 			
 		}
 		if(ablauf.contains("e") && ablauf.contains("l")) {
@@ -64,8 +62,13 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		if(ablauf.contains("d")) {
 			if(!ablauf.contains("l") && !ablauf.contains("e")) {
 				schlangenJagd.darstellen(eingabe);
-			}else{
+			}else if (!ablauf.contains("e")){
 				schlangenJagd.darstellen(ausgabe);
+			}else {
+				
+				throw new IllegalArgumentException(
+						"Bei nur Erzeugen kann man keine Loesung darstellen!!");
+			
 			}
 			
 		}
@@ -141,17 +144,13 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		// TODO Implementierung der API-Methode zur Erzeugung von Probleminstanzen.
 		Vorgabe vorgabeDatei = new Vorgabe(xmlEingabeDatei, xmlAusgabeDatei);
 		try {
-			System.out.println("started readerzeuge");
 			vorgabeDatei.readErzeuge();
-			System.out.println("finished readerzeuge");
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			System.out.println("started writeErzeuge");
 			vorgabeDatei.writeErzeuge();
-			System.out.println("finished writeErzeuge");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,10 +233,10 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 					continue;
 				}//8:53
 				System.out.println("vorhanden: " + Collections.frequency(verwendbarkeit, g.getFeld().getId()));
-				System.out.println("vaerwendbarkeit: " +  g.getFeld().getVerwendbarkeit());
+				System.out.println("vaerwendbarkeit: " +  g.getFeld().getVerwendbarkeit() );
 				if(Collections.frequency(verwendbarkeit, g.getFeld().getId()) >= g.getFeld().getVerwendbarkeit()) {
 					fehler.add(Fehlertyp.VERWENDUNG);
-					
+					System.out.println("feld id : " +   g.getFeld().getId());
 				}
 				verwendbarkeit.add(g.getFeld().getId());
 			}

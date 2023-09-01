@@ -54,49 +54,7 @@ public class Vorgabe {
 		this.erfolgErzeuge = false;
 	}	
 	
-	private double leseZeitKonvertieren(double eingabe , String string ) {
-		double ausgabe = 0;
-		
-		if (string.equals("s")){
-			ausgabe = eingabe * 1000;
-		}
-		if (string.equals("min")){
-			ausgabe = eingabe * 1000 * 60;
-		}
-		if (string.equals("h")){
-			ausgabe = eingabe * 1000 * 60 * 60;
-		}
-		if (string.equals("d")){
-			ausgabe = eingabe * 1000 * 60 * 60 *24;
-		}
-		
-		if (string.equals("ms")){
-			ausgabe = eingabe;
-		}
-		return ausgabe;
-	}
 	
-	private double schreibZeitKonvertieren(double eingabe, String einheit) {
-		double ausgabe = 0;
-		
-		if (einheit.equals("s")){
-			ausgabe = eingabe / 1000;
-		}
-		if (einheit.equals("min")){
-			ausgabe = eingabe / ( 1000 * 60 );
-		}
-		if (einheit.equals("h")){
-			ausgabe = eingabe / ( 1000 * 60 * 60 );
-		}
-		if (einheit.equals("d")){
-			ausgabe = eingabe / ( 1000 * 60 * 60 *24 );
-		}
-		
-		if (einheit.equals("ms")){
-			ausgabe = eingabe;
-		}
-		return ausgabe;
-	}
 	
 	/**
 	 * Liest Daten aus einer XML-Datei ein und verarbeitet sie, um den Dschungel und
@@ -343,7 +301,6 @@ public class Vorgabe {
 			setEinheit(einheit.getValue());
 			vorgabe = leseZeitKonvertieren(vorgabe, getEinheit());
 			
-			System.out.println("inside readerzeuge");
 			
 			setZeitVorgabe(vorgabe);
 			
@@ -427,7 +384,6 @@ public class Vorgabe {
 	        		nchbrsstr = new Nachbarschaftsstruktur(typString, par1, par2);
 	        	}
 	        	
-	        	System.out.println("inside readerzeuge3");
 	        	
 	        	
 	        	
@@ -439,20 +395,13 @@ public class Vorgabe {
 	        	
 	        	 
 	        	schlangenarten.add(schlangenart);
-	        	System.out.println("inside readerzeuge6");
 	        });
-	        System.out.println("inside readerzeuge7");
 	        setSchlangenarten(schlangenarten);
-	        System.out.println("inside readerzeuge10");
 	        if (dschungelElement.getChildren().size() == 0){
-	        	System.out.println("inside readerzeuge11");
 	        	DschungelGenerator dschungelGenerator = new DschungelGenerator(dschungelZeilenInt, dschungelSpaltenInt,dschungelZeichenStr, schlangenarten );
-	        	System.out.println("inside readerzeuge12");
 		        Dschungel dschungel = dschungelGenerator.erzeugeDschungel();
-		        System.out.println("inside readerzeuge5");
 		        setDschungel(dschungel);
 	        } else {
-	        	System.out.println("inside readerzeuge8");
 	        	Dschungel dschungel = new Dschungel(dschungelZeilenInt, dschungelSpaltenInt, dschungelZeichenStr);
 	        	List<Element> dschungelkinder = dschungelElement.getChildren();
 	        	dschungelkinder.forEach ( i -> {
@@ -506,7 +455,6 @@ public class Vorgabe {
 	        		
 	        	});
 	        	setDschungel(dschungel);
-	        	System.out.println("inside readerzeuge4");
 	        }
 	       
 			
@@ -533,7 +481,7 @@ public class Vorgabe {
 		
         String currentDir = System.getProperty("user.dir");
 
-        String dateiPfad = currentDir  + "/" + name ;
+        String dateiPfad = /*currentDir  + "/" +*/ name ;
 		
 		
 		Document document = new Document();
@@ -671,8 +619,11 @@ public class Vorgabe {
         try {
         	XMLOutputter outputter = new XMLOutputter();
     		outputter.setFormat(Format.getPrettyFormat());
+    		// Create parent directories if they don't exist//HIER WIRD ANGEPASST PROBLEM 27.08.2023
+    		File file = new File(getAusgabeDatei());
+            file.getParentFile().mkdirs();
             
-    		outputter.output(document, new FileOutputStream(new File(dateiPfad)));
+    		outputter.output(document, new FileOutputStream(file));
         }catch (IOException e){
         	e.printStackTrace();
         }
@@ -689,9 +640,9 @@ public class Vorgabe {
 	public void writeErzeuge() throws FileNotFoundException, IOException {
 		String name = getAusgabeDatei();
 		
-        String currentDir = System.getProperty("user.dir");
+        /*String currentDir = System.getProperty("user.dir");*/
 
-        String dateiPfad = currentDir  + "/" + name ;
+        String dateiPfad = /*currentDir  + "/" +*/ name ;
 		
 		
 		Document document = new Document();
@@ -784,8 +735,10 @@ public class Vorgabe {
         try {
         	XMLOutputter outputter = new XMLOutputter();
     		outputter.setFormat(Format.getPrettyFormat());
-            
-    		outputter.output(document, new FileOutputStream(new File(dateiPfad)));
+            File file = new File(dateiPfad);
+         // Create parent directories if they don't exist
+            file.getParentFile().mkdirs();
+    		outputter.output(document, new FileOutputStream(file));
     		setErfolgErzeugeTrue();
         }catch (IOException e){
         	e.printStackTrace();
@@ -1222,6 +1175,49 @@ public class Vorgabe {
 	public ArrayList<Schlange> getXMLSchlangenLoesung(){
 		return this.xmlSchlangenloesung;
 		
+	}
+	private double leseZeitKonvertieren(double eingabe , String string ) {
+		double ausgabe = 0;
+		
+		if (string.equals("s")){
+			ausgabe = eingabe * 1000;
+		}
+		if (string.equals("min")){
+			ausgabe = eingabe * 1000 * 60;
+		}
+		if (string.equals("h")){
+			ausgabe = eingabe * 1000 * 60 * 60;
+		}
+		if (string.equals("d")){
+			ausgabe = eingabe * 1000 * 60 * 60 *24;
+		}
+		
+		if (string.equals("ms")){
+			ausgabe = eingabe;
+		}
+		return ausgabe;
+	}
+	
+	private double schreibZeitKonvertieren(double eingabe, String einheit) {
+		double ausgabe = 0;
+		
+		if (einheit.equals("s")){
+			ausgabe = eingabe / 1000;
+		}
+		if (einheit.equals("min")){
+			ausgabe = eingabe / ( 1000 * 60 );
+		}
+		if (einheit.equals("h")){
+			ausgabe = eingabe / ( 1000 * 60 * 60 );
+		}
+		if (einheit.equals("d")){
+			ausgabe = eingabe / ( 1000 * 60 * 60 *24 );
+		}
+		
+		if (einheit.equals("ms")){
+			ausgabe = eingabe;
+		}
+		return ausgabe;
 	}
 	
 

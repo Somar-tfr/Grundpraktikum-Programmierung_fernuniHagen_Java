@@ -30,7 +30,7 @@ public class Feld {
 		}
 		this.zeile = zeile;
 		this.spalte = spalte;
-		this.verwendbarkeit = 1;
+		this.verwendbarkeit = 0; //geändert von 1 zu null
 		this.punkte = 1;
 		this.zeichen = ' ';
 	}
@@ -180,6 +180,10 @@ public class Feld {
 		}
 		verwendbarkeit -= 1;
 	}
+	public void verwendbarkeitPlus() {
+		verwendbarkeit += 1;
+	}
+	
 	
 
 

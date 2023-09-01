@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-	
+
 
 
 import de.fernuni.kurs01584.ss23.modell.*;
-	
-	
+
+
 /**
  * Diese Klasse definiert den Suchalgorithmus für Schlangen in einem Dschungel.
  */
@@ -28,7 +28,8 @@ public class SchlangenSuche {
 	private double startZeit;
     private double zeitLimit;
     private int[][] verMat;
-	
+
+
     /**
      * Erzeugt eine neue Instanz von SchlangenSuche.
      *
@@ -45,7 +46,7 @@ public class SchlangenSuche {
 		this.zeitLimit = zeitLimit;
 		this.abgabeZeit = 0;
 	}
-	
+
 	/**
      * Gibt die gefundenen Schlangen zurück.
      *
@@ -55,82 +56,110 @@ public class SchlangenSuche {
 		return this.loesung;
 	}
 	
+	public void setLoesung( ArrayList<Schlange> neuerLoesung) {
+		this.loesung = neuerLoesung;
+	}
+
 	/**
      * Sucht nach Schlangen im Dschungel.
      */
 	public void sucheSchlange() {
 		startZeit = System.currentTimeMillis();
-		
+
 		ArrayList<Feld> tempFelder = new ArrayList<Feld>();
 		ArrayList<ArrayList<Feld>> dschungelMatrix = dschungel.getMatrix();
-		
+
 		//eine liste mit alle felder erstellen
 		for (ArrayList<Feld> zeile : dschungelMatrix) {
 			tempFelder.addAll(zeile);
 		}
-		
+		//initVerMat();
 		//durch schlangenarten iterieren
+		
 		do {
+			//initVerMat();
+			ArrayList<Schlange> tempLoesung = new ArrayList<Schlange>();
 			for (int h = 0; h < schlangenarten.getSize(); h++) {
-				
+				//HIER 31082023
 				Schlangenart schlangenart = schlangenarten.getSchlangeByIndex(h);
-				
+				//initVerMat();
+				//initVerwendbarkeit(tempLoesung);
 				//zulaessige Felder die die gleiche zeichen wie die in schlangenart  && feldVerwendbarkeit >0
-				ArrayList<Feld> zulaessigeFelder = tempFelder.stream()
-						    .filter(feld -> feld.getZeichen() == schlangenart.getZeichenkette().charAt(0) && feld.getVerwendbarkeit() > 0)
-						    .collect(Collectors.toCollection(ArrayList::new));
 				
+
 				//sortiere zulaessigeFelder nach punkte
 				for (int k = 0; k < schlangenart.getAnzahl(); k++) {// moved from 63 under arraylist declaration
+					initVerMat();
+					initVerwendbarkeit(tempLoesung);
+					
+					ArrayList<Feld> zulaessigeFelder = tempFelder.stream()
+						    .filter(feld -> (feld.getZeichen() == schlangenart.getZeichenkette().charAt(0) && verMatPos(feld.getZeile(), feld.getSpalte())))
+						    .collect(Collectors.toCollection(ArrayList::new));
+
 					Collections.shuffle(zulaessigeFelder);
 					Collections.sort(zulaessigeFelder, feldComparator);
 
 					Schlange schlange = new Schlange();
-					
+
 					//iteration durch alle felder
 					for (Feld feld : zulaessigeFelder) {
-						
+
 						//rekursion
-						initVerMat();
+						//initVerMat();
 						Schlangenglied glied = new Schlangenglied(feld);
 						if(sucheSchlangenGlied(glied, schlangenart, 1) /*&& (aktPunkte > maxPunkte)*/) {
 							schlange.setKopf(glied);
 							/*schlange.setPunkte(aktPunkte);*/
 							schlange.setArt(schlangenart.getId());
+
 							/*this.gaktPunkte = 0;
 							this.gmaxPunkte = 0;*/
+
 						}
-						
+						//System.out.println(feld.getId());
+
 					}
-					
-					
 					if (schlange.getKopf().getFeld() != null){
 					    // pruefe ob diese lösung bereits da ist
-					    long anzahl = loesung.stream().filter(existingSchlange -> existingSchlange.getArt().equals(schlange.getArt())).count();
-					    if (anzahl <= schlangenart.getAnzahl()) {
-					        loesung.add(schlange);
-					        zulaessigeFelder.remove(schlange.getKopf().getFeld());// added new
+					    long anzahl = tempLoesung.stream().filter(existingSchlange -> existingSchlange.getArt().equals(schlange.getArt())).count();
+					    if (anzahl < schlangenart.getAnzahl()) {
+					    	print();
+					    	tempLoesung.add(schlange);
+
+
+
+					        //zulaessigeFelder.remove(schlange.getKopf().getFeld());// added new
 					    }
+
 					}
+
+
 					
-					//stoppe den Zeit wenn alle schlangen gefunden sind
-					if (loesung.size() == schlangenarten.getAnzahl()){
-						double zeit = (System.currentTimeMillis() - startZeit);
-						setAbgabeZeit(zeit );
-					}
-					
+
 				}
 				
 				
+
+				//stoppe den Zeit wenn alle schlangen gefunden sind
+				if (loesung.size() == schlangenarten.getAnzahl()){
+					double zeit = (System.currentTimeMillis() - startZeit);
+					setAbgabeZeit(zeit );
+				}
+
+
 			}
-			
+			if( getPunkte(tempLoesung) > getPunkte(getLoesung())) {
+				setLoesung(tempLoesung);
+				
+			}
+
 		}while(loesung.size() != schlangenarten.getAnzahl() && (System.currentTimeMillis() - startZeit < zeitLimit));
-		
+
 		//schreibe zeit am ende
 		double zeit = (System.currentTimeMillis() - startZeit);
 		setAbgabeZeit( zeit); // in ms
 	}
-	
+
 	/**
      * Sucht nach dem nächsten Schlangenglied, das der Schlange hinzugefügt werden soll, Backtracking.
      *
@@ -140,47 +169,49 @@ public class SchlangenSuche {
      * @return Gibt true zurück, wenn das nächste Schlangenglied gefunden wurde, sonst false.
      */
 	private boolean sucheSchlangenGlied(Schlangenglied vorGlied, Schlangenart schlangenart, int iterator) {
-		
+
 		//n0 die tiefste rekursion
 		if(iterator == schlangenart.getSize()) {
-			
-			
+
+
 			return true;
 		}
-		
-		
+
+
 
 		//initiere zulaessige nachbarfelder
 		ArrayList<Feld> nachbarn = schlangenart.getNachbarschaftsstruktur().getNachbarschaft(dschungel, vorGlied.getFeld())
 			    .stream()
 			    .filter(feld ->  (verMatPos(feld.getZeile() , feld.getSpalte() )  && feld.getZeichen() == schlangenart.getZeichenkette().charAt(iterator)))
 			    .collect(Collectors.toCollection(ArrayList::new));
-		
+
+
+
 		//sortiere nach punkte
 		Collections.shuffle(nachbarn);
 		Collections.sort(nachbarn, feldComparator);
-		
+
 		for (Feld feld : nachbarn) {
 			redVerMat(feld.getZeile(), feld.getSpalte());
 			Schlangenglied glied = new Schlangenglied(feld);
 			vorGlied.setNext(glied);
-			
+			//System.out.println(feld.getZeichen());
 			//rekursion
 			if(sucheSchlangenGlied(glied, schlangenart, iterator + 1) ) {
-				
+				//System.out.println(glied.getFeld().getZeichen());
 				return true;
-				
+
 			}else {
-				
+
 				addVerMat( feld.getZeile(), feld.getSpalte());
 				vorGlied.setNext(null);
 			}
-			
+
 		}
-		
+		//System.out.println("xx");
 		return false;
 	}
-	
+
 	/**
      * Ein Comparator für Felder. Felder werden nach ihrer Punktzahl sortiert.
      */
@@ -191,7 +222,7 @@ public class SchlangenSuche {
 	    	if (o1.getPunkte() > o2.getPunkte()){
 	    		return -1;
 	    	}
-	    	
+
 	    	if (o1.getPunkte() == o2.getPunkte()) {
 	    		return 0;
 	    	}
@@ -199,6 +230,22 @@ public class SchlangenSuche {
 	    }
 	};
 	
+	//UNBENUTZT
+	Comparator<Schlangenart> schlangenartComperator = new Comparator<Schlangenart>() {
+	    @Override
+	    public int compare(Schlangenart s1, Schlangenart s2) {
+	        // Define your comparison logic here
+	    	if (s1.getSize() > s2.getSize()){
+	    		return -1;
+	    	}
+
+	    	if (s1.getSize() == s2.getSize()) {
+	    		return 0;
+	    	}
+	    	return 1;
+	    }
+	};
+
 	/**
      * Legt die Zeit fest, zu der die Lösung abgegeben wird.
      *
@@ -207,7 +254,7 @@ public class SchlangenSuche {
 	public void setAbgabeZeit(double abgabezeit) {
 		this.abgabeZeit = abgabezeit;
 	}
-	
+
 	/**
      * Gibt die Zeit zurück, zu der die Lösung abgegeben wurde.
      *
@@ -227,7 +274,7 @@ public class SchlangenSuche {
 		// TODO Auto-generated method stub
 		return this.loesung.size();
 	}
-	
+
 	/**
      * Initialisiert die VerwendbarkeitsMatrix mit den "Verwendbarkeit"Werten der Felder im Dschungel.
      */
@@ -248,13 +295,15 @@ public class SchlangenSuche {
      * @return true, wenn der "Verwendbarkeit"-Wert positiv ist, false sonst.
      */
 	private boolean verMatPos(int x, int y) {
-		if (verMat[x][y] > 0) {
+		if (verMat[x][y] <= dschungel.getFeld(x, y).getVerwendbarkeit() && verMat[x][y] > 0) {
 			return true;
 		}
-		
+
 		return false;
-		
+
 	}
+
+
 
 	/**
      * Verringert den "Verwendbarkeit"-Wert des Feldes an der angegebenen Position (x, y) um 1.
@@ -264,12 +313,12 @@ public class SchlangenSuche {
      * @param y Der Spaltenindex des Feldes in der Matrix.
      */
 	private void redVerMat(int x, int y) {
-		if (verMat[x][y] > 0) {
+
 			verMat[x][y] -= 1;
-		}
-		
+
+
 	}
-	
+
 	/**
      * Erhöht den "Verwendbarkeit"-Wert des Feldes an der angegebenen Position (x, y) um 1.
      *
@@ -279,7 +328,55 @@ public class SchlangenSuche {
 	private void addVerMat(int x, int y) {
 		verMat[x][y] += 1;
 	}
+	private void print() {
+		for (int i = 0; i < verMat.length; i++) {
+			for(int j = 0; j < verMat[i].length; j++) {
+				System.out.print(verMat[i][j] + " |, ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 	
+	private void initVerwendbarkeit(ArrayList<Schlange> tempLoesung ) {
+		if (tempLoesung.size() > 0){
+			for (Schlange s : tempLoesung) {
+				Schlangenglied gl = s.getKopf();
+				int zeile1 = gl.getFeld().getZeile();
+				int spalte1 = gl.getFeld().getSpalte();
+				redVerMat(zeile1, spalte1);
+				
+				while ( gl.getNext() != null){
+					int zeile = gl.getNext().getFeld().getZeile();
+					int spalte = gl.getNext().getFeld().getSpalte();
+					redVerMat(zeile, spalte);
+					gl = gl.getNext();
+				}
+			}
+		}
+	}
+	
+	private int getPunkte(ArrayList<Schlange> schlangenList) {
+		int punkte = 0 ;
+		if (schlangenList.size() ==0){
+			return punkte;
+		}
+		for (Schlange n : schlangenList) {
+			Schlangenglied gl = n.getKopf();
+			punkte += gl.getNext().getFeld().getPunkte();
+			
+			
+			while ( gl.getNext() != null){
+				punkte += gl.getNext().getFeld().getPunkte();
+				
+				gl = gl.getNext();
+			} 
+		}
+		return punkte;
+		
+	}
+
+
 
 
 }
