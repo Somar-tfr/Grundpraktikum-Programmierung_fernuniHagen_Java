@@ -64,7 +64,10 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 				schlangenJagd.darstellen(eingabe);
 			}else if (!ablauf.contains("e")){
 				schlangenJagd.darstellen(ausgabe);
-			}else {
+			}else if(ablauf.contains("l") && ablauf.contains("e")) {
+				schlangenJagd.darstellen(ausgabe);
+			
+			}else{
 				
 				throw new IllegalArgumentException(
 						"Bei nur Erzeugen kann man keine Loesung darstellen!!");
@@ -232,11 +235,10 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 				if(g == schlange.getKopf()) {
 					continue;
 				}//8:53
-				System.out.println("vorhanden: " + Collections.frequency(verwendbarkeit, g.getFeld().getId()));
-				System.out.println("vaerwendbarkeit: " +  g.getFeld().getVerwendbarkeit() );
+				
 				if(Collections.frequency(verwendbarkeit, g.getFeld().getId()) >= g.getFeld().getVerwendbarkeit()) {
 					fehler.add(Fehlertyp.VERWENDUNG);
-					System.out.println("feld id : " +   g.getFeld().getId());
+					
 				}
 				verwendbarkeit.add(g.getFeld().getId());
 			}

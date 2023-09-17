@@ -778,8 +778,8 @@ public class Vorgabe {
 			
 			vorgabe = leseZeitKonvertieren(vorgabe, getEinheit());
 			setZeitVorgabe(vorgabe);
-			System.out.println(vorgabe);
-			System.out.println(zeitElement.getChildren());
+			//System.out.println(vorgabe);
+			//System.out.println(zeitElement.getChildren());
 			
 			Element abgabeElement = zeitElement.getChild("Abgabe");
 			double abgabe = Double.parseDouble(abgabeElement.getValue());
@@ -1101,6 +1101,11 @@ public class Vorgabe {
 		return this.zeitAbgabe;
 	}
 	
+	/**
+	 * Diese Methode gibt die aktuelle Zeiteinheit der Zeitvorgabe zurück.
+	 *
+	 * @return Die aktuelle Zeiteinheit der Zeitvorgabe als Zeichenkette ("ms", "s", "min", "h" oder "d").
+	 */
 	private String getEinheit() {
 		return this.zeitVorgabeEinheit;
 	}
@@ -1176,6 +1181,14 @@ public class Vorgabe {
 		return this.xmlSchlangenloesung;
 		
 	}
+	
+	/**
+	 * Diese Methode konvertiert eine Zeitspanne von einer gegebenen Einheit in eine andere Einheit in Millisekunden.
+	 *
+	 * @param eingabe Die Zeitspanne in der angegebenen Einheit, die konvertiert werden soll.
+	 * @param einheit Die Einheit, in die die Zeitspanne konvertiert werden soll ("ms", "s", "min", "h" oder "d").
+	 * @return Die konvertierte Zeitspanne in Millisekunden.
+	 */
 	private double leseZeitKonvertieren(double eingabe , String string ) {
 		double ausgabe = 0;
 		
@@ -1198,6 +1211,13 @@ public class Vorgabe {
 		return ausgabe;
 	}
 	
+	/**
+	 * Diese Methode konvertiert eine Zeitspanne von einer gegebenen Einheit in Millisekunden in eine andere Einheit.
+	 *
+	 * @param eingabe Die Zeitspanne in Millisekunden, die konvertiert werden soll.
+	 * @param einheit Die Einheit, in die die Zeitspanne konvertiert werden soll ("ms", "s", "min", "h" oder "d").
+	 * @return Die konvertierte Zeitspanne in der angegebenen Einheit.
+	 */
 	private double schreibZeitKonvertieren(double eingabe, String einheit) {
 		double ausgabe = 0;
 		

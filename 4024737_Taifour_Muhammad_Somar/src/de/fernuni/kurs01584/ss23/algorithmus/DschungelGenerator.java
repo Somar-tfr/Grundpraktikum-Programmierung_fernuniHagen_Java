@@ -32,7 +32,7 @@ public class DschungelGenerator {
 			int spalten,
 			String zulaessigeZeichen,
 			Schlangenarten schlangenarten
-			/*,int schlangenanzahl*/){
+			){
 		if (zeilen < 1 || spalten < 1 || zulaessigeZeichen == null || schlangenarten == null /*||  schlangenanzahl < 1*/) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute "
@@ -52,10 +52,11 @@ public class DschungelGenerator {
      * @return Dschungel Objekt mit initialisierter Belegung.
      */
 	public Dschungel erzeugeDschungel() {
+		System.out.println("Dschungel wird generiert.. ");
 		Dschungel dschungel = new Dschungel(zeilen, spalten, zulaessigeZeichen);
 		verwendbarkeitErstellen();
 		//Zufällige schlangen verteilung
-		System.out.println(getVNummer());
+		
 		int schlangenartenAnzahl = schlangenarten.getSize();
 		
 
@@ -65,9 +66,7 @@ public class DschungelGenerator {
 		for(int i = 0; i < schlangenartenAnzahl; i++) {
 			//muss sicher stellen dass die zeichenketten in schlange zulaessig sind
 			
-			/*if(schlangeZeichenkettenZulaessig) {
-
-			}*/
+			
 			
 			//schlangenart wählen und benötigte informationen speichern
 			Schlangenart schlangenart = schlangenarten.getSchlangeByIndex(i);
@@ -75,17 +74,18 @@ public class DschungelGenerator {
 			int schlangenAnzahl = schlangenart.getAnzahl();
 			
 			for(int j = 0 ; j < schlangenAnzahl; j++) {
+				
 				ArrayList<Feld> felderlist = new ArrayList<Feld>();//felderliste für  felder die recursiv belegt sind und die schlange zulässig ist
 				
 				//looop für ein random position in dem dschungel für die schlange
-				//HashSet<Feld> verwendeteFelder = new HashSet<>();
+				
 				while(!istZulaessigBT(dschungel, schlangenart, gliederAnzahl -1, null, felderlist, verwendeteFelder)) {
 					
 			        felderlist.clear(); // clear the list and set to generate a new snake
-			        //verwendeteFelder.clear();//nicht clear sondern die letzte löschen
+			        
 			    } //diese do while addiert um sicher zu stellen dass es eine schlange zu ende platziert wird
 			}
-
+			
 
 			}
 
@@ -112,7 +112,7 @@ public class DschungelGenerator {
 				}//if feld nicht belegt
 			}//spalten iteration
 		}//zeilen iteration
-		System.out.println("lst");
+		
 
 		return dschungel;
 	}
@@ -139,7 +139,7 @@ public class DschungelGenerator {
 
 		//die n0 position
 		if (schlangenZeichenIterator == -1) {
-			System.out.println(thisFeld.getVerwendbarkeit()+ " "+ getVNummer());
+			//System.out.println(thisFeld.getVerwendbarkeit()+ " "+ getVNummer());
 
 			return true;
 		}
@@ -156,11 +156,7 @@ public class DschungelGenerator {
 		
 		//SCHAUE OB DIE ANZAHL AN VERWENDETEN FELDER KLEINER ALS DIE VNUMMER
 		//die negative positionen die bereits belegt sind
-		/*if(thisFeld.getZeichen() != ' ' || verwendeteFelder.contains(thisFeld)) {
-			System.out.println("intheloop!!");
-			return false;
-			
-		}*/
+		
 		
 		if((Collections.frequency(verwendeteFelder,thisFeld) >= getVNummer()) || (thisFeld.getZeichen() != ' ' && (Collections.frequency(verwendeteFelder,thisFeld) > getVNummer()) )) {
 		
@@ -168,10 +164,7 @@ public class DschungelGenerator {
 		
 		}
 		
-		/*if(thisFeld.getZeichen() != ' ' && ((Collections.frequency(verwendeteFelder,thisFeld) > thisFeld.getVerwendbarkeit()) && (getVNummer() == 1))) {
-			return false;
-			
-		}*/
+		
 		
 		
 		//Rekursive Position
@@ -184,31 +177,23 @@ public class DschungelGenerator {
 			thisFeld.setZeichen(appendChar);
 			int prevPunkte = thisFeld.getPunkte();
 			thisFeld.setPunkte(appendPunkte);
-			//thisFeld.setVerwendbarkeit(1);
+			
 			thisFeld.verwendbarkeitPlus();
-			/*if (getVNummer() != 1) {
-				thisFeld.verwendbarkeitPlus();
-			}else {
-				thisFeld.setVerwendbarkeit(1);
-			}*/
+			
 			
 			felderlist.add(thisFeld);
 			
 			if(istZulaessigBT(dschungel, schlangenart, schlangenZeichenIterator - 1, feld, felderlist, verwendeteFelder)) {
-				//System.out.println(thisFeld.getId());
+				
 				return true;
 			}else {
 				verwendeteFelder.remove(thisFeld);
 				
 				thisFeld.setZeichen(' ');
 				thisFeld.setPunkte(prevPunkte);
-				//thisFeld.setVerwendbarkeit(0);
+				
 				thisFeld.verwenden();
-				/*if (getVNummer() != 1) {
-					thisFeld.verwenden();
-				}else {
-					thisFeld.setVerwendbarkeit(0);
-				}*/
+				
 				 
 				felderlist.remove(thisFeld);
 				
@@ -232,16 +217,16 @@ public class DschungelGenerator {
 			int gliederAnzahl = schlangenart.getSize();
 			int schlangenAnzahl = schlangenart.getAnzahl();
 			
-			felderSollAnzahl += (gliederAnzahl * schlangenAnzahl);
+			felderSollAnzahl += (gliederAnzahl * schlangenAnzahl) + 1;
 		}
 		
 		if (felderIstAnzahl < felderSollAnzahl) {
 			if (felderSollAnzahl % felderIstAnzahl != 0) {
 				int verwendbarkeit = (int) Math.ceil((double) felderSollAnzahl / felderIstAnzahl);
-				setvNummer( verwendbarkeit);
+				setvNummer(10 * verwendbarkeit);
 			}else {
 				int verwendbarkeit = felderSollAnzahl / felderIstAnzahl;
-				setvNummer( verwendbarkeit);	
+				setvNummer( 10 * verwendbarkeit);	
 			}
 			
 		}else {

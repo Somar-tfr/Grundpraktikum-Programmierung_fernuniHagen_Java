@@ -56,6 +56,12 @@ public class SchlangenSuche {
 		return this.loesung;
 	}
 	
+	/**
+	 * Setzt den Wert des Feldes 'loesung' auf die gegebene ArrayList von Schlange-Objekten.
+	 * 
+	 * @param neuerLoesung Die neue Lösung, repräsentiert als ArrayList von Schlange-Objekten. 
+	 *                     Diese ersetzt die bestehende 'loesung'.
+	 */
 	public void setLoesung( ArrayList<Schlange> neuerLoesung) {
 		this.loesung = neuerLoesung;
 	}
@@ -65,6 +71,7 @@ public class SchlangenSuche {
      */
 	public void sucheSchlange() {
 		startZeit = System.currentTimeMillis();
+		System.out.println("Schlange wird gesucht..");
 
 		ArrayList<Feld> tempFelder = new ArrayList<Feld>();
 		ArrayList<ArrayList<Feld>> dschungelMatrix = dschungel.getMatrix();
@@ -107,28 +114,30 @@ public class SchlangenSuche {
 						//rekursion
 						//initVerMat();
 						Schlangenglied glied = new Schlangenglied(feld);
-						if(sucheSchlangenGlied(glied, schlangenart, 1) /*&& (aktPunkte > maxPunkte)*/) {
+						int gliedsZeile = glied.getFeld().getZeile();
+						int gliedsSpalte = glied.getFeld().getSpalte();
+						redVerMat(gliedsZeile, gliedsSpalte);
+						
+						if(sucheSchlangenGlied(glied, schlangenart, 1) ) {
 							schlange.setKopf(glied);
-							/*schlange.setPunkte(aktPunkte);*/
 							schlange.setArt(schlangenart.getId());
 
-							/*this.gaktPunkte = 0;
-							this.gmaxPunkte = 0;*/
+							
 
+						}else {
+							addVerMat(gliedsZeile,gliedsSpalte );
 						}
-						//System.out.println(feld.getId());
 
 					}
 					if (schlange.getKopf().getFeld() != null){
 					    // pruefe ob diese lösung bereits da ist
 					    long anzahl = tempLoesung.stream().filter(existingSchlange -> existingSchlange.getArt().equals(schlange.getArt())).count();
 					    if (anzahl < schlangenart.getAnzahl()) {
-					    	print();
+					    	
 					    	tempLoesung.add(schlange);
 
 
 
-					        //zulaessigeFelder.remove(schlange.getKopf().getFeld());// added new
 					    }
 
 					}
@@ -139,7 +148,7 @@ public class SchlangenSuche {
 				}
 				
 				
-
+				//HIER ANGEPASST 01092023
 				//stoppe den Zeit wenn alle schlangen gefunden sind
 				if (loesung.size() == schlangenarten.getAnzahl()){
 					double zeit = (System.currentTimeMillis() - startZeit);
@@ -195,10 +204,8 @@ public class SchlangenSuche {
 			redVerMat(feld.getZeile(), feld.getSpalte());
 			Schlangenglied glied = new Schlangenglied(feld);
 			vorGlied.setNext(glied);
-			//System.out.println(feld.getZeichen());
 			//rekursion
 			if(sucheSchlangenGlied(glied, schlangenart, iterator + 1) ) {
-				//System.out.println(glied.getFeld().getZeichen());
 				return true;
 
 			}else {
@@ -208,7 +215,6 @@ public class SchlangenSuche {
 			}
 
 		}
-		//System.out.println("xx");
 		return false;
 	}
 
@@ -328,6 +334,7 @@ public class SchlangenSuche {
 	private void addVerMat(int x, int y) {
 		verMat[x][y] += 1;
 	}
+	
 	private void print() {
 		for (int i = 0; i < verMat.length; i++) {
 			for(int j = 0; j < verMat[i].length; j++) {
@@ -338,6 +345,11 @@ public class SchlangenSuche {
 		System.out.println();
 	}
 	
+	/**
+	 * Diese Methode initialisiert die Verwendbarkeit der Felder in einer gegebenen Liste von Schlangen.
+	 *
+	 * @param tempLoesung Eine Liste von Schlangen, deren Felder als verwendet markiert werden sollen.
+	 */
 	private void initVerwendbarkeit(ArrayList<Schlange> tempLoesung ) {
 		if (tempLoesung.size() > 0){
 			for (Schlange s : tempLoesung) {
@@ -356,6 +368,12 @@ public class SchlangenSuche {
 		}
 	}
 	
+	/**
+	 * Diese Methode berechnet die Gesamtpunktzahl aller Schlangen in einer gegebenen Liste.
+	 *
+	 * @param schlangenList Eine Liste von Schlangen, deren Punktzahlen addiert werden sollen.
+	 * @return Die Gesamtpunktzahl aller Schlangen in der Liste.
+	 */
 	private int getPunkte(ArrayList<Schlange> schlangenList) {
 		int punkte = 0 ;
 		if (schlangenList.size() ==0){

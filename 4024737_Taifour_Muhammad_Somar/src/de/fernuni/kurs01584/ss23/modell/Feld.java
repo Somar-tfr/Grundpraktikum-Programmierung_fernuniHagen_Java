@@ -180,6 +180,10 @@ public class Feld {
 		}
 		verwendbarkeit -= 1;
 	}
+	
+	/**
+	 * erhoeht die Verwendbarkeit des Feld im Dschungel.
+	 */
 	public void verwendbarkeitPlus() {
 		verwendbarkeit += 1;
 	}
