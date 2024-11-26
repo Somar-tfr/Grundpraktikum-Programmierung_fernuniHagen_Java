@@ -5,8 +5,7 @@ Grundpraktikum-Programmierung_fernuniHagen_Java
  Grundpraktikum Programmierung durchgeführt vom  Lehrgebiet Unternehmensweite Softwaresysteme im Sommersemester 2023 
  Der für die Schlangenjagd entwickelte Suchalgorithmus und das zugehörige Datenmodell lassen sich auf verschiedene andere Problemstellungen übertragen.
 
-#Technologien:
+# Technologien:
 Java
 
- weitere infos sind unter: 
  
